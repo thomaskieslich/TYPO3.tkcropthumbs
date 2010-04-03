@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for plugin &quot;tx_cropthumbs&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="editor_title">edit cropping</label>
+            <label index="save_values">save values</label>
+            <label index="reset_values">reset_values</label>
+            <label index="aspectratio">aspect ratio</label>
+            <label index="aspectratio.I.0">-:-</label>
+            <label index="aspectratio.I.1">1:1</label>
+            <label index="aspectratio.I.2">4:3</label>
+            <label index="aspectratio.I.3">13:9</label>
+            <label index="aspectratio.I.4">16:9</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="editor_title">Bildausschnitt bearbeiten</label>
+            <label index="save_values">Ausschnitt speichern</label>
+            <label index="reset_values">Ausschnitt löschen</label>
+			<label index="aspectratio">Seitenverhältnis</label>
+			<label index="aspectratio.I.0">-:-</label>
+            <label index="aspectratio.I.1">1:1</label>
+            <label index="aspectratio.I.2">4:3</label>
+            <label index="aspectratio.I.3">13:9</label>
+            <label index="aspectratio.I.4">16:9</label>
+        </languageKey>
+    </data>
+</T3locallang>
