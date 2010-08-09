@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Crop Thumbnails with jCrop and has a switch to make thumbs with aspect ratios. Can use it for Detailviews or simple galeries.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.1.0',
+	'version' => '1.1.1',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -35,7 +35,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',
-			'typo3' => '4.3.0-4.3.99',
+			'typo3' => '4.3.0-4.4.99',
 		),
 		'conflicts' => array(
 		),
