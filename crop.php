@@ -116,8 +116,8 @@ else if($_GET['aspectratio'] == 4)$aspect = 'aspectRatio: 1.77,';
 
 //field
 $ratioField = '';
-if($aspect)$ratioField = '<label for="ratio">'.$LANG->getLL("aspectratio").'&nbsp;&nbsp;&nbsp;</label><input type="text" size="9" id="ratio" name="ratio" readonly />';
-else $ratioField = '<label for="ratio">'.$LANG->getLL("aspectratio").'&nbsp;&nbsp;&nbsp;</label><input type="text" size="9" id="ratio" name="ratio" />';
+if($aspect)$ratioField = '<label for="ratio">'.$LANG->getLL("aspectratio").'&nbsp;&nbsp;&nbsp;</label><input type="text" size="4" id="ratio" name="ratio" readonly />';
+else $ratioField = '<label for="ratio">'.$LANG->getLL("aspectratio").'&nbsp;&nbsp;&nbsp;</label><input type="text" size="4" id="ratio" name="ratio" />';
 
 // init window
 $template=new template;
