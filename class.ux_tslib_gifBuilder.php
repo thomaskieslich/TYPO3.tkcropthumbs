@@ -53,7 +53,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 	 * @return	array		[0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
-	function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0, $uid) {
+	function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0, $uid = 0) {
 		if ($this->NO_IMAGE_MAGICK) {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
