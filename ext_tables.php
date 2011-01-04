@@ -19,11 +19,21 @@ $tempColumns = array (
 						'maxitems'=>1,
 				)
 		),
+		'tx_tkcropthumbs_cropvalues' => array(
+			'l10n_display' => 'hideDiff',
+			'label' => 'scale',
+			'config' => array(
+				'type' => 'text',
+				'default' => '<?xml version="1.0" encoding="UTF-8"?>
+				<images></images>'
+			),
+		)
 );
 
 
 t3lib_div::loadTCA('tt_content');
-t3lib_extMgm::addTCAcolumns('tt_content',$tempColumns,1);
+t3lib_extMgm::addTCAcolumns('tt_content',$tempColumns,tx_tkcroptumbs);
 
-$GLOBALS['TCA']['tt_content']['palettes']['13']['showitem'] .= ', tx_tkcropthumbs_aspectratio';
+
+$GLOBALS['TCA']['tt_content']['palettes']['image_settings']['showitem'] .= ', tx_tkcropthumbs_aspectratio';
 ?>

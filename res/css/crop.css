@@ -1,0 +1,31 @@
+
+body{
+    background-color: #666;
+	font-family: Verdana;
+	font-size: 12px;
+	margin: 15px;
+}
+
+h2{
+	color: #ccc;
+	font-size: 100%;
+}
+
+#image{
+	float:left;
+}
+#values{
+	float:right;
+	width: 185px;
+}
+
+fieldset{
+    border:1px solid #f90;
+}
+input{
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+input#reset{
+    background-color: #000000;
+}
