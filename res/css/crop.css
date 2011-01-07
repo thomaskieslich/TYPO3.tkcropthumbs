@@ -3,7 +3,10 @@ body{
     background-color: #666;
 	font-family: Verdana;
 	font-size: 12px;
-	margin: 15px;
+	margin: 0;
+	padding: 10px;
+	height: 600px;
+	width: 800px;
 }
 
 h2{
@@ -25,7 +28,4 @@ fieldset{
 input{
     margin-top: 6px;
     margin-bottom: 6px;
-}
-input#reset{
-    background-color: #000000;
 }

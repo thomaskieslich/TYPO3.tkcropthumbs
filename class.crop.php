@@ -81,7 +81,7 @@ class crop {
 	<script src="res/js/jquery-1.4.4.min.js" type="text/javascript"></script>
 	<script src="res/js/jquery.imgareaselect.min.js" type="text/javascript"></script>
 
-	<script language="Javascript">
+	<script type="text/javascript">
 		function preview(img, selection) {
 			$("#x1").val(selection.x1);
 			$("#y1").val(selection.y1);
@@ -99,12 +99,12 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 <body>';
 		//Image
 		$this->template .= '<div id="image">
-		<img src="' . '../../../' . $_GET["image"] . '" width="' . $this->width . '" height="' . $this->height . '" id="cropbox" />
+		<img src="' . '../../../' . $_GET["image"] . '" width="' . $this->width . '" height="' . $this->height . '" id="cropbox" alt="croped image" />
 	</div>';
 
 		//Values
 		$this->template .= '<div id="values"><h2>' . $this->LANG->getLL("editor_title") . '</h2>
-		<form name="crop" method="get">
+		<form name="crop" method="get" action="">
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="image" value="' . $_GET['image'] . '" />
 		<input type="hidden" name="uid" value="' . $_GET['uid'] . '" />
@@ -116,26 +116,26 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 				<label for="y2">Y2</label><input type="text" size="4" id="y2" name="y2" value="' . $this->values['y2'] . '" /><br />
 				<label for="w">W&nbsp;</label><input type="text" size="4" id="w" name="w" readonly />
 				<label for="h">H&nbsp;</label><input type="text" size="4" id="h" name="h" readonly />
-				<label for="ratio">' . $this->LANG->getLL("aspectratio") . '&nbsp;&nbsp;&nbsp;</label><input type="text" size="2" id="ratio" value="' . $this->aspect . '" readonly />
+				<label for="ratio">' . $this->LANG->getLL("aspectratio") . '</label><input type="text" size="2" id="ratio" value="' . $this->aspect . '" readonly />
 		' . $this->ratioField . '
 			</fieldset>
 			<input type="submit" value="' . $this->LANG->getLL("save_values") . '" />
 		</form>
-		<form name="resetSingle" method="get">
+		<form name="resetSingle" method="get" action="">
 			<input type="hidden" name="action" value="resetSingle" />
 			<input type="hidden" name="image" value="' . $_GET['image'] . '" />
 			<input type="hidden" name="uid" value="' . $_GET['uid'] . '" />
 			<input type="hidden" name="aspectratio" value="' . $_GET['aspectratio'] . '" />
 			<input type="submit" value="' . $this->LANG->getLL("reset_single") . '" />
 		</form>
-		<form name="resetAll" method="get">
+		<form name="resetAll" method="get" action="">
 			<input type="hidden" name="action" value="resetAll" />
 			<input type="hidden" name="image" value="' . $_GET['image'] . '" />
 			<input type="hidden" name="uid" value="' . $_GET['uid'] . '" />
 			<input type="hidden" name="aspectratio" value="' . $_GET['aspectratio'] . '" />
 			<input type="submit" value="' . $this->LANG->getLL("reset_all") . '" />
 		</form>
-		<form name="close" method="get">
+		<form name="close" method="get" action="">
 			<input type="submit" value="' . $this->LANG->getLL("close") . '" onClick="self.close();" />
 		</form>
 	</div>';
@@ -188,12 +188,14 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 		$imgsize = getimagesize(PATH_site . $_GET["image"]);
 		$this->imageWidth = $imgsize[0];
 		$this->imageHeight = $imgsize[1];
-
+		//css width height
 		if (($this->imageWidth > 600) || ($this->imageHeight > 600)) {
 			if ($this->imageHeight > $this->imageWidth) {
 				$this->height = 600;
+				$this->width = $this->imageWidth * 600 / $this->imageHeight;
 			} else {
 				$this->width = 600;
+				$this->height = $this->imageHeight * 600 / $this->imageWidth;
 			}
 		}
 	}
