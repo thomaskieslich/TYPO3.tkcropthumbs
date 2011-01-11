@@ -142,7 +142,7 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 								. $relPath . 'class.crop.php?image=' . $config['uploadfolder'] . '/' . $imgP[0]
 								. '&uid=' . $row[uid] . '&aspectratio=' . $row['tx_tkcropthumbs_aspectratio'] . '\',\'tkcropthumbs' . rand(0, 1000000)
 								. '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;" style="position: relative;">
-								<div style="position:absolute; margin: auto; width: 56px;"><img src="'. $relPath . 'res/icons/crop.png" title="Crop"></div>'
+								<div style="position:absolute; margin: auto; width: 56px;"><img src="'. $relPath . 'res/icons/crop.png" title="'.$fI['basename'].'"></div>'
 						. $this->croppedThumbs($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"')
 								. '</a></span>';
 
