@@ -49,15 +49,16 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 	 * @param	string		Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
 	 * @param	array		An array with options passed to getImageScale (see this function).
 	 * @param	boolean		If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+	 * @param   array		tkcropthumbs
 	 * @return	array		[0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
-	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0, $tkcropthumbs = 0) {
+	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0, $tkcropthumbs = NULL) {
 		if ($this->NO_IMAGE_MAGICK) {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
 		}
-
+		
 		if ($info = $this->getImageDimensions($imagefile)) {
 
 			//tkcropthumbs
@@ -137,7 +138,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 							$cropValues['y1'] = intval($info[1] / 2 - $cHeight / 2);
 						}
 					}
-					$params = ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
+					$params .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
 					$info[0] = $width_dest;
 					$info[1] = $height_dest;
 					$crop = 1;
@@ -218,7 +219,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 				if ($tkcropthumbs['cropvalues'] || $tkcropthumbs['aspectratio'] > 0) {
 					$command = $params . ' ' . $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ';
 				} else {
-					$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+					$command = $params . ' ' .$this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ';
 				}
 
 
