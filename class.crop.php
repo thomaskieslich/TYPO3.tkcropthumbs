@@ -70,7 +70,6 @@ class crop {
 	}
 
 	public function display() {
-//		var_dump($this->values);
 		$this->template = '<!DOCTYPE html>
 <html>
 <head>
@@ -210,7 +209,7 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 		else if ($_GET['aspectratio'] == 3)
 			$this->aspect = '13:9';
 		else if ($_GET['aspectratio'] == 4)
-			$this->aspect = '16:9';
+			$this->aspect = '16:9';		
 	}
 
 	function saveValues() {

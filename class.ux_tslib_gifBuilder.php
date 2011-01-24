@@ -58,11 +58,11 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
 		}
-		
-		if ($info = $this->getImageDimensions($imagefile)) {
 
+		if ($info = $this->getImageDimensions($imagefile)) {
 			//tkcropthumbs
 			$cropValues = array();
+			$cropParams = '';
 			if (strlen($tkcropthumbs['cropvalues']) > 1) {
 				$cropXml = simplexml_load_string($tkcropthumbs['cropvalues']);
 				if ($cropXml) {
@@ -75,7 +75,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$cHeight = $cropValues['y2'] - $cropValues['y1'];
 					$ratio = ($cropValues["x2"] - $cropValues["x1"]) / ($cropValues["y2"] - $cropValues["y1"]);
 					$info[1] = intval($info[0] / $ratio);
-					$params .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
+					$cropParams .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
 				}
 			}
 			//tkcropthumbs aspect ratio
@@ -138,7 +138,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 							$cropValues['y1'] = intval($info[1] / 2 - $cHeight / 2);
 						}
 					}
-					$params .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
+					$cropParams = ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
 					$info[0] = $width_dest;
 					$info[1] = $height_dest;
 					$crop = 1;
@@ -176,7 +176,8 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 				// the image to be scaled!! (that is if no width / height is
 				// given or if the destination w/h matches the original image
 				// dimensions or if the option to not scale the image is set)
-				$noScale = (!$w && !$h) || ($data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
+				//$noScale = (!$w && !$h) || ($data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
+				$noScale = (!$w && !$h);
 
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 					// set the new width and height before returning,
@@ -201,8 +202,6 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$params = $this->cmds[$newExt];
 				}
 
-
-
 				// Cropscaling:
 				if ($data['crs']) {
 					if (!$data['origW']) {
@@ -216,13 +215,12 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ' ';
 				}
 
-				if ($tkcropthumbs['cropvalues'] || $tkcropthumbs['aspectratio'] > 0) {
-					$command = $params . ' ' . $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ';
-				} else {
-					$command = $params . ' ' .$this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ';
+				if ($cropParams) {
+					$params .= $cropParams;
 				}
 
 
+				$command = $params . ' ' . $this->scalecmd . ' ' . intval($info[0]) . 'x' . intval($info[1]) . '! ';
 				$cropscale = ($data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '');
 
 //				var_dump($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
@@ -237,11 +235,11 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$this->imageMagickConvert_forceFileNameBody = '';
 				}
 
-				// Making the temporary filename:
+// Making the temporary filename:
 				$this->createTempSubDir('pics/');
 				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
 
-				// Register temporary filename:
+// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile)) {
