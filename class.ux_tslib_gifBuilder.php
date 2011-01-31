@@ -80,21 +80,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 			}
 			//tkcropthumbs aspect ratio
 			if ($tkcropthumbs['aspectratio'] > 0) {
-				$isAspect = $tkcropthumbs['aspectratio'];
-				$aspect = array();
-				if ($isAspect == 1) {
-					$aspect[0] = 1;
-					$aspect[1] = 1;
-				} else if ($isAspect == 2) {
-					$aspect[0] = 4;
-					$aspect[1] = 3;
-				} else if ($isAspect == 3) {
-					$aspect[0] = 13;
-					$aspect[1] = 9;
-				} else if ($isAspect == 4) {
-					$aspect[0] = 16;
-					$aspect[1] = 9;
-				}
+				$aspect = preg_split('/:/', $tkcropthumbs['aspectratio'], 2);
 
 				if ($info[0] / $info[1] != $aspect[0] / $aspect[1]) {
 					$orientation = ($info[0] > $info[1]) ? 'landscape' : 'portrait';

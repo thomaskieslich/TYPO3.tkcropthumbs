@@ -9,11 +9,11 @@ $tempColumns = array (
 				'config' => array (
 						'type' => 'select',
 						'items' => array (
-								array('-:-', '0'),
-								array('1:1', '1'),
-								array('4:3', '2'),
-								array('13:9', '3'),
-								array('16:9', '4'),
+								array('-:-', ''),
+								array('1:1', '1:1'),
+								array('4:3', '4:3'),
+								array('13:9', '13:9'),
+								array('16:9', '16:9'),
 						),
 						'minitems'=>1,
 						'maxitems'=>1,
