@@ -87,7 +87,7 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 <body>';
 		//Image
 		$this->template .= '<div id="image">
-		<img src="' . '../../../' . $_GET["image"] . '" width="' . $this->width . '" height="' . $this->height . '" id="cropbox" alt="croped image" />
+		<img src="../'. $_GET["image"] . '" width="' . $this->width . '" height="' . $this->height . '" id="cropbox" alt="croped image" />
 	</div>';
 
 		//Values
