@@ -9,7 +9,7 @@
             <label index="tt_content.tx_tkcropthumbs_aspectratio">aspect ratio</label>
         </languageKey>
         <languageKey index="de" type="array">
-			<label index="tt_content.tx_tkcropthumbs_aspectratio">Seitenverhältnis</label>
+            <label index="tt_content.tx_tkcropthumbs_aspectratio">Seitenverhältnis</label>
         </languageKey>
     </data>
 </T3locallang>

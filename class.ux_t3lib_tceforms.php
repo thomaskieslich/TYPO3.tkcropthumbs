@@ -25,19 +25,6 @@
  */
 
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   43: class ux_t3lib_tceforms extends t3lib_tceforms
- *   55:     function getSingleField_typeGroup($table,$field,$row,&$PA)
- *
- * TOTAL FUNCTIONS: 1
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-/**
  * extends t3lib_tceforms
  *
  */
@@ -135,7 +122,7 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 										)
 						);
 
-						//tkcropthumbs
+						// tkcropthumbs
 						$relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
 						
 						$imgs[] = '<span class="nobr">
@@ -146,21 +133,6 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 								<div style="position:absolute; margin: auto; width: 56px;"><img src="'. $relPath . 'res/icons/crop.png" title="'.$fI['basename'].'"></div>'
 						. $this->croppedThumbs($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"')
 								. '</a></span>';
-						
-						/*$imgs[] = '<span class="nobr">
-							<a href="#" onclick="window.open(\''
-								. $relPath . 'class.crop.php?image=' . $config['uploadfolder'] . '/' . $imgP[0]
-								. '&uid=' . $row[uid] . '&aspectratio=' . $row['tx_tkcropthumbs_aspectratio'] . '\',\'tkcropthumbs' . rand(0, 1000000)
-								. '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;" style="position: relative;">
-								<div style="position:absolute; margin: auto; width: 56px;"><img src="'. $relPath . 'res/icons/crop.png" title="'.$fI['basename'].'"></div>'
-						. $this->croppedThumbs($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"')
-								. '</a></span>';
-						 */
-
-						/* $imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"') .
-						  ($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon) .
-						  $imgPath .
-						  '</span>'; */
 					}
 					$thumbsnail = implode('<br />', $imgs);
 				}
@@ -292,6 +264,9 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 		return $item;
 	}
 
+        /**
+         * edit the thumbnailview
+         */
 	function croppedThumbs($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '') {
 		global $TCA;
 		// Load table.

@@ -29,7 +29,7 @@ $tempColumns = array (
 			'label' => 'scale',
 			'config' => array(
 				'type' => 'text',
-				'default' => '<?xml version="1.0" encoding="UTF-8"?>
+				'default' => '<?xml version="1.0" encoding="UTF-8" ?>
 				<images></images>'
 			),
 		)

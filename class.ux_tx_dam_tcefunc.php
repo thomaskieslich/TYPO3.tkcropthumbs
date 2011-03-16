@@ -24,17 +24,7 @@
  * ************************************************************* */
 
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   38: class ux_tx_dam_tceFunc extends tx_dam_tceFunc
- *   48:     function getSingleField_typeMedia($PA, &$fObj)
- *  201:     function renderFileList($filesArray, $displayThumbs=true, $PA, $disabled=false)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
+ * extends tx_dam_tceFunc
  */
 class ux_tx_dam_tceFunc extends tx_dam_tceFunc {
 
@@ -262,7 +252,7 @@ class ux_tx_dam_tceFunc extends tx_dam_tceFunc {
 				$infoText = str_replace('<strong>', '<strong style="font-weight:normal;">', $infoText);
 				$infoText = str_replace('</td><td>', '</td><td class="bgColor-10">', $infoText);
 
-				//tkcropthumbs
+				// tkcropthumbs
 				$relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
 				$uid = $PA[row][uid];
 				$croplink = "<a href=\"#\" onclick=\"window.open('"

@@ -25,63 +25,55 @@
 
 class ext_update {
 
-	/**
-	 * Main function, returning the HTML content of the module
-	 *
-	 * @return	string		HTML
-	 */
-	function main() {
-		$content = '';
-		//update tt_content
-		$updateArray = array(
-			'tx_tkcropthumbs_aspectratio' => ''
-		);
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=0', $updateArray);
+    /**
+     * Main function, returning the HTML content of the module
+     *
+     * @return	string		HTML
+     */
+    function main () {
+        $content = '';
+        //update tt_content
+        $updateArray = array (
+            'tx_tkcropthumbs_aspectratio' => ''
+        );
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=0', $updateArray);
 
-		$updateArray = array(
-			'tx_tkcropthumbs_aspectratio' => '1:1'
-		);
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=1', $updateArray);
-		
-		$updateArray = array(
-			'tx_tkcropthumbs_aspectratio' => '4:3'
-		);
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=2', $updateArray);
-		
-		$updateArray = array(
-			'tx_tkcropthumbs_aspectratio' => '13:9'
-		);
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=3', $updateArray);
-		
-		$updateArray = array(
-			'tx_tkcropthumbs_aspectratio' => '16:9'
-		);
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=4', $updateArray);
-		//1:1
-//		$query = 'UPDATE tt_content SET tx_tkcropthumbs_aspectratio = \'1:1\' WHERE tx_tkcropthumbs_aspectratio = 1';
-//		$renameAr = $GLOBALS['TYPO3_DB']->admin_query($query);
+        $updateArray = array (
+            'tx_tkcropthumbs_aspectratio' => '1:1'
+        );
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=1', $updateArray);
 
-		//4:3
-//		$query = 'UPDATE tt_content SET tx_tkcropthumbs_aspectratio = \'4:3\' WHERE tx_tkcropthumbs_aspectratio = 2';
-//		$renameAr = $GLOBALS['TYPO3_DB']->admin_query($query);
+        $updateArray = array (
+            'tx_tkcropthumbs_aspectratio' => '4:3'
+        );
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=2', $updateArray);
 
+        $updateArray = array (
+            'tx_tkcropthumbs_aspectratio' => '13:9'
+        );
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=3', $updateArray);
 
-		$content .= $res;
-		return $content;
-	}
+        $updateArray = array (
+            'tx_tkcropthumbs_aspectratio' => '16:9'
+        );
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'tx_tkcropthumbs_aspectratio=4', $updateArray);
 
-	/**
-	 * access is always allowed
-	 *
-	 * @return	boolean		Always returns true
-	 */
-	function access() {
-		return true;
-	}
+        $content .= $res;
+        return $content;
+    }
+
+    /**
+     * access is always allowed
+     *
+     * @return	boolean		Always returns true
+     */
+    function access () {
+        return true;
+    }
 
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tkcropthumbs/class.ext_update.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tkcropthumbs/class.ext_update.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tkcropthumbs/class.ext_update.php']);
 }
 ?>

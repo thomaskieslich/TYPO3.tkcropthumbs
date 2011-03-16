@@ -2,7 +2,7 @@
 <T3locallang>
     <meta type="array">
         <type>module</type>
-        <description>Language labels for plugin &quot;tx_cropthumbs&quot;</description>
+        <description>Language labels for plugintx_cropthumbs</description>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
@@ -23,9 +23,9 @@
             <label index="save_values">Ausschnitt speichern</label>
             <label index="reset_single">diesen Ausschnitt löschen</label>
             <label index="reset_all">alle Ausschnitte löschen</label>
-			<label index="close">Fenster schließen</label>
-			<label index="aspectratio">Seitenverhältnis</label>
-			<label index="aspectratio.I.0">-:-</label>
+            <label index="close">Fenster schließen</label>
+            <label index="aspectratio">Seitenverhältnis</label>
+            <label index="aspectratio.I.0">-:-</label>
             <label index="aspectratio.I.1">1:1</label>
             <label index="aspectratio.I.2">4:3</label>
             <label index="aspectratio.I.3">13:9</label>

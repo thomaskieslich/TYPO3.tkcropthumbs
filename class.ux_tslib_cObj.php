@@ -23,21 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   44: class ux_tslib_cObj extends tslib_cObj
- *   56:     function cImage($file,$conf)
- *   96:     function getImgResource($file,$fileArray,$uid=0)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
 /**
  * extends tslib_cObj
  *
@@ -56,7 +41,7 @@ class ux_tslib_cObj extends tslib_cObj {
 	 * @see IMAGE()
 	 */
 	function cImage($file, $conf) {
-		//tkcropthumbs values
+		// tkcropthumbs values
 		$tkcropthumbs = array();
 		$tkcropthumbs['hash'] = t3lib_div::shortMD5($this->data[tx_tkcropthumbs_aspectratio] . $this->data[tx_tkcropthumbs_cropvalues]);
 		$tkcropthumbs['aspectratio'] = $this->data[tx_tkcropthumbs_aspectratio];
@@ -157,8 +142,7 @@ class ux_tslib_cObj extends tslib_cObj {
 							$maskImages['m_bottomImg_mask'] = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
 						}
 
-						//tkcropthumbs add uid!!!
-//						$hash = t3lib_div::shortMD5($theImage . serialize($fileArray) . serialize($maskImages));
+						// tkcropthumbs add uid!!!
 						$hash = t3lib_div::shortMD5($theImage . serialize($fileArray) . serialize($maskImages) . serialize($tkcropthumbs['hash']));
 						if (!isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
 							$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
@@ -219,8 +203,7 @@ class ux_tslib_cObj extends tslib_cObj {
 										if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif']) { // If ImageMagick version 5+
 											$temp_ext = $gifCreator->gifExtension;
 										}
-										//tkcropthumbs
-//										$tempFileInfo = $gifCreator->imageMagickConvert($theImage, $temp_ext, $fileArray['width'], $fileArray['height'], $fileArray['params'], $fileArray['frame'], $options);
+										// tkcropthumbs
 										$tempFileInfo = $gifCreator->imageMagickConvert($theImage, $temp_ext, $fileArray['width'], $fileArray['height'], $fileArray['params'], $fileArray['frame'], $options, 0, $tkcropthumbs);
 										if (is_array($tempFileInfo)) {
 											$m_bottomImg = $maskImages['m_bottomImg'];
@@ -273,8 +256,7 @@ class ux_tslib_cObj extends tslib_cObj {
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash] = $gifCreator->getImageDimensions($dest);
 							} else { // Normal situation:
 								$fileArray['params'] = $this->modifyImageMagickStripProfileParameters($fileArray['params'], $fileArray);
-								//tkcropthumbs
-//								$GLOBALS['TSFE']->tmpl->fileCache[$hash] = $gifCreator->imageMagickConvert($theImage, $fileArray['ext'], $fileArray['width'], $fileArray['height'], $fileArray['params'], $fileArray['frame'], $options);
+								// tkcropthumbs
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash] = $gifCreator->imageMagickConvert($theImage, $fileArray['ext'], $fileArray['width'], $fileArray['height'], $fileArray['params'], $fileArray['frame'], $options, 0, $tkcropthumbs);
 								if (($fileArray['reduceColors'] || ($imgExt == 'png' && !$gifCreator->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3])) {
 									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));

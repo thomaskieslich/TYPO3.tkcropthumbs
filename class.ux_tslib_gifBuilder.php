@@ -24,17 +24,7 @@
  * ************************************************************* */
 
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   40: class ux_tslib_gifBuilder extends tslib_gifBuilder
- *   57:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0, $uid)
- *  299:     function createThumb($imagefile,$frame,$output,$command,$width_dest,$height_dest,$width_src,$height_src,$line) //,$width_dest,$height_dest,$width_src,$height_src)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
+ * extends tslib_gifBuilder
  */
 class ux_tslib_gifBuilder extends tslib_gifBuilder {
 
@@ -49,7 +39,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 	 * @param	string		Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
 	 * @param	array		An array with options passed to getImageScale (see this function).
 	 * @param	boolean		If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
-	 * @param   array		tkcropthumbs
+	 * @param       array		tkcropthumbs
 	 * @return	array		[0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
@@ -60,7 +50,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 		}
 
 		if ($info = $this->getImageDimensions($imagefile)) {
-			//tkcropthumbs
+			// tkcropthumbs
 			$cropValues = array();
 			$cropParams = '';
 			if (strlen($tkcropthumbs['cropvalues']) > 1) {
@@ -78,7 +68,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$cropParams .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
 				}
 			}
-			//tkcropthumbs aspect ratio
+			// tkcropthumbs aspect ratio
 			if ($tkcropthumbs['aspectratio'] > 0) {
 				$aspect = preg_split('/:/', $tkcropthumbs['aspectratio'], 2);
 
@@ -221,11 +211,11 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$this->imageMagickConvert_forceFileNameBody = '';
 				}
 
-// Making the temporary filename:
+                                // Making the temporary filename:
 				$this->createTempSubDir('pics/');
 				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
 
-// Register temporary filename:
+                                // Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile)) {
