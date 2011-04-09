@@ -333,7 +333,7 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
 					$thumbData .= '<img src="' . htmlspecialchars($backPath . $url) . '" hspace="2" border="0" title="Crop"' . $tparams . ' alt="" /> ';
 				} else {
-					$icon = self::getFileIcon($ext);
+					$icon = t3lib_BEfunc::getFileIcon($ext);
 					$url = 'gfx/fileicons/' . $icon;
 					$thumbData .= '<img src="' . $backPath . $url . '" hspace="2" border="0" title="' . trim($theFile) . '"' . $tparams . ' alt="" /> ';
 				}

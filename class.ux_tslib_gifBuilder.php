@@ -43,84 +43,13 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 	 * @return	array		[0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
-	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0, $tkcropthumbs = NULL) {
+	function imageMagickConvert ($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0, $tkcropthumbs = NULL) {
 		if ($this->NO_IMAGE_MAGICK) {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
 		}
 
 		if ($info = $this->getImageDimensions($imagefile)) {
-			// tkcropthumbs
-			$cropValues = array();
-			$cropParams = '';
-			if (strlen($tkcropthumbs['cropvalues']) > 1) {
-				$cropXml = simplexml_load_string($tkcropthumbs['cropvalues']);
-				if ($cropXml) {
-					$cropData = $cropXml->xpath('//image[. ="' . $info[3] . '"]');
-					$cropValues = $cropData[0];
-				}
-
-				if ($cropValues) {
-					$cWidth = $cropValues['x2'] - $cropValues['x1'];
-					$cHeight = $cropValues['y2'] - $cropValues['y1'];
-					$ratio = ($cropValues["x2"] - $cropValues["x1"]) / ($cropValues["y2"] - $cropValues["y1"]);
-					$info[1] = intval($info[0] / $ratio);
-					$cropParams .= ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
-				}
-			}
-			// tkcropthumbs aspect ratio
-			if ($tkcropthumbs['aspectratio'] > 0) {
-				$aspect = preg_split('/:/', $tkcropthumbs['aspectratio'], 2);
-
-				if ($info[0] / $info[1] != $aspect[0] / $aspect[1]) {
-					$orientation = ($info[0] > $info[1]) ? 'landscape' : 'portrait';
-					if (intval($info[1] * ($aspect[0] / $aspect[1])) > $info[0]) {
-						$orientation = 'portrait';
-					}
-
-					if ($h) {
-						$width_dest = $h;
-						$height_dest = $h * $aspect[1] / $aspect[0];
-					} else {
-						if (!$w) {
-							if ($options['maxW']) {
-								if ($options['maxW'] > $info[0])
-									$w = $info[0];
-								else
-									$w = $options['maxW'];
-							}
-							else
-								$w = $info[0];
-						}
-						$width_dest = $w;
-						$height_dest = $w * $aspect[1] / $aspect[0];
-					}
-
-					if (!$cropValues) {
-						if ($orientation == 'landscape') {
-							$cWidth = intval($info[1] * ($aspect[0] / $aspect[1]));
-							$cHeight = intval($info[1]);
-							$cropValues['x1'] = intval($info[0] / 2 - $cWidth / 2);
-							$cropValues['y1'] = 0;
-						} else if ($orientation == 'portrait') {
-							$cWidth = $info[0];
-							$cHeight = intval($info[0] * $aspect[1] / $aspect[0]);
-							$cropValues['x1'] = 0;
-							$cropValues['y1'] = intval($info[1] / 2 - $cHeight / 2);
-						} else {
-							$cWidth = $info[0];
-							$cHeight = intval($info[0] * $aspect[1] / $aspect[0]);
-							$cropValues['x1'] = 0;
-							$cropValues['y1'] = intval($info[1] / 2 - $cHeight / 2);
-						}
-					}
-					$cropParams = ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $cropValues['x1'] . '+' . $cropValues['y1'] . ' ';
-					$info[0] = $width_dest;
-					$info[1] = $height_dest;
-					$crop = 1;
-				}
-			}
-
 			$newExt = strtolower(trim($newExt));
 			if (!$newExt) { // If no extension is given the original extension is used
 				$newExt = $info[2];
@@ -141,19 +70,50 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 				} else {
 					$max = 0;
 				}
+				
+				// tkcropthumbs
+				if (strlen($tkcropthumbs['cropvalues']) > 1) {
+					$cropXml = simplexml_load_string($tkcropthumbs['cropvalues']);
+					if ($cropXml) {
+						$cropData = $cropXml->xpath('//image[. ="' . $info[3] . '"]');
+						$cropValues = $cropData[0];
 
+						$cWidth = intval($cropValues['x2'] - $cropValues['x1']);
+						$cHeight = intval($cropValues['y2'] - $cropValues['y1']);
+						$ratio = ($cropValues["x2"] - $cropValues["x1"]) / ($cropValues["y2"] - $cropValues["y1"]);
+						
+						if ($tkcropthumbs['aspectratio'] == 0) {
+							$tkcropthumbs['aspectratio'] = ($cropValues["x2"] - $cropValues["x1"]).':'.($cropValues["y2"] - $cropValues["y1"]);
+						}
+					}
+				}
+				// tkcropthumbs
+				if ($tkcropthumbs['aspectratio'] > 0) {
+					$aspect = preg_split('/:/', $tkcropthumbs['aspectratio'], 2);
+					if ($options['maxW'] && !$w) {
+						$w = $options['maxW'] . 'c';
+						$h = intval($options['maxW'] * ($aspect[1] / $aspect[0])) . 'c';
+					}
+					if ($options['maxW'] && $w) {
+						$w = $w . 'c';
+						$options['maxW'] = $w;
+						$h = intval($options['maxW'] * ($aspect[1] / $aspect[0])) . 'c';
+					} elseif ($h && $w) {
+						$w = intval($h * ($aspect[0] / $aspect[1])) . 'c';
+						$h = $h . 'c';
+					}
+				}
+				//end tkcropthumbs 
+				
 				$data = $this->getImageScale($info, $w, $h, $options);
 				$w = $data['origW'];
 				$h = $data['origH'];
-
-
 				// if no conversion should be performed
 				// this flag is true if the width / height does NOT dictate
 				// the image to be scaled!! (that is if no width / height is
 				// given or if the destination w/h matches the original image
 				// dimensions or if the option to not scale the image is set)
-				//$noScale = (!$w && !$h) || ($data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
-				$noScale = (!$w && !$h);
+				$noScale = (!$w && !$h) || ($data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
 
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 					// set the new width and height before returning,
@@ -165,12 +125,10 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$info[3] = $imagefile;
 					return $info;
 				}
-
-				if (!$crop) {
-					$info[0] = $data[0];
-					$info[1] = $data[1];
-				}
-
+				$file['w'] = $info[0];
+				$file['h'] = $info[1];
+				$info[0] = $data[0];
+				$info[1] = $data[1];
 
 				$frame = $this->noFramePrepended ? '' : intval($frame);
 
@@ -179,6 +137,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 				}
 
 				// Cropscaling:
+				$paramsOrg = $params;
 				if ($data['crs']) {
 					if (!$data['origW']) {
 						$data['origW'] = $data[0];
@@ -191,15 +150,33 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ' ';
 				}
 
-				if ($cropParams) {
-					$params .= $cropParams;
+				//tkcropthumbs					
+				if ($cropValues) {
+					if (!$data['origW']) {
+						$data['origW'] = $file['w'];
+					}
+					if (!$data['origH']) {
+						$data['origH'] = $file['h'];
+					}
+
+
+					$xRatio = $data['origW'] / $cWidth;
+					$offsetX1 = intval($cropValues['x1'] * $xRatio);
+					$yRatio = $data['origH'] / $cHeight;
+					$offsetY1 = intval($cropValues['y1'] * $yRatio);
+
+
+					$cropParams .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX1 . '+' . $offsetY1 . ' ';
+					$info[0] = intval($data['origW'] + ($file['w'] - $cWidth) * $xRatio);
+					$info[1] = intval($data['origH'] + ($file['h'] - $cHeight) * $yRatio);
+					$params = $paramsOrg . $cropParams;
 				}
 
 
-				$command = $params . ' ' . $this->scalecmd . ' ' . intval($info[0]) . 'x' . intval($info[1]) . '! ';
+
+				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
 				$cropscale = ($data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '');
 
-//				var_dump($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
 
 				if ($this->alternativeOutputKey) {
 					$theOutputName = t3lib_div::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
@@ -211,11 +188,11 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					$this->imageMagickConvert_forceFileNameBody = '';
 				}
 
-                                // Making the temporary filename:
+				// Making the temporary filename:
 				$this->createTempSubDir('pics/');
 				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
 
-                                // Register temporary filename:
+				// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile)) {
