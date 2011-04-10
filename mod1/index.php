@@ -98,8 +98,8 @@ class tx_tkcropthumbs_crop {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" type="text/css" href="' . $this->relPath . 'res/css/crop.css" media="all">
 	<link rel="stylesheet" type="text/css" href="' . $this->relPath . 'res/css/imgareaselect-default.css" media="all">
-	<script src="' . $this->relPath . 'res/js/jquery-1.4.4.min.js" type="text/javascript"></script>
-	<script src="' . $this->relPath . 'res/js/jquery.imgareaselect.min.js" type="text/javascript"></script>
+	<script src="' . $this->relPath . 'res/js/jquery-1.5.2.min.js" type="text/javascript"></script>
+	<script src="' . $this->relPath . 'res/js/jquery.imgareaselect-0.9.5.pack.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		function preview(img, selection) {

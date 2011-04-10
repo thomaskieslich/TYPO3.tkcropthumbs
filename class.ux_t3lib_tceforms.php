@@ -106,22 +106,14 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 
 						$rowCopy = array();
 						$rowCopy[$field] = $imgPath;
-
-						// Icon + clickmenu:
-						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'] ? $config['uploadfolder'] . '/' . $imgPath : $imgPath);
-
-						$fI = pathinfo($imgPath);
-						$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
-										strtolower($fI['extension']), array(
-									'title' => htmlspecialchars(
-											$fI['basename'] .
-											($absFilePath && @is_file($absFilePath) ? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' :
-													' - FILE NOT FOUND!'
-											)
-									)
-										)
-						);
-
+						
+						if($table != 'tt_content'){
+						$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"') .
+								  $imgPath .
+								  '</span>';
+						}
+						
+						else{
 						// tkcropthumbs
 						$relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
 						
@@ -132,7 +124,8 @@ class ux_t3lib_tceforms extends t3lib_tceforms {
 								. '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;" style="position: relative;">
 								<div style="position:absolute; margin: auto; width: 56px;"><img src="'. $relPath . 'res/icons/crop.png" title="'.$fI['basename'].'"></div>'
 						. $this->croppedThumbs($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"')
-								. '</a></span>';
+								. '</a></span>';							
+						}
 					}
 					$thumbsnail = implode('<br />', $imgs);
 				}
