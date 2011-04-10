@@ -77,10 +77,11 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 					if ($cropXml) {
 						$cropData = $cropXml->xpath('//image[. ="' . $info[3] . '"]');
 						$cropValues = $cropData[0];
-
-						$cWidth = intval($cropValues['x2'] - $cropValues['x1']);
-						$cHeight = intval($cropValues['y2'] - $cropValues['y1']);
-						$ratio = ($cropValues["x2"] - $cropValues["x1"]) / ($cropValues["y2"] - $cropValues["y1"]);
+						if($cropValues){
+							$cWidth = intval($cropValues['x2'] - $cropValues['x1']);
+							$cHeight = intval($cropValues['y2'] - $cropValues['y1']);
+							$ratio = ($cropValues["x2"] - $cropValues["x1"]) / ($cropValues["y2"] - $cropValues["y1"]);
+						}
 						
 						if ($tkcropthumbs['aspectratio'] == 0) {
 							$tkcropthumbs['aspectratio'] = ($cropValues["x2"] - $cropValues["x1"]).':'.($cropValues["y2"] - $cropValues["y1"]);
