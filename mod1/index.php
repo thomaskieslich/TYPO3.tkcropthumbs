@@ -33,65 +33,65 @@ $LANG->includeLLFile('EXT:tkcropthumbs/locallang.xml');
  */
 class tx_tkcropthumbs_crop {
 
-    public $template = '';
-    protected $values = array ();
-    protected $imageWidth;
-    protected $imageHeight;
-    protected $width;
-    protected $height;
-    protected $LANG;
-    protected $relPath;
-    protected $formVars = array ();
+	public $template = '';
+	protected $values = array ();
+	protected $imageWidth;
+	protected $imageHeight;
+	protected $width;
+	protected $height;
+	protected $LANG;
+	protected $relPath;
+	protected $formVars = array ();
 
-    /**
-     * init the object
-     * @param mixed $LANG Syslanguage
-     */
-    function init ($LANG) {
+	/**
+	 * init the object
+	 * @param mixed $LANG Syslanguage
+	 */
+	function init ($LANG) {
 
-        $this->LANG = $GLOBALS['LANG'];
-        $this->relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
+		$this->LANG = $GLOBALS['LANG'];
+		$this->relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
 
-        // check form vars
-        $this->formVars[action] = strip_tags(t3lib_div::_GET('action'));
-        if (mb_strlen($this->formVars[action]) > 12) {
-            $this->formVars[action] = mb_substr($this->formVars[action], 0, 12);
-        }
+		// check form vars
+		$this->formVars[action] = strip_tags(t3lib_div::_GET('action'));
+		if (mb_strlen($this->formVars[action]) > 12) {
+			$this->formVars[action] = mb_substr($this->formVars[action], 0, 12);
+		}
 
-        $this->formVars[image] = strip_tags(t3lib_div::_GET('image'));
+		$this->formVars[image] = strip_tags(t3lib_div::_GET('image'));
 
-        $this->formVars[uid] = intval('0' . t3lib_div::_GET('uid'));
+		$this->formVars[uid] = intval('0' . t3lib_div::_GET('uid'));
 
-        $this->formVars[aspectratio] = t3lib_div::trimExplode(':', t3lib_div::_GET('aspectratio'), TRUE, 2);
-        $this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
-        $this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
+		$this->formVars[aspectratio] = t3lib_div::trimExplode(':', t3lib_div::_GET('aspectratio'), TRUE, 2);
+		$this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
+		$this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
 
-        $this->formVars[x1] = intval('0' . t3lib_div::_GET('x1'));
-        $this->formVars[y1] = intval('0' . t3lib_div::_GET('y1'));
-        $this->formVars[x2] = intval('0' . t3lib_div::_GET('x2'));
-        $this->formVars[y2] = intval('0' . t3lib_div::_GET('y2'));
-        $this->formVars[w] = intval('0' . t3lib_div::_GET('w'));
-        $this->formVars[h] = intval('0' . t3lib_div::_GET('h'));
+		$this->formVars[x1] = intval('0' . t3lib_div::_GET('x1'));
+		$this->formVars[y1] = intval('0' . t3lib_div::_GET('y1'));
+		$this->formVars[x2] = intval('0' . t3lib_div::_GET('x2'));
+		$this->formVars[y2] = intval('0' . t3lib_div::_GET('y2'));
+		$this->formVars[w] = intval('0' . t3lib_div::_GET('w'));
+		$this->formVars[h] = intval('0' . t3lib_div::_GET('h'));
 
 
-        if ($this->formVars[action] == 'save') {
-            $this->saveValues();
-        } else if ($this->formVars[action] == 'resetSingle') {
-            $this->resetSingle();
-        } else if ($this->formVars[action] == 'resetAll') {
-            $this->resetAll();
-        } else {
-            $this->resizeImage();
-            $this->getValues();
-            $this->display();
-        }
-    }
+		if ($this->formVars[action] == 'save') {
+			$this->saveValues();
+		} else if ($this->formVars[action] == 'resetSingle') {
+			$this->resetSingle();
+		} else if ($this->formVars[action] == 'resetAll') {
+			$this->resetAll();
+		} else {
+			$this->resizeImage();
+			$this->getValues();
+			$this->display();
+		}
+	}
 
-    /**
-     * display the window content
-     */
-    public function display () {
-        $this->template = '<!DOCTYPE html>
+	/**
+	 * display the window content
+	 */
+	public function display () {
+		$this->template = '<!DOCTYPE html>
 <html>
 <head>
 	<title>' . $this->formVars[image] . '</title>
@@ -118,13 +118,13 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 </script>
 </head>
 <body>';
-        //Image
-        $this->template .= '<div id="image">
+		//Image
+		$this->template .= '<div id="image">
 		<img src="../' . $this->formVars[image] . '" width="' . $this->width . '" height="' . $this->height . '" id="cropbox" alt="croped image" />
 	</div>';
 
-        //Values
-        $this->template .= '<div id="values"><h2>' . $this->LANG->getLL("editor_title") . '</h2>
+		//Values
+		$this->template .= '<div id="values"><h2>' . $this->LANG->getLL("editor_title") . '</h2>
 		<form name="crop">
 		<input type="hidden" name="M" value="tkcropthumbs_crop" />
 		<input type="hidden" name="action" value="save" />
@@ -143,7 +143,7 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 			<input type="submit" value="' . $this->LANG->getLL("save_values") . '" />
 		</form>
 		<form name="resetSingle">
-		    <input type="hidden" name="M" value="tkcropthumbs_crop" />
+			<input type="hidden" name="M" value="tkcropthumbs_crop" />
 			<input type="hidden" name="action" value="resetSingle" />
 			<input type="hidden" name="image" value="' . $this->formVars[image] . '" />
 			<input type="hidden" name="uid" value="' . $this->formVars[uid] . '" />
@@ -151,7 +151,7 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 			<input type="submit" value="' . $this->LANG->getLL("reset_single") . '" />
 		</form>
 		<form name="resetAll">
-		    <input type="hidden" name="M" value="tkcropthumbs_crop" />
+			<input type="hidden" name="M" value="tkcropthumbs_crop" />
 			<input type="hidden" name="action" value="resetAll" />
 			<input type="hidden" name="image" value="' . $this->formVars[image] . '" />
 			<input type="hidden" name="uid" value="' . $this->formVars[uid] . '" />
@@ -165,187 +165,187 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 
 
 
-        $this->template .= ' </body>
+		$this->template .= ' </body>
 </html>';
-        echo $this->template;
-    }
+		echo $this->template;
+	}
 
-    /**
-     * get crop values from database or make new values fro aspect ratio
-     */
-    function getValues () {
-        $select = 'tx_tkcropthumbs_cropvalues';
-        $table = 'tt_content';
-        $where = 'uid = ' . $this->formVars[uid];
-        $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
-        $this->values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-        $cropXml = simplexml_load_string($this->values['tx_tkcropthumbs_cropvalues']);
-        if ($cropXml) {
-            $cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
-            $this->values = $cropData[0];
-        }
+	/**
+	 * get crop values from database or make new values fro aspect ratio
+	 */
+	function getValues () {
+		$select = 'tx_tkcropthumbs_cropvalues';
+		$table = 'tt_content';
+		$where = 'uid = ' . $this->formVars[uid];
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
+		$this->values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+		$cropXml = simplexml_load_string($this->values['tx_tkcropthumbs_cropvalues']);
+		if ($cropXml) {
+			$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
+			$this->values = $cropData[0];
+		}
 
-        if (!$cropData) {
-            //if aspect empty
-            if (!$this->formVars[aspectratio][0]) {
-                $this->formVars[aspectratio][0] = $this->imageWidth;
-                $this->formVars[aspectratio][1] = $this->imageHeight;
-            }
-            $orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
-            if (intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1])) > $this->imageWidth) {
-                $orientation = 'portrait';
-            }
+		if (!$cropData) {
+			//if aspect empty
+			if (!$this->formVars[aspectratio][0]) {
+				$this->formVars[aspectratio][0] = $this->imageWidth;
+				$this->formVars[aspectratio][1] = $this->imageHeight;
+			}
+			$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
+			if (intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1])) > $this->imageWidth) {
+				$orientation = 'portrait';
+			}
 
-            if ($orientation == 'landscape') {
-                $cWidth = intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1]));
-                if ($cWidth == 0)
-                    $cWidth = $this->imageWidth;
-                $this->values["x1"] = intval($this->imageWidth / 2 - $cWidth / 2);
-                $this->values["y1"] = 0;
-                $this->values["x2"] = $this->imageWidth - $this->values["x1"];
-                $this->values["y2"] = $this->imageHeight;
-            } else if ($orientation == 'portrait') {
-                $cHeight = intval($this->imageWidth * ($this->formVars[aspectratio][1] / $this->formVars[aspectratio][0]));
-                if ($cHeight == 0)
-                    $cHeight = $this->imageHeight;
-                $this->values["x1"] = 0;
-                $this->values["y1"] = intval($this->imageHeight / 2 - $cHeight / 2);
-                $this->values["x2"] = $this->imageWidth;
-                $this->values["y2"] = $this->imageHeight - $this->values["y1"];
-            }
-        }
-    }
+			if ($orientation == 'landscape') {
+				$cWidth = intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1]));
+				if ($cWidth == 0)
+					$cWidth = $this->imageWidth;
+				$this->values["x1"] = intval($this->imageWidth / 2 - $cWidth / 2);
+				$this->values["y1"] = 0;
+				$this->values["x2"] = $this->imageWidth - $this->values["x1"];
+				$this->values["y2"] = $this->imageHeight;
+			} else if ($orientation == 'portrait') {
+				$cHeight = intval($this->imageWidth * ($this->formVars[aspectratio][1] / $this->formVars[aspectratio][0]));
+				if ($cHeight == 0)
+					$cHeight = $this->imageHeight;
+				$this->values["x1"] = 0;
+				$this->values["y1"] = intval($this->imageHeight / 2 - $cHeight / 2);
+				$this->values["x2"] = $this->imageWidth;
+				$this->values["y2"] = $this->imageHeight - $this->values["y1"];
+			}
+		}
+	}
 
-    /**
-     * resize the view of the image in window
-     */
-    function resizeImage () {
-        $imgsize = getimagesize(PATH_site . $this->formVars[image]);
-        $this->imageWidth = $imgsize[0];
-        $this->imageHeight = $imgsize[1];
-        //css width height
-        if (($this->imageWidth > 600) || ($this->imageHeight > 600)) {
-            if ($this->imageHeight > $this->imageWidth) {
-                $this->height = 600;
-                $this->width = $this->imageWidth * 600 / $this->imageHeight;
-            } else {
-                $this->width = 600;
-                $this->height = $this->imageHeight * 600 / $this->imageWidth;
-            }
-        }
-    }
+	/**
+	 * resize the view of the image in window
+	 */
+	function resizeImage () {
+		$imgsize = getimagesize(PATH_site . $this->formVars[image]);
+		$this->imageWidth = $imgsize[0];
+		$this->imageHeight = $imgsize[1];
+		//css width height
+		if (($this->imageWidth > 600) || ($this->imageHeight > 600)) {
+			if ($this->imageHeight > $this->imageWidth) {
+				$this->height = 600;
+				$this->width = $this->imageWidth * 600 / $this->imageHeight;
+			} else {
+				$this->width = 600;
+				$this->height = $this->imageHeight * 600 / $this->imageWidth;
+			}
+		}
+	}
 
-    /**
-     * save values to database
-     */
-    function saveValues () {
-        $select = 'tx_tkcropthumbs_cropvalues';
-        $table = 'tt_content';
-        $where = 'uid = ' . $this->formVars[uid];
-        $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
-        $values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-        $cropXml = simplexml_load_string($values['tx_tkcropthumbs_cropvalues']);
-        if ($cropXml) {
-            $cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
-            if (!$cropData) {
-                $cropXml->addChild('image', $this->formVars[image]);
-                $cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
-            }
-            $values = $cropData[0];
-        } else {
-            $xml = '<?xml version="1.0" encoding="UTF-8" ?>
+	/**
+	 * save values to database
+	 */
+	function saveValues () {
+		$select = 'tx_tkcropthumbs_cropvalues';
+		$table = 'tt_content';
+		$where = 'uid = ' . $this->formVars[uid];
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
+		$values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+		$cropXml = simplexml_load_string($values['tx_tkcropthumbs_cropvalues']);
+		if ($cropXml) {
+			$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
+			if (!$cropData) {
+				$cropXml->addChild('image', $this->formVars[image]);
+				$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
+			}
+			$values = $cropData[0];
+		} else {
+			$xml = '<?xml version="1.0" encoding="UTF-8" ?>
 				<images>
 				  <image x1="0" y1="0" x2="0" y2="0" tstamp="0">' . $this->formVars[image] . '</image>
 				</images>';
-            $cropXml = simplexml_load_string($xml);
-            $cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
-            $values = $cropData[0];
-        }
+			$cropXml = simplexml_load_string($xml);
+			$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
+			$values = $cropData[0];
+		}
 
 
 
-        $values["x1"] = $this->formVars[x1];
-        $values["y1"] = $this->formVars[y1];
-        $values["x2"] = $this->formVars[x2];
-        $values["y2"] = $this->formVars[y2];
-        $values["tstamp"] = time();
+		$values["x1"] = $this->formVars[x1];
+		$values["y1"] = $this->formVars[y1];
+		$values["x2"] = $this->formVars[x2];
+		$values["y2"] = $this->formVars[y2];
+		$values["tstamp"] = time();
 
-        $fieldValues = array (
-            'tx_tkcropthumbs_cropvalues' => $cropXml->asXML()
-        );
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+		$fieldValues = array (
+			'tx_tkcropthumbs_cropvalues' => $cropXml->asXML()
+		);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
 
-        $this->resizeImage();
-        $this->getValues();
-        $this->display();
-    }
+		$this->resizeImage();
+		$this->getValues();
+		$this->display();
+	}
 
-    /**
-     * reset values for single image and update database
-     */
-    function resetSingle () {
-        $select = 'tx_tkcropthumbs_cropvalues';
-        $table = 'tt_content';
-        $where = 'uid = ' . $this->formVars[uid];
-        $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
-        $values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-        if (strlen($values['tx_tkcropthumbs_cropvalues']) > 1) {
-            $cropXml = simplexml_load_string($values['tx_tkcropthumbs_cropvalues']);
-            $cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
-            $this->values = $cropData[0];
-            $this->resizeImage();
-            $orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
-            if (intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1])) > $this->imageWidth) {
-                $orientation = 'portrait';
-            }
+	/**
+	 * reset values for single image and update database
+	 */
+	function resetSingle () {
+		$select = 'tx_tkcropthumbs_cropvalues';
+		$table = 'tt_content';
+		$where = 'uid = ' . $this->formVars[uid];
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
+		$values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+		if (strlen($values['tx_tkcropthumbs_cropvalues']) > 1) {
+			$cropXml = simplexml_load_string($values['tx_tkcropthumbs_cropvalues']);
+			$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
+			$this->values = $cropData[0];
+			$this->resizeImage();
+			$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
+			if (intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1])) > $this->imageWidth) {
+				$orientation = 'portrait';
+			}
 
-            if ($orientation == 'landscape') {
-                $cWidth = intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1]));
-                if ($cWidth == 0)
-                    $cWidth = $this->imageWidth;
-                $this->values["x1"] = intval($this->imageWidth / 2 - $cWidth / 2);
-                $this->values["y1"] = 0;
-                $this->values["x2"] = $this->imageWidth - $this->values["x1"];
-                $this->values["y2"] = $this->imageHeight;
-            } else if ($orientation == 'portrait') {
-                $cHeight = intval($this->imageWidth * ($this->formVars[aspectratio][1] / $this->formVars[aspectratio][0]));
-                if ($cHeight == 0)
-                    $cHeight = $this->imageHeight;
-                $this->values["x1"] = 0;
-                $this->values["y1"] = intval($this->imageHeight / 2 - $cHeight / 2);
-                $this->values["x2"] = $this->imageWidth;
-                $this->values["y2"] = $this->imageHeight - $this->values["y1"];
-            }
+			if ($orientation == 'landscape') {
+				$cWidth = intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1]));
+				if ($cWidth == 0)
+					$cWidth = $this->imageWidth;
+				$this->values["x1"] = intval($this->imageWidth / 2 - $cWidth / 2);
+				$this->values["y1"] = 0;
+				$this->values["x2"] = $this->imageWidth - $this->values["x1"];
+				$this->values["y2"] = $this->imageHeight;
+			} else if ($orientation == 'portrait') {
+				$cHeight = intval($this->imageWidth * ($this->formVars[aspectratio][1] / $this->formVars[aspectratio][0]));
+				if ($cHeight == 0)
+					$cHeight = $this->imageHeight;
+				$this->values["x1"] = 0;
+				$this->values["y1"] = intval($this->imageHeight / 2 - $cHeight / 2);
+				$this->values["x2"] = $this->imageWidth;
+				$this->values["y2"] = $this->imageHeight - $this->values["y1"];
+			}
 
-            $fieldValues = array (
-                'tx_tkcropthumbs_cropvalues' => $cropXml->asXML()
-            );
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
-            $this->getValues();
-            $this->display();
-        }
-        else {
-            $this->resizeImage();
-            $this->getValues();
-            $this->display();
-        }
-    }
+			$fieldValues = array (
+				'tx_tkcropthumbs_cropvalues' => $cropXml->asXML()
+			);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+			$this->getValues();
+			$this->display();
+		}
+		else {
+			$this->resizeImage();
+			$this->getValues();
+			$this->display();
+		}
+	}
 
-    /**
-     * reset values for all images in contentelement - set databasefielt to NULL
-     */
-    function resetAll () {
-        $table = 'tt_content';
-        $where = 'uid = ' . $this->formVars[uid];
-        $fieldValues = array (
-            'tx_tkcropthumbs_cropvalues' => NULL
-        );
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+	/**
+	 * reset values for all images in contentelement - set databasefielt to NULL
+	 */
+	function resetAll () {
+		$table = 'tt_content';
+		$where = 'uid = ' . $this->formVars[uid];
+		$fieldValues = array (
+			'tx_tkcropthumbs_cropvalues' => NULL
+		);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
 
-        $this->resizeImage();
-        $this->getValues();
-        $this->display();
-    }
+		$this->resizeImage();
+		$this->getValues();
+		$this->display();
+	}
 
 }
 

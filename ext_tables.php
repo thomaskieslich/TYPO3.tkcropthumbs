@@ -23,15 +23,6 @@ $tempColumns = array (
 						'minitems'=>1,
 						'maxitems'=>1,
 				)
-		),
-		'tx_tkcropthumbs_cropvalues' => array(
-			'l10n_display' => 'hideDiff',
-			'label' => 'scale',
-			'config' => array(
-				'type' => 'text',
-				'default' => '<?xml version="1.0" encoding="UTF-8" ?>
-				<images></images>'
-			),
 		)
 );
 
