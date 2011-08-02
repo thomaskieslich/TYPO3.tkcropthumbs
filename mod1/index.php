@@ -98,8 +98,8 @@ class tx_tkcropthumbs_crop {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" type="text/css" href="' . $this->relPath . 'res/css/crop.css" media="all">
 	<link rel="stylesheet" type="text/css" href="' . $this->relPath . 'res/css/imgareaselect-default.css" media="all">
-	<script src="' . $this->relPath . 'res/js/jquery-1.5.2.min.js" type="text/javascript"></script>
-	<script src="' . $this->relPath . 'res/js/jquery.imgareaselect-0.9.5.pack.js" type="text/javascript"></script>
+	<script src="' . $this->relPath . 'res/js/jquery-1.6.2.min.js" type="text/javascript"></script>
+	<script src="' . $this->relPath . 'res/js/jquery.imgareaselect-0.9.8.pack.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		function preview(img, selection) {
@@ -112,9 +112,33 @@ class tx_tkcropthumbs_crop {
 			$("#aspectRatio").val(selection.aspectRatio);
 		}
 
-jQuery(document).ready(function($){
-$("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->values["y1"] . ', x2: ' . $this->values["x2"] . ', y2: ' . $this->values["y2"] . ', aspectRatio: \'' . implode(":", $this->formVars[aspectratio]) . '\', imageWidth:' . $this->imageWidth . ', imageHeight:' . $this->imageHeight . ', handles: true, fadeSpeed: 200, onInit: preview, onSelectChange: preview  });
-});
+	jQuery(document).ready(function($){
+	var cropbox = $("#cropbox").imgAreaSelect({ 
+		x1: ' . $this->values["x1"] . ', 
+		y1: ' . $this->values["y1"] . ', 
+		x2: ' . $this->values["x2"] . ', 
+		y2: ' . $this->values["y2"] . ', 
+		aspectRatio: \'' . implode(":", $this->formVars[aspectratio]) . '\', 
+		imageWidth:' . $this->imageWidth . ', imageHeight:' . $this->imageHeight . ', 
+		handles: true, fadeSpeed: 200, onInit: preview, onSelectChange: preview, instance: true  
+		});
+	
+		$("#setAR").click(function() {
+			var selection = cropbox.getSelection(); 
+			var newAR = $("#ratio").val();
+			var ratio = newAR.split(":");
+			var gcd = ratio[0]/ratio[1];
+			cropbox.setOptions({ 
+				aspectRatio : newAR,
+			});
+			var y2 = selection.y1 + selection.width * gcd;
+			cropbox.setSelection(selection.x1, selection.y1, selection.x2, parseInt(y2), true);
+			cropbox.update();
+		});
+		
+	});
+	
+	
 </script>
 </head>
 <body>';
@@ -138,7 +162,9 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 				<label for="y2">Y2</label><input type="text" size="4" id="y2" name="y2" value="' . $this->values['y2'] . '" /><br />
 				<label for="w">W&nbsp;</label><input type="text" size="4" id="w" name="w" readonly />
 				<label for="h">H&nbsp;</label><input type="text" size="4" id="h" name="h" readonly />
-				<label for="aspectratio">' . $this->LANG->getLL("aspectratio") . '</label><input type="text" size="6" name="aspectratio" id="ratio" value="' . implode(":", $this->formVars[aspectratio]) . '" />
+				<label for="aspectratio">' . $this->LANG->getLL("aspectratio") . '</label><br>
+				<input type="text" size="10" name="aspectratio" id="ratio" value="' . implode(":", $this->formVars[aspectratio]) . '" />
+				<input type="button" id="setAR" value="< Set" />
 			</fieldset>
 			<input type="submit" value="' . $this->LANG->getLL("save_values") . '" />
 		</form>
@@ -179,7 +205,7 @@ $("#cropbox").imgAreaSelect({ x1: ' . $this->values["x1"] . ', y1: ' . $this->va
 		$where = 'uid = ' . $this->formVars[uid];
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where);
 		$this->values = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-		$cropXml = simplexml_load_string($this->values['tx_tkcropthumbs_cropvalues']);
+		$cropXml = simplexml_load_string(html_entity_decode($this->values['tx_tkcropthumbs_cropvalues']), 'SimpleXMLElement', LIBXML_NOCDATA);
 		if ($cropXml) {
 			$cropData = $cropXml->xpath('//image[. ="' . $this->formVars[image] . '"]');
 			$this->values = $cropData[0];

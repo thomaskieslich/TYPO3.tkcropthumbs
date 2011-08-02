@@ -73,7 +73,7 @@ class ux_tslib_gifBuilder extends tslib_gifBuilder {
 				
 				// tkcropthumbs
 				if (strlen($tkcropthumbs['cropvalues']) > 1) {
-					$cropXml = simplexml_load_string($tkcropthumbs['cropvalues']);
+					$cropXml = simplexml_load_string(html_entity_decode($tkcropthumbs['cropvalues']), 'SimpleXMLElement', LIBXML_NOCDATA);
 					if ($cropXml) {
 						$cropData = $cropXml->xpath('//image[. ="' . $info[3] . '"]');
 						$cropValues = $cropData[0];
