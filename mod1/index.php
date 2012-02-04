@@ -53,18 +53,22 @@ class tx_tkcropthumbs_crop {
 		$this->relPath = t3lib_extMgm::extRelPath('tkcropthumbs');
 
 		// check form vars
-		$this->formVars[action] = strip_tags(t3lib_div::_GET('action'));
+		$this->formVars[action] = htmlspecialchars(t3lib_div::_GET('action'));
 		if (mb_strlen($this->formVars[action]) > 12) {
 			$this->formVars[action] = mb_substr($this->formVars[action], 0, 12);
 		}
 
-		$this->formVars[image] = strip_tags(t3lib_div::_GET('image'));
+		$this->formVars[image] = htmlspecialchars(t3lib_div::_GET('image'));
 
 		$this->formVars[uid] = intval('0' . t3lib_div::_GET('uid'));
 
 		$this->formVars[aspectratio] = t3lib_div::trimExplode(':', t3lib_div::_GET('aspectratio'), TRUE, 2);
-		$this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
-		$this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
+		if (count($this->formVars[aspectratio]) == 2) {
+			$this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
+			$this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
+		} else {
+			$this->formVars[aspectratio] = null;
+		}
 
 		$this->formVars[x1] = intval('0' . t3lib_div::_GET('x1'));
 		$this->formVars[y1] = intval('0' . t3lib_div::_GET('y1'));
