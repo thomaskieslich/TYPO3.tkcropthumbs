@@ -62,13 +62,6 @@ class tx_tkcropthumbs_crop {
 
 		$this->formVars[uid] = intval('0' . t3lib_div::_GET('uid'));
 
-		$this->formVars[aspectratio] = t3lib_div::trimExplode(':', t3lib_div::_GET('aspectratio'), TRUE, 2);
-		if (count($this->formVars[aspectratio]) == 2) {
-			$this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
-			$this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
-		} else {
-			$this->formVars[aspectratio] = null;
-		}
 
 		$this->formVars[x1] = intval('0' . t3lib_div::_GET('x1'));
 		$this->formVars[y1] = intval('0' . t3lib_div::_GET('y1'));
@@ -76,6 +69,15 @@ class tx_tkcropthumbs_crop {
 		$this->formVars[y2] = intval('0' . t3lib_div::_GET('y2'));
 		$this->formVars[w] = intval('0' . t3lib_div::_GET('w'));
 		$this->formVars[h] = intval('0' . t3lib_div::_GET('h'));
+		
+		$this->formVars[aspectratio] = t3lib_div::trimExplode(':', t3lib_div::_GET('aspectratio'), TRUE, 2);
+		if (count($this->formVars[aspectratio]) == 2) {
+			$this->formVars[aspectratio][0] = intval('0' . $this->formVars[aspectratio][0]);
+			$this->formVars[aspectratio][1] = intval('0' . $this->formVars[aspectratio][1]);
+		} else {
+			$this->formVars[aspectratio][0] = $this->formVars[w];
+			$this->formVars[aspectratio][1] = $this->formVars[h];
+		}
 
 
 		if ($this->formVars[action] == 'save') {

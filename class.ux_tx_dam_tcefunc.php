@@ -42,11 +42,6 @@ class ux_tx_dam_tceFunc extends tx_dam_tceFunc {
 		$this->tceforms = &$PA['pObj'];
 
 
-		if (!(($msg = $this->isMMForeignActive()) === true)) {
-			return $this->tceforms->getSingleField_typeNone_render(array('rows' => 1), $msg);
-		}
-
-
 		$table = $PA['table'];
 		$field = $PA['field'];
 		$row = $PA['row'];
@@ -118,39 +113,6 @@ class ux_tx_dam_tceFunc extends tx_dam_tceFunc {
 				}
 
 				$thumbsnails = $this->renderFileList($filesArray, $config['show_thumbs'], $PA);
-				/*
-				  // making thumbnails
-				  $thumbsnails = '';
-				  if ($config['show_thumbs'] AND count($filesArray))	{
-
-				  foreach($filesArray['rows'] as $row)	{
-
-				  // Icon
-				  $absFilePath = tx_dam::file_absolutePath($row);
-				  $fileExists = @file_exists($absFilePath);
-
-				  $addAttrib = 'class="absmiddle"';
-				  $addAttrib .= tx_dam_guiFunc::icon_getTitleAttribute($row);
-				  $fileIcon = tx_dam::icon_getFileTypeImgTag($row, $addAttrib);
-
-
-				  // add clickmenu
-				  if ($fileExists AND !$disabled) {
-				  #							$fileIcon = $this->tceforms->getClickMenu($fileIcon, $absFilePath);
-				  $fileIcon = $this->tceforms->getClickMenu($fileIcon, 'tx_dam', $row['uid']);
-				  }
-
-				  $title = t3lib_div::fixed_lgd_cs($this->tceforms->noTitle($row['title']), $this->tceforms->titleLen);
-
-				  $thumb = tx_dam_image::previewImgTag($row, '', 'align="middle"');
-
-				  $thumbDescr = '<div class="nobr">'.$fileIcon.$title.'<br />'.$row['file_name'].'</div>';
-
-				  $thumbsnails .= '<tr><td>'.$thumb.'</td><td>'.$thumbDescr.'</td></tr>';
-				  }
-				  $thumbsnails = '<table border="0">'.$thumbsnails.'</table>';
-				  }
-				 */
 
 				// Creating the element:
 				$params = array(
