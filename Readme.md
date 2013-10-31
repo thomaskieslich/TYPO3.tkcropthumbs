@@ -1,1 +1,1 @@
-Crop and Square ThumbnailsCrop Thumbnails with image area select and has a switch to make thumbs with aspect ratios. Can use it for Detailviews or simple galeries.
+Crop and Square Thumbnails==========================Crop Thumbnails with image area select and has a switch to make thumbs with aspect ratios. Can use it for Detailviews or simple galeries.
