@@ -1,21 +1,21 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "tkcropthumbs".
-#
-# Auto generated 19-02-2012 10:46
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "tkcropthumbs".
+ *
+ * Auto generated 31-10-2013 14:40
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Crop and Square Thumbnails',
 	'description' => 'Crop Thumbnails with image area select and has a switch to make thumbs with aspect ratios. Can use it for Detailviews or simple galeries.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.2.6',
+	'version' => '1.2.7',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
