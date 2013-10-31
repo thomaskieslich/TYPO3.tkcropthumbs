@@ -28,13 +28,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearcacheonload' => 0,
 	'lockType' => '',
 	'author' => 'Thomas Kieslich',
-	'author_email' => 'thomaskieslich@gmx.net',
+	'author_email' => 'info@thomaskieslich.net',
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '4.5.0-4.7.99',
+			'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(
 		),
