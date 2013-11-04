@@ -1,0 +1,14 @@
+module.tx_tkcropthumbs {
+	persistence{
+		classes {
+			ThomasKieslich\Tkcropthumbs\Domain\Model\Content {
+				mapping {
+					tableName = tt_content
+					columns {
+#						CType.mapOnProperty = ctype
+					}
+				}
+			}
+		}
+	}
+}
