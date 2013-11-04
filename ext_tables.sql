@@ -1,7 +1,7 @@
 CREATE TABLE tt_content (
-	tx_tkcropthumbs_aspectratio tinytext
+	tx_tkcropthumbs_aspectratio TINYTEXT
 );
 
-CREATE TABLE  sys_file_reference (
-	tx_tkcropthumbs_crop mediumtext
+CREATE TABLE sys_file_reference (
+	tx_tkcropthumbs_crop MEDIUMTEXT
 );
