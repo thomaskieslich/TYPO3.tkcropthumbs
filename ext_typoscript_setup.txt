@@ -5,7 +5,6 @@ module.tx_tkcropthumbs {
 				mapping {
 					tableName = tt_content
 					columns {
-#						CType.mapOnProperty = ctype
 					}
 				}
 			}
