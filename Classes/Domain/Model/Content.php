@@ -32,12 +32,21 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
 	 */
-	protected $txTkcropthumbsAspectratio;
+	protected $aspectratio;
 
 	/**
 	 * @return string
 	 */
-	public function getTxTkcropthumbsAspectratio() {
-		return $this->txTkcropthumbsAspectratio;
+	public function getAspectratio() {
+		return $this->aspectratio;
+	}
+
+	/**
+	 * @param string $aspectratio
+	 *
+	 * @return string
+	 */
+	public function setAspectratio($aspectratio) {
+		$this->aspectratio = $aspectratio;
 	}
 }

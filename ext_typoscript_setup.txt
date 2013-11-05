@@ -5,6 +5,7 @@ module.tx_tkcropthumbs {
 				mapping {
 					tableName = tt_content
 					columns {
+						tx_tkcropthumbs_aspectratio.mapOnProperty = aspectratio
 					}
 				}
 			}

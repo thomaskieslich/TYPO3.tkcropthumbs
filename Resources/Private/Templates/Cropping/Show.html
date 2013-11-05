@@ -4,37 +4,42 @@
 		<meta charset="utf-8">
 		<title>Cropping Image</title>
 		<link rel="stylesheet" href="{fVars.pubPath}Css/extension.min.css">
-		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>
-		<script src="{fVars.pubPath}Js/jquery.imgareaselect-0.9.10.min.js"></script>
 	</head>
 	<body>
 		<div id="image">
 			<figure>
-				<img src="{fVars.publicUrl}" alt="{fVars.imgName}" width="{fVars.imgWidth}" height="{fVars.imgHeight}">
+				<img src="{fVars.publicUrl}" alt="{fVars.imgName}" width="{fVars.imgWidth}" height="{fVars.imgHeight}" id="cropbox">
 			</figure>
 		</div>
 		<div id="values">
 			<h2>{f:translate(key: 'editor.title')}</h2>
 
-			<form name="crop">
+			<form id="edit">
 				<fieldset>
 					<label for="x1">X1</label>
-					<input type="text" size="4" id="x1" name="x1" value="">
+					<input type="text" size="4" id="x1" value="">
 					<label for="y1">Y1</label>
-					<input type="text" size="4" id="y1" name="y1" value="">
+					<input type="text" size="4" id="y1" value="">
 					<label for="x2">X2</label>
-					<input type="text" size="4" id="x2" name="x2" value="">
+					<input type="text" size="4" id="x2" value="">
 					<label for="y2">Y2</label>
-					<input type="text" size="4" id="y2" name="y2" value="">
+					<input type="text" size="4" id="y2" value="">
 					<label for="w">W&nbsp;</label>
-					<input type="text" size="4" id="w" name="w" readonly>
+					<input type="text" size="4" id="w" readonly>
 					<label for="h">H&nbsp;</label>
 					<input type="text" size="4" id="h" readonly>
-					<label for="aspectratio">AR</label>
-					<input type="text" size="10" id="aspectratio" value="">
+					<label for="aspectRatio">{f:translate(key: 'editor.aspectratio')}</label>
+					<input type="text" size="10" id="aspectRatio" value="">
 					<input type="button" id="setAR" value="< Set"/>
 				</fieldset>
 			</form>
 		</div>
+
+		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>
+		<script src="{fVars.pubPath}Js/jquery.imgareaselect-0.9.10.min.js"></script>
+		<script>
+			var crop = {fVars.values -> f:format.raw()};
+		</script>
+		<script src="{fVars.pubPath}Js/extension.js"></script>
 	</body>
 </html>

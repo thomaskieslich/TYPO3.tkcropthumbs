@@ -6,6 +6,9 @@
 			<trans-unit id="editor.title" xml:space="preserve">
 				<source>edit cropping</source>
 			</trans-unit>
+			<trans-unit id="editor.aspectratio" xml:space="preserve">
+				<source>aspect ratio</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
