@@ -45,6 +45,11 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $referenceObject;
 
 	/**
+	 * @var array
+	 */
+	protected $referenceProperties;
+
+	/**
 	 * @var \ThomasKieslich\Tkcropthumbs\Domain\Repository\ContentRepository
 	 *
 	 * @inject
@@ -58,16 +63,36 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $fileRepository;
 
 	/**
+	 * @var int
+	 */
+	protected $imageWidth;
+
+	/**
+	 * @var int
+	 */
+	protected $imageHeight;
+
+	/**
+	 * @var int
+	 */
+	protected $height;
+
+	/**
+	 * @var int
+	 */
+	protected $width;
+
+	/**
 	 * @var array
 	 */
-	protected $fVars = array();
+	protected $fVars;
 
 	/**
 	 *
 	 * @throws \RuntimeException
 	 * @return void
 	 */
-	public function cropAction() {
+	public function initializeAction() {
 		$this->getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 
 		$referenceUid = intval(str_replace('sys_file_', '', $this->getVars['image']));
@@ -75,18 +100,60 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		if (is_int($referenceUid)) {
 			//Reference
 			$this->referenceObject = $this->fileRepository->findFileReferenceByUid($referenceUid);
+			$this->referenceProperties = $this->referenceObject->getProperties();
+//			$this->cObj = $this->contentRepository->findByUid($this->referenceProperties[uid_foreign]);
+		}
+	}
 
-			//cObj
-			$referenceProperties = $this->referenceObject->getProperties();
-			$this->cObj = $this->contentRepository->findByUid($referenceProperties[uid_foreign]);
+	/**
+	 * Show new Window for cropping
+	 *
+	 * @return void
+	 */
+	public function showAction() {
+		$this->resizeImage();
+
+		$this->fVars = array(
+			'imgName' => $this->referenceProperties['name'],
+			'pubPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/',
+			'publicUrl' => $this->referenceObject->getPublicUrl(TRUE),
+			'imgHeight' => $this->height,
+			'imgWidth' => $this->width
+		);
+
+//		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->referenceObject, 'this', 12);
+		$this->view->assign('fVars', $this->fVars);
+	}
+
+	/**
+	 * resize the view of the image in window
+	 *
+	 * @return void
+	 */
+	protected function resizeImage() {
+		if ($this->referenceProperties['height']) {
+			$this->imageHeight = $this->referenceProperties['height'];
+		} else {
+			$imageSize = getimagesize($this->referenceObject->getPublicUrl(TRUE));
+			$this->imageHeight = $imageSize[1];
 		}
 
-		$this->fVars['imgPath'] = $referenceProperties['identifier'];
-		$this->fVars['imgName'] = $referenceProperties['name'];
-		$this->fVars['pubPath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/';
+		if ($this->referenceProperties['width']) {
+			$this->imageWidth = $this->referenceProperties['width'];
+		} else {
+			$imageSize = getimagesize($this->referenceObject->getPublicUrl(TRUE));
+			$this->imageWidth = $imageSize[0];
+		}
 
-//		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this, 'this');
-
-		$this->view->assign('fVars', $this->fVars);
+		$displaySize = 500;
+		if (($this->imageWidth > $displaySize) || ($this->imageHeight > $displaySize)) {
+			if ($this->imageHeight > $this->imageWidth) {
+				$this->height = $displaySize;
+				$this->width = intval($this->imageWidth * $displaySize / $this->imageHeight);
+			} else {
+				$this->width = $displaySize;
+				$this->height = intval($this->imageHeight * $displaySize / $this->imageWidth);
+			}
+		}
 	}
 }

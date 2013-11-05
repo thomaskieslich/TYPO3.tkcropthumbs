@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 		'crop',
 		'',
 		array(
-			'Cropping' => 'crop'
+			'Cropping' => 'show'
 		),
 		array()
 	);
