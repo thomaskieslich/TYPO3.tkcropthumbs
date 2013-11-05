@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Cropping Image</title>
-</head>
-<body>
+	<head>
+		<meta charset="utf-8">
+		<title>Cropping Image</title>
+		<link rel="stylesheet" href="{fVars.pubPath}Css/extension.min.css">
+		<link rel="stylesheet" href="{fVars.pubPath}Css/imgareaselect/imgareaselect-default.min.css">
+		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>
+		<script src="{fVars.pubPath}Js/jquery.imgareaselect-0.9.10.min.js"></script>
+	</head>
+	<body>
+		<div id="image">
+			<f:image src="fileadmin/{fVars.imgPath}" alt="{fVars.imgName}" width="500"/>
+		</div>
+		<div id="values">
+			<h2>{f:translate(key: 'editor.title')}</h2>
 
-</body>
+			<form name="crop">
+				<fieldset>
+					<label for="x1">X1</label>
+					<input type="text" size="4" id="x1" name="x1" value="">
+					<label for="y1">Y1</label>
+					<input type="text" size="4" id="y1" name="y1" value="">
+					<label for="x2">X2</label>
+					<input type="text" size="4" id="x2" name="x2" value="">
+					<label for="y2">Y2</label>
+					<input type="text" size="4" id="y2" name="y2" value="">
+					<label for="w">W&nbsp;</label>
+					<input type="text" size="4" id="w" name="w" readonly>
+					<label for="h">H&nbsp;</label>
+					<input type="text" size="4" id="h" readonly>
+					<label for="aspectratio">AR</label>
+					<input type="text" size="10" id="aspectratio" value="">
+					<input type="button" id="setAR" value="< Set"/>
+				</fieldset>
+			</form>
+		</div>
+	</body>
 </html>

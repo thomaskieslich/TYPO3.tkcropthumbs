@@ -34,7 +34,6 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	protected $getVars;
 
-
 	/**
 	 * @var array
 	 */
@@ -44,11 +43,6 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @var object
 	 */
 	protected $referenceObject;
-
-	/**
-	 * @var object
-	 */
-	protected $originalResource;
 
 	/**
 	 * @var \ThomasKieslich\Tkcropthumbs\Domain\Repository\ContentRepository
@@ -64,6 +58,11 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $fileRepository;
 
 	/**
+	 * @var array
+	 */
+	protected $fVars = array();
+
+	/**
 	 *
 	 * @throws \RuntimeException
 	 * @return void
@@ -77,14 +76,17 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			//Reference
 			$this->referenceObject = $this->fileRepository->findFileReferenceByUid($referenceUid);
 
-			//Original
-			$this->originalResource = $this->referenceObject->getOriginalFile();
-
 			//cObj
 			$referenceProperties = $this->referenceObject->getProperties();
 			$this->cObj = $this->contentRepository->findByUid($referenceProperties[uid_foreign]);
 		}
 
-		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->cObj, 'this');
+		$this->fVars['imgPath'] = $referenceProperties['identifier'];
+		$this->fVars['imgName'] = $referenceProperties['name'];
+		$this->fVars['pubPath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/';
+
+//		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this, 'this');
+
+		$this->view->assign('fVars', $this->fVars);
 	}
 }

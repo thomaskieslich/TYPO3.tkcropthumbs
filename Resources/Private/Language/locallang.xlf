@@ -3,7 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
 		<header/>
 		<body>
-
+			<trans-unit id="editor.title" xml:space="preserve">
+				<source>edit cropping</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
