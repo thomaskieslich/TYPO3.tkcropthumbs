@@ -1,0 +1,28 @@
+body {
+  background-color: #666;
+  font-family: Arial;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  height: 600px;
+  width: 800px;
+}
+h2 {
+  color: #ccc;
+  font-size: 100%;
+}
+#image {
+  float: left;
+  padding: 10px;
+}
+#values {
+  float: right;
+  width: 185px;
+}
+fieldset {
+  border: 1px solid #f90;
+}
+input {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
