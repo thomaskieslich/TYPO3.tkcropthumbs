@@ -1,14 +1,6 @@
 module.tx_tkcropthumbs {
 	persistence{
 		classes {
-			ThomasKieslich\Tkcropthumbs\Domain\Model\FileReference {
-				mapping {
-					tableName = sys_file_reference
-					columns {
-						title.mapOnProperty = title
-					}
-				}
-			}
 			ThomasKieslich\Tkcropthumbs\Domain\Model\Content {
 				mapping {
 					tableName = tt_content

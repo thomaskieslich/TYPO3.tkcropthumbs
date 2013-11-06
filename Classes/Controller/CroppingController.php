@@ -57,21 +57,10 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $contentRepository;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	protected $contentObject;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Resource\FileRepository
 	 * @inject
 	 */
 	protected $fileRepository;
-
-	/**
-	 * @var Tx_Extbase_Persistence_Manager
-	 * @inject
-	 */
-	protected $persistenceManager;
 
 	/**
 	 * @var array
@@ -114,7 +103,29 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function initializeAction() {
+		$this->getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 
+		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars($this->getVars['image'])));
+
+		if (is_int($referenceUid)) {
+			//Reference
+			$this->referenceObject = $this->fileRepository->findFileReferenceByUid($referenceUid);
+			$this->referenceProperties = $this->referenceObject->getProperties();
+			$cObj = $this->contentRepository->findByUid($this->referenceProperties[uid_foreign]);
+			$this->aspectRatio = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $cObj->getAspectratio(), TRUE);
+
+			$this->resizeImage();
+
+			if (isset($this->referenceProperties['tx_tkcropthumbs_crop'])) {
+				$import = json_decode($this->referenceProperties['tx_tkcropthumbs_crop'], TRUE);
+			}
+
+			if (isset($import) && count($import) === 6) {
+				$this->cropValues = $import;
+			} else {
+				$this->initValues();
+			}
+		}
 	}
 
 	/**
@@ -122,19 +133,7 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 *
 	 * @return void
 	 */
-	public function showAction(\ThomasKieslich\Tkcropthumbs\Domain\Model\FileReference $referenceObject) {
-		$this->referenceObject = $referenceObject->getOriginalResource();
-//		$this->referenceObject = $this->fileRepository->findFileReferenceByUid(17);
-//		$this->referenceProperties = $this->referenceObject->getProperties();
-		$this->contentObject = $this->contentRepository->findByUid($this->referenceObject->getProperty('uid_foreign'));
-//		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-//		$this->configurationManager->getContentObject();
-
-//		$this->aspectRatio = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $cObj->getAspectratio(), TRUE);
-
-//		$cObj->setAspectratio('1234');
-//		$this->contentRepository->update($cObj);
-		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->contentObject->getImage(), 'cObj', 12);
+	public function showAction() {
 
 		$this->resizeImage();
 
@@ -163,7 +162,6 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$script .= '</script>';
 
 //		$this->referenceObject->setTitle('title');
-
 
 		$this->view->assign('fVars', $this->fVars);
 		$this->view->assign('script', $script);

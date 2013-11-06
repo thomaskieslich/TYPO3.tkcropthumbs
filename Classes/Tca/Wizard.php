@@ -32,7 +32,7 @@ class Wizard {
 	public function showIcon($fObj) {
 		$iconPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/Icons';
 		$formField = '<a href="#"  onclick="window.open(\'';
-		$formField .= 'mod.php?M=user_TkcropthumbsCrop&tx_tkcropthumbs_user_tkcropthumbscrop[referenceObject]=' . $fObj['row']['uid'];
+		$formField .= 'mod.php?M=user_TkcropthumbsCrop&image=' . $fObj['row']['uid'];
 		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
 		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
 		$formField .= '<img src="' . $iconPath . '/crop.png">';
