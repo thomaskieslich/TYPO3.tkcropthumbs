@@ -140,11 +140,15 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			'publicUrl' => $this->referenceObject->getPublicUrl(TRUE),
 			'imgHeight' => $this->height,
 			'imgWidth' => $this->width,
-			'values' => json_encode($this->cropValues)
 		);
+
+		$script = '<script>';
+		$script .= 'var crop = ' . json_encode($this->cropValues);
+		$script .= '</script>';
 
 //		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->fVars, 'this', 12);
 		$this->view->assign('fVars', $this->fVars);
+		$this->view->assign('script', $script);
 	}
 
 	/**
@@ -167,7 +171,7 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$this->imageWidth = $imageSize[0];
 		}
 
-		$displaySize = 500;
+		$displaySize = 600;
 		if (($this->imageWidth > $displaySize) || ($this->imageHeight > $displaySize)) {
 			if ($this->imageHeight > $this->imageWidth) {
 				$this->height = $displaySize;
@@ -215,7 +219,7 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		}
 
 		$this->cropValues = array(
-			'ar' => (string)$this->aspectRatio,
+			'ar' => implode(':', $this->aspectRatio),
 			'x1' => 0,
 			'y1' => 0,
 			'x2' => $this->width,

@@ -40,6 +40,9 @@ class ContentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		/** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
 		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
+		$querySettings->setIgnoreEnableFields(TRUE);
+		$querySettings->setIncludeDeleted(FALSE);
+
 		$this->setDefaultQuerySettings($querySettings);
 	}
 }

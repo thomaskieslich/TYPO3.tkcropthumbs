@@ -16,30 +16,39 @@
 
 			<form id="edit">
 				<fieldset>
-					<label for="x1">X1</label>
-					<input type="text" size="4" id="x1" value="">
-					<label for="y1">Y1</label>
-					<input type="text" size="4" id="y1" value="">
-					<label for="x2">X2</label>
-					<input type="text" size="4" id="x2" value="">
-					<label for="y2">Y2</label>
-					<input type="text" size="4" id="y2" value="">
-					<label for="w">W&nbsp;</label>
-					<input type="text" size="4" id="w" readonly>
-					<label for="h">H&nbsp;</label>
-					<input type="text" size="4" id="h" readonly>
-					<label for="aspectRatio">{f:translate(key: 'editor.aspectratio')}</label>
-					<input type="text" size="10" id="aspectRatio" value="">
-					<input type="button" id="setAR" value="< Set"/>
+					<div class="formRow">
+						<label for="x1">X1</label>
+						<input type="text" id="x1" value="">
+						<label for="y1">Y1</label>
+						<input type="text" id="y1" value="">
+					</div>
+					<div class="formRow">
+						<label for="x2">X2</label>
+						<input type="text" id="x2" value="">
+						<label for="y2">Y2</label>
+						<input type="text" id="y2" value="">
+					</div>
+					<div class="formRow">
+						<label for="w">W</label>
+						<input type="text" id="w" readonly>
+						<label for="h">H</label>
+						<input type="text" id="h" readonly>
+					</div>
+					<div class="formRow">
+						<label for="aspectRatio">{f:translate(key: 'editor.aspectratio')}</label>
+						<input type="text" id="aspectRatio" value="">
+						<label for="setAR">&nbsp;</label>
+						<input type="button" id="setAR" value="Set AR"/>
+					</div>
 				</fieldset>
+				<input type="button" id="close" value="{f:translate(key: 'editor.close')}"/>
+				<input type="button" id="resetSingle" value="{f:translate(key: 'editor.reset.single')}"/>
 			</form>
 		</div>
 
 		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>
 		<script src="{fVars.pubPath}Js/jquery.imgareaselect-0.9.10.min.js"></script>
-		<script>
-			var crop = {fVars.values -> f:format.raw()};
-		</script>
+		{script -> f:format.raw()}
 		<script src="{fVars.pubPath}Js/extension.js"></script>
 	</body>
 </html>

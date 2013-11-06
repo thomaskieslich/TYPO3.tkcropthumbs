@@ -7,7 +7,19 @@
 				<source>edit cropping</source>
 			</trans-unit>
 			<trans-unit id="editor.aspectratio" xml:space="preserve">
-				<source>aspect ratio</source>
+				<source>ar</source>
+			</trans-unit>
+			<trans-unit id="editor.save" xml:space="preserve">
+				<source>save values</source>
+			</trans-unit>
+			<trans-unit id="editor.reset.single" xml:space="preserve">
+				<source>reset this image</source>
+			</trans-unit>
+			<trans-unit id="editor.reset.all" xml:space="preserve">
+				<source>reset all images</source>
+			</trans-unit>
+			<trans-unit id="editor.close" xml:space="preserve">
+				<source>close</source>
 			</trans-unit>
 		</body>
 	</file>
