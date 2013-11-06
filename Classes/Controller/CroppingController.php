@@ -40,7 +40,7 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $formVars = array();
 
 	/**
-	 * @var object
+	 * @var \ThomasKieslich\Tkcropthumbs\Controller\FileReference
 	 */
 	protected $referenceObject;
 
@@ -126,6 +126,7 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				$this->initValues();
 			}
 		}
+		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->referenceObject);
 	}
 
 	/**
@@ -161,14 +162,25 @@ class CroppingController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$script .= 'var uid = 13' . ";\n";
 		$script .= '</script>';
 
-//		$this->referenceObject->setTitle('title');
+//		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->referenceObject, 'this');
 
 		$this->view->assign('fVars', $this->fVars);
 		$this->view->assign('script', $script);
+		$this->saveAction();
 	}
 
-	public function saveAction(\ThomasKieslich\Tkcropthumbs\Domain\Model\FileReference $image) {
-		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($image, 'this');
+	public function saveAction() {
+		$select = 'tx_tkcropthumbs_crop';
+		$table = 'sys_file_reference';
+		$where = 'uid = ' . $this->referenceProperties['uid'];
+
+		$fieldValues = array(
+			'tx_tkcropthumbs_crop' => 'save test: ' . $this->referenceProperties['uid']
+		);
+
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+
+		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($fieldValues, 'this');
 //		$this->redirect(show,NULL,NULL,array('image'=>17));
 	}
 
