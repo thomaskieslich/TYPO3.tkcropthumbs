@@ -20,14 +20,41 @@ h2 {
 }
 #values {
   float: right;
-  width: 185px;
+  width: 180px;
 }
 #values fieldset {
   border: 1px solid #f90;
 }
-#values input {
-  margin-top: 6px;
-  margin-bottom: 6px;
+#values fieldset .formRow {
+  clear: both;
+  margin: 6px 0;
+  overflow: auto;
+}
+#values fieldset label {
+  display: block;
+  float: left;
+  margin: 4px 4px;
+  width: 16px;
+}
+#values fieldset input {
+  border: none;
+  float: left;
+  padding: 2px;
+  width: 48px;
+}
+#values fieldset input[type="button"] {
+  cursor: pointer;
+  height: 18px;
+  margin: 0;
+  width: 52px;
+}
+#values input[type="button"] {
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  height: 18px;
+  margin: 6px 12px;
+  width: 120px;
 }
 /*
  * imgAreaSelect default style

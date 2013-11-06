@@ -22,13 +22,40 @@ h2 {
 }
 #values {
 	float: right;
-	width: 185px;
+	width: 180px;
 	fieldset {
 		border: 1px solid #f90;
+		.formRow {
+			clear: both;
+			margin: 6px 0;
+			overflow: auto;
+		}
+		label {
+			display: block;
+			float: left;
+			margin: 4px 4px;
+			width: 16px;
+		}
+		input {
+			border: none;
+			float: left;
+			padding: 2px;
+			width: 48px;
+		}
+		input[type="button"]{
+			cursor: pointer;
+			height: 18px;
+			margin: 0;
+			width: 52px;
+		}
 	}
-	input {
-		margin-top: 6px;
-		margin-bottom: 6px;
+	input[type="button"] {
+		border: none;
+		padding: 2px;
+		cursor: pointer;
+		height: 18px;
+		margin: 6px 12px;
+		width: 120px;
 	}
 }
 

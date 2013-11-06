@@ -44,6 +44,10 @@
 				<input type="button" id="close" value="{f:translate(key: 'editor.close')}"/>
 				<input type="button" id="resetSingle" value="{f:translate(key: 'editor.reset.single')}"/>
 			</form>
+			<f:link.action action="save" arguments="{image:'{fVars.imgUid}'}">test</f:link.action>
+			<a href="mod.php?M=user_TkcropthumbsCrop&image={fVars.imgUid}">
+				{f:translate(key: 'editor.close')}
+			</a>
 		</div>
 
 		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>

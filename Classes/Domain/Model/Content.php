@@ -35,6 +35,11 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $aspectratio;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+	 */
+	protected $image;
+
+	/**
 	 * @return string
 	 */
 	public function getAspectratio() {
@@ -49,4 +54,20 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setAspectratio($aspectratio) {
 		$this->aspectratio = $aspectratio;
 	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $image
+	 */
+	public function setImage($image) {
+		$this->image = $image;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+	 */
+	public function getImage() {
+		return $this->image;
+	}
+
+
 }

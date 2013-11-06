@@ -1,5 +1,5 @@
 <?php
-namespace ThomasKieslich\Tkcropthumbs\Tca;
+namespace ThomasKieslich\Tkcropthumbs\Domain\Model;
 
 	/***************************************************************
 	 *  Copyright notice
@@ -25,18 +25,45 @@ namespace ThomasKieslich\Tkcropthumbs\Tca;
 	 ***************************************************************/
 
 /**
- * Class Wizard
+ * FileReference Model
  */
-class Wizard {
+class FileReference extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
-	public function showIcon($fObj) {
-		$iconPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/Icons';
-		$formField = '<a href="#"  onclick="window.open(\'';
-		$formField .= 'mod.php?M=user_TkcropthumbsCrop&tx_tkcropthumbs_user_tkcropthumbscrop[referenceObject]=' . $fObj['row']['uid'];
-		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
-		$formField .= '<img src="' . $iconPath . '/crop.png">';
-		$formField .= '</a>';
-		return $formField;
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @inject
+	 */
+	protected $fileRepository;
+
+	/**
+	 * @var string
+	 */
+	protected $title;
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 */
+	public function getOriginalResource() {
+		if ($this->originalResource === NULL) {
+			$this->originalResource = $this->fileRepository->findFileReferenceByUid($this->getUid());
+		}
+
+		return $this->originalResource;
 	}
+
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+
 }
