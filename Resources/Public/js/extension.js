@@ -20,7 +20,6 @@ $(function () {
 		handles: true,
 		imageWidth: crop['width'],
 		imageHeight: crop['height'],
-		handles: true,
 		fadeSpeed: 200,
 		onInit: preview,
 		onSelectChange: preview,
@@ -33,5 +32,10 @@ $(function () {
 			aspectRatio: $("#aspectRatio").val()
 		});
 		cropbox.update();
+	});
+
+
+	$('#controller').on('click', '#save', function () {
+		alert('13');
 	});
 });

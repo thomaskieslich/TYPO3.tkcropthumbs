@@ -23,13 +23,14 @@ namespace ThomasKieslich\Tkcropthumbs\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * ContentRepository
  *
  * Repository for Content
  */
-class ContentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class ContentRepository extends Repository {
 
 	/**
 	 * Initializes the repository.

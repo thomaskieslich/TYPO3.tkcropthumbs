@@ -41,11 +41,13 @@
 						<input type="button" id="setAR" value="Set AR"/>
 					</div>
 				</fieldset>
-				<input type="button" id="close" value="{f:translate(key: 'editor.close')}"/>
-				<input type="button" id="resetSingle" value="{f:translate(key: 'editor.reset.single')}"/>
 			</form>
-			<f:link.action action="save" arguments="{image:'{fVars.imgUid}'}">test</f:link.action>
-			<a href="mod.php?M=user_TkcropthumbsCrop&image={fVars.imgUid}">
+
+			<div id="controller">
+				<div id="save" class="btn">{f:translate(key: 'editor.close')}</div>
+			</div>
+
+			<a href="mod.php?M=user_TkcropthumbsCrop&reference={fVars.imgUid}&action=save">
 				{f:translate(key: 'editor.close')}
 			</a>
 		</div>
