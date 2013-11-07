@@ -8,7 +8,7 @@
 	<body>
 		<div id="image">
 			<figure>
-				<img src="{fVars.publicUrl}" alt="{fVars.imgName}" width="{fVars.imgWidth}" height="{fVars.imgHeight}" id="cropbox">
+				<img src="{fVars.publicUrl}" alt="{fVars.imgName}" style="width:{fVars.imgWidth}px; height:{fVars.imgHeight}px" id="cropbox">
 			</figure>
 		</div>
 		<div id="values">
@@ -46,10 +46,6 @@
 			<div id="controller">
 				<div id="save" class="btn">{f:translate(key: 'editor.close')}</div>
 			</div>
-
-			<a href="mod.php?M=user_TkcropthumbsCrop&reference={fVars.imgUid}&action=save">
-				{f:translate(key: 'editor.close')}
-			</a>
 		</div>
 
 		<script src="{fVars.pubPath}Js/jquery-1.10.2.min.js"></script>

@@ -1,5 +1,6 @@
 <?php
-namespace ThomasKieslich\Tkcropthumbs\Tca;
+
+namespace ThomasKieslich\Tkcropthumbs\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -23,22 +24,43 @@ namespace ThomasKieslich\Tkcropthumbs\Tca;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Wizard
+ * Class AjaxController
+ *
+ * @package ThomasKieslich\Tkcropthumbs\Controller
  */
-class Wizard {
+class AjaxController {
 
-	public function showIcon($fObj) {
-		$iconPath = ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/Icons';
-		$formField = '<a href="#"  onclick="window.open(\'';
-		$formField .= 'mod.php?M=user_TkcropthumbsCrop&reference=' . $fObj['row']['uid'];
-		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
-		$formField .= '<img src="' . $iconPath . '/crop.png" id="' . $fObj['itemFormElName'] . '">';
-		$formField .= '</a>';
-		$formField .= '<input type="text" value="' . htmlspecialchars($fObj['row']['tx_tkcropthumbs_crop']) . '" size="80" id="' . $fObj['itemFormElName'] . '">' . "\n";
-		return $formField;
+	/**
+	 * init Ajax
+	 *
+	 * @return void
+	 */
+	public function init() {
+		$getVars = GeneralUtility::_GET();
+		if ($getVars['action'] == save) {
+			$this->save($getVars['uid'], $getVars['cropValues']);
+		}
+//		echo json_encode($getVars);
 	}
-}
+
+	/**
+	 * @param $uid
+	 * @param $cropValues
+	 * @return void
+	 */
+	protected function save($uid, $cropValues) {
+		$table = 'sys_file_reference';
+		$where = 'uid = ' . $uid;
+
+		$fieldValues = array(
+			'tx_tkcropthumbs_crop' => json_encode($cropValues)
+		);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+
+		echo json_encode($cropValues);
+	}
+//
+} 

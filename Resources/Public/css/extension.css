@@ -48,12 +48,13 @@ h2 {
   margin: 0;
   width: 52px;
 }
-#values input[type="button"] {
-  border: none;
-  padding: 2px;
+#values .btn {
+  background: #ccc;
+  border: 1px solid #999;
+  padding: 6px;
   cursor: pointer;
   height: 18px;
-  margin: 6px 12px;
+  margin: 6px 0;
   width: 120px;
 }
 /*

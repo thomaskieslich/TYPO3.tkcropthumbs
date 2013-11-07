@@ -1,5 +1,9 @@
 <?php
-if (!defined('TYPO3_MODE')) {die('Access denied.');}
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
+
+$TYPO3_CONF_VARS['BE']['AJAX']['TkcropthumbsAjaxController::init'] = 'ThomasKieslich\\Tkcropthumbs\\Controller\\AjaxController->init';
 
 $_EXTCONF = unserialize($_EXTCONF);
 //if (t3lib_extMgm::isLoaded('dam')) {
