@@ -103,6 +103,11 @@ class CroppingController extends ActionController {
 	protected $cropValues;
 
 	/**
+	 * @var boolean
+	 */
+	protected $fixAr;
+
+	/**
 	 *
 	 * @throws \RuntimeException
 	 * @return void
@@ -118,24 +123,22 @@ class CroppingController extends ActionController {
 			$this->referenceProperties = $this->referenceObject->getProperties();
 
 			$cObj = $this->contentRepository->findByUid($this->referenceProperties[uid_foreign]);
-			$this->aspectRatio = GeneralUtility::trimExplode(':', $cObj->getAspectratio(), TRUE);
+			if ($cObj->getAspectratio()) {
+				$this->aspectRatio = GeneralUtility::trimExplode(':', $cObj->getAspectratio(), TRUE);
+				$this->fixAr = TRUE;
+			}
 
 			$this->resizeImage();
 
 			if (isset($this->referenceProperties['tx_tkcropthumbs_crop'])) {
 				$import = json_decode($this->referenceProperties['tx_tkcropthumbs_crop'], TRUE);
-				if (isset($import) && count($import) === 4) {
-					$this->cropValues = $import;
-				} else {
-					$this->initValues();
-				}
+			}
+			if (isset($import) && count($import) === 4) {
+				$this->cropValues = $import;
+			} else {
+				$this->initValues();
 			}
 		}
-//		if ($this->getVars['action'] == 'save') {
-//			$this->save();
-//		}
-
-//		DebuggerUtility::var_dump($this->referenceProperties);
 	}
 
 	/**
@@ -153,13 +156,40 @@ class CroppingController extends ActionController {
 			'publicUrl' => $this->referenceObject->getPublicUrl(TRUE),
 			'imgHeight' => $this->height,
 			'imgWidth' => $this->width,
-			'crop' => json_encode((string)$this->referenceProperties['tx_tkcropthumbs_crop']),
+			'ar' => implode(':', $this->aspectRatio),
+			'fixAr' => $this->fixAr
 		);
 
-		$script = '<script>';
-		$script .= 'var crop = ' . json_encode($this->cropValues) . ';';
-		$script .= 'var uid = ' . $this->referenceProperties['uid'] . ';';
-		$script .= '</script>';
+		$script = "
+	<script>
+		var uid = " . $this->referenceProperties['uid'] . ";
+
+		var imgOrg = [" . $this->cropValues['x1'] . "," . $this->cropValues['y1'] . "," . $this->cropValues['x2'] . " ," . $this->cropValues['y2'] . "];
+
+		$(function () {
+			var cropbox = $('img#cropbox') . imgAreaSelect({
+				x1: " . $this->cropValues['x1'] . ",
+				y1: " . $this->cropValues['y1'] . ",
+				x2: " . $this->cropValues['x2'] . " ,
+				y2: " . $this->cropValues['y2'] . ",
+				imageWidth: " . $this->imageWidth . ",
+				imageHeight: " . $this->imageHeight . ",
+				aspectRatio: '" . implode(':', $this->aspectRatio) . "',
+				handles: true,
+				fadeSpeed: 200,
+				onInit: preview,
+				onSelectChange: preview,
+				instance: true
+			});
+
+			$('#setAR').click(function () {
+				cropbox . setOptions({
+					aspectRatio: $('#aspectRatio') . val()
+				});
+				cropbox.update();
+			});
+		});
+	</script > ";
 
 //		DebuggerUtility::var_dump($script);
 
@@ -210,40 +240,28 @@ class CroppingController extends ActionController {
 		}
 
 		$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
-//		if (intval($this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1])) > $this->imageWidth) {
-//			$orientation = 'portrait';
-//		}
+		if (intval($this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1])) > $this->imageWidth) {
+			$orientation = 'portrait';
+		}
 
 		if ($orientation == 'landscape') {
-			$cWidth = intval($this->imageHeight * ($this->formVars[aspectratio][0] / $this->formVars[aspectratio][1]));
+			$cWidth = intval($this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]));
 			if ($cWidth == 0) {
 				$cWidth = $this->imageWidth;
 			}
-			$this->values['x1'] = intval($this->imageWidth / 2 - $cWidth / 2);
-			$this->values['y1'] = 0;
-			$this->values['x2'] = $this->imageWidth - $this->values['x1'];
-			$this->values['y2'] = $this->imageHeight;
+			$this->cropValues['x1'] = intval($this->imageWidth / 2 - $cWidth / 2);
+			$this->cropValues['y1'] = 0;
+			$this->cropValues['x2'] = $this->imageWidth - $this->cropValues['x1'];
+			$this->cropValues['y2'] = $this->imageHeight;
 		} elseif ($orientation == 'portrait') {
-			$cHeight = intval($this->imageWidth * ($this->formVars[aspectratio][1] / $this->formVars[aspectratio][0]));
+			$cHeight = intval($this->imageWidth * ($this->aspectRatio[1] / $this->aspectRatio[0]));
 			if ($cHeight == 0) {
 				$cHeight = $this->imageHeight;
 			}
-			$this->values['x1'] = 0;
-			$this->values['y1'] = intval($this->imageHeight / 2 - $cHeight / 2);
-			$this->values['x2'] = $this->imageWidth;
-			$this->values['y2'] = $this->imageHeight - $this->values['y1'];
-		}
-
-		if (!$this->cropValues) {
-			$this->cropValues = array(
-				'ar' => (string)$this->aspectRatio,
-				'x1' => 0,
-				'y1' => 0,
-				'x2' => $this->width,
-				'y2' => $this->height,
-				'width' => $this->width,
-				'height' => $this->height
-			);
+			$this->cropValues['x1'] = 0;
+			$this->cropValues['y1'] = intval($this->imageHeight / 2 - $cHeight / 2);
+			$this->cropValues['x2'] = $this->imageWidth;
+			$this->cropValues['y2'] = $this->imageHeight - $this->cropValues['y1'];
 		}
 	}
 }

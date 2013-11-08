@@ -32,13 +32,18 @@ class Wizard {
 
 	public function showIcon($fObj) {
 		$iconPath = ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/Icons';
+		$icon = 'crop.png';
+		if ($fObj['row']['tx_tkcropthumbs_crop']) {
+			$icon = 'crop_act.png';
+		}
+
 		$formField = '<a href="#"  onclick="window.open(\'';
 		$formField .= 'mod.php?M=user_TkcropthumbsCrop&reference=' . $fObj['row']['uid'];
 		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
 		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
-		$formField .= '<img src="' . $iconPath . '/crop.png" id="' . $fObj['itemFormElName'] . '">';
+		$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
 		$formField .= '</a>';
-		$formField .= '<input type="text" value="' . htmlspecialchars($fObj['row']['tx_tkcropthumbs_crop']) . '" size="80" id="' . $fObj['itemFormElName'] . '">' . "\n";
+		//$formField .= '<input type="text" value="' . htmlspecialchars($fObj['row']['tx_tkcropthumbs_crop']) . '" size="80" name="' . $fObj['itemFormElName'] . '">' . "\n";
 		return $formField;
 	}
 }

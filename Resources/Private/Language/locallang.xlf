@@ -10,7 +10,7 @@
 				<source>ar</source>
 			</trans-unit>
 			<trans-unit id="editor.save" xml:space="preserve">
-				<source>save values</source>
+				<source>save and close</source>
 			</trans-unit>
 			<trans-unit id="editor.reset.single" xml:space="preserve">
 				<source>reset this image</source>

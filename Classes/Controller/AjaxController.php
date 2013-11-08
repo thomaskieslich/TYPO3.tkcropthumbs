@@ -43,6 +43,17 @@ class AjaxController {
 		if ($getVars['action'] == save) {
 			$this->save($getVars['uid'], $getVars['cropValues']);
 		}
+
+		switch ($getVars['action']) {
+			case 'save';
+				$this->save($getVars['uid'], $getVars['cropValues']);
+				break;
+			case 'resetSingle';
+				$this->resetSingle($getVars['uid']);
+				break;
+			default;
+				$this->save($getVars['uid'], $getVars['cropValues']);
+		}
 //		echo json_encode($getVars);
 	}
 
@@ -58,9 +69,24 @@ class AjaxController {
 		$fieldValues = array(
 			'tx_tkcropthumbs_crop' => json_encode($cropValues)
 		);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+		$db = $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
 
-		echo json_encode($cropValues);
+		echo $db;
 	}
-//
-} 
+
+	/**
+	 * @param $uid
+	 * @return void
+	 */
+	protected function resetSingle($uid) {
+		$table = 'sys_file_reference';
+		$where = 'uid = ' . $uid;
+
+		$fieldValues = array(
+			'tx_tkcropthumbs_crop' => ''
+		);
+		$db = $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+
+		echo $db;
+	}
+}

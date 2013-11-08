@@ -3,12 +3,12 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Cropping Image</title>
-		<link rel="stylesheet" href="{fVars.pubPath}Css/extension.min.css">
+		<link rel="stylesheet" href="{fVars.pubPath}Css/extension.css">
 	</head>
 	<body>
 		<div id="image">
 			<figure>
-				<img src="{fVars.publicUrl}" alt="{fVars.imgName}" style="width:{fVars.imgWidth}px; height:{fVars.imgHeight}px" id="cropbox">
+				<img src="{fVars.publicUrl}" id="cropbox" alt="{fVars.imgName}" style="width:{fVars.imgWidth}px; height:{fVars.imgHeight}px">
 			</figure>
 		</div>
 		<div id="values">
@@ -18,15 +18,15 @@
 				<fieldset>
 					<div class="formRow">
 						<label for="x1">X1</label>
-						<input type="text" id="x1" value="">
+						<input type="text" id="x1">
 						<label for="y1">Y1</label>
-						<input type="text" id="y1" value="">
+						<input type="text" id="y1">
 					</div>
 					<div class="formRow">
 						<label for="x2">X2</label>
-						<input type="text" id="x2" value="">
+						<input type="text" id="x2">
 						<label for="y2">Y2</label>
-						<input type="text" id="y2" value="">
+						<input type="text" id="y2">
 					</div>
 					<div class="formRow">
 						<label for="w">W</label>
@@ -36,15 +36,23 @@
 					</div>
 					<div class="formRow">
 						<label for="aspectRatio">{f:translate(key: 'editor.aspectratio')}</label>
-						<input type="text" id="aspectRatio" value="">
-						<label for="setAR">&nbsp;</label>
-						<input type="button" id="setAR" value="Set AR"/>
+						<f:if condition="{fVars.fixAr}">
+							<f:then>
+								<input type="text" id="aspectRatio" name="aspectRatio" value="{fVars.ar}" readonly="">
+							</f:then>
+							<f:else>
+								<input type="text" id="aspectRatio" name="aspectRatio">
+								<input type="button" id="setAR" value="Set AR"/>
+							</f:else>
+						</f:if>
 					</div>
 				</fieldset>
 			</form>
 
 			<div id="controller">
-				<div id="save" class="btn">{f:translate(key: 'editor.close')}</div>
+				<div id="resetSingle" class="btn">{f:translate(key: 'editor.reset.single')}</div>
+				<div id="save" class="btn">{f:translate(key: 'editor.save')}</div>
+				<div id="close" class="btn">{f:translate(key: 'editor.close')}</div>
 			</div>
 		</div>
 
