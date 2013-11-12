@@ -27,17 +27,11 @@ use ThomasKieslich\Tkcropthumbs\Domain;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class Cropping Controller
  */
 class CroppingController extends ActionController {
-
-	/**
-	 * @var array
-	 */
-	protected $getVars;
 
 	/**
 	 * @var array
@@ -113,9 +107,9 @@ class CroppingController extends ActionController {
 	 * @return void
 	 */
 	public function initializeAction() {
-		$this->getVars = GeneralUtility::_GET();
+		$getVars = GeneralUtility::_GET();
 
-		$referenceUid = intval(str_replace('sys_file_', '', $this->getVars['reference']));
+		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars($getVars['reference'])));
 
 		if (is_int($referenceUid)) {
 			//Reference

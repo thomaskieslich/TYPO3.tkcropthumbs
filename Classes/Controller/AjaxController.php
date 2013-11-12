@@ -40,21 +40,24 @@ class AjaxController {
 	 */
 	public function init() {
 		$getVars = GeneralUtility::_GET();
-		if ($getVars['action'] == save) {
-			$this->save($getVars['uid'], $getVars['cropValues']);
+		$getAction = htmlspecialchars($getVars['action']);
+		$getUid = intval(htmlspecialchars($getVars['uid']));
+		$getCropValues = htmlspecialchars($getVars['cropValues']);
+
+		if ($getAction == save) {
+			$this->save($getUid, $getCropValues);
 		}
 
-		switch ($getVars['action']) {
+		switch ($getAction) {
 			case 'save';
-				$this->save($getVars['uid'], $getVars['cropValues']);
+				$this->save($getUid, $getCropValues);
 				break;
 			case 'resetSingle';
-				$this->resetSingle($getVars['uid']);
+				$this->resetSingle($getUid);
 				break;
 			default;
-				$this->save($getVars['uid'], $getVars['cropValues']);
+				$this->save($getUid, $getCropValues);
 		}
-//		echo json_encode($getVars);
 	}
 
 	/**
@@ -65,7 +68,6 @@ class AjaxController {
 	protected function save($uid, $cropValues) {
 		$table = 'sys_file_reference';
 		$where = 'uid = ' . $uid;
-
 		$fieldValues = array(
 			'tx_tkcropthumbs_crop' => json_encode($cropValues)
 		);
@@ -81,7 +83,6 @@ class AjaxController {
 	protected function resetSingle($uid) {
 		$table = 'sys_file_reference';
 		$where = 'uid = ' . $uid;
-
 		$fieldValues = array(
 			'tx_tkcropthumbs_crop' => ''
 		);
