@@ -5,37 +5,67 @@ function preview(img, selection) {
 	$('#y2').val(selection.y2);
 	$('#w').val(selection.width);
 	$('#h').val(selection.height);
+
+	checkChange();
+}
+
+function checkChange() {
+	var imgCur = [$('#edit #x1').val(), $('#edit #y1').val(), $('#edit #x2').val(), $('#edit #y2').val()];
+	var noCrop = imgOrg.toString() === imgCur.toString();
+	console.log(imgOrg);
+	console.log(imgCur);
+	if (noCrop == false) {
+		$('#controller #close').hide();
+		$('#controller #save').show();
+	} else {
+		$('#controller #close').show();
+		$('#controller #save').hide();
+	}
 }
 
 
 $(function () {
-	$('#edit #aspectRatio').val(crop['ar']);
-
-	var cropbox = $('img#cropbox').imgAreaSelect({
-		x1: crop['x1'],
-		y1: crop['y1'],
-		x2: crop['x2'],
-		y2: crop['y2'],
-		aspectRatio: crop['ar'],
-		handles: true,
-		imageWidth: crop['width'],
-		imageHeight: crop['height'],
-		fadeSpeed: 200,
-		onInit: preview,
-		onSelectChange: preview,
-		instance: true,
-		persistent: true
-	});
-
-	$("#setAR").click(function () {
-		cropbox.setOptions({
-			aspectRatio: $("#aspectRatio").val()
-		});
-		cropbox.update();
-	});
-
-
 	$('#controller').on('click', '#save', function () {
-		alert('13');
+		$.ajax({
+			dataType: 'json',
+			url: 'ajax.php?ajaxID=TkcropthumbsAjaxController::init',
+			data: {
+				'action': 'save',
+				'cropValues': {
+					'x1': $('#edit #x1').val(),
+					'y1': $('#edit #y1').val(),
+					'x2': $('#edit #x2').val(),
+					'y2': $('#edit #y2').val()
+				},
+				'uid': uid
+			}
+		}).success(function (data) {
+				if (data) {
+//					window.opener.location.reload(false);
+					parent.window.opener.focus();
+					parent.close();
+				}
+			});
+	});
+
+	$('#controller').on('click', '#close', function () {
+//		window.opener.location.reload(false);
+		parent.window.opener.focus();
+		parent.close();
+	});
+
+	$('#controller').on('click', '#resetSingle', function () {
+		$.ajax({
+			dataType: 'json',
+			url: 'ajax.php?ajaxID=TkcropthumbsAjaxController::init',
+			data: {
+				'action': 'resetSingle',
+				'uid': uid
+			}
+		}).success(function (data) {
+				if (data) {
+					location.reload();
+				}
+			});
 	});
 });
