@@ -5,13 +5,16 @@ if (!defined('TYPO3_MODE')) {
 
 $TYPO3_CONF_VARS['BE']['AJAX']['TkcropthumbsAjaxController::init'] = 'ThomasKieslich\\Tkcropthumbs\\Controller\\AjaxController->init';
 
-$_EXTCONF = unserialize($_EXTCONF);
-//if (t3lib_extMgm::isLoaded('dam')) {
-//	$TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/dam/lib/class.tx_dam_tcefunc.php"] = t3lib_extMgm::extPath($_EXTKEY) . "class.ux_tx_dam_tcefunc.php";
-//}
-//
-//$TYPO3_CONF_VARS["BE"]["XCLASS"]["t3lib/class.t3lib_tceforms.php"] = t3lib_extMgm::extPath($_EXTKEY) . "class.ux_t3lib_tceforms.php";
-//
-//$TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["tslib/class.tslib_content.php"] = t3lib_extMgm::extPath($_EXTKEY) . "class.ux_tslib_cObj.php";
-//$TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["tslib/class.tslib_gifbuilder.php"] = t3lib_extMgm::extPath($_EXTKEY) . "class.ux_tslib_gifBuilder.php";
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'] = array(
+	'className' => 'ThomasKieslich\\Tkcropthumbs\\Xclass\\ContentObjectRenderer',
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\Resource\\Processing\\LocalCropScaleMaskHelper'] = array(
+	'className' => 'ThomasKieslich\\Tkcropthumbs\\Xclass\\LocalCropScaleMaskHelper',
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder'] = array(
+	'className' => 'ThomasKieslich\\Tkcropthumbs\\Xclass\\GifBuilder',
+);
+
 ?>
