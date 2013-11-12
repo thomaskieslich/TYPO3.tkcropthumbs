@@ -25,6 +25,7 @@ namespace ThomasKieslich\Tkcropthumbs\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class AjaxController
@@ -42,7 +43,12 @@ class AjaxController {
 		$getVars = GeneralUtility::_GET();
 		$getAction = htmlspecialchars($getVars['action']);
 		$getUid = intval(htmlspecialchars($getVars['uid']));
-		$getCropValues = htmlspecialchars($getVars['cropValues']);
+		$getCropValues = array(
+			'x1' => intval(htmlspecialchars($getVars['cropValues']['x1'])),
+			'y1' => intval(htmlspecialchars($getVars['cropValues']['y1'])),
+			'x2' => intval(htmlspecialchars($getVars['cropValues']['x2'])),
+			'y2' => intval(htmlspecialchars($getVars['cropValues']['y2']))
+		);
 
 		if ($getAction == save) {
 			$this->save($getUid, $getCropValues);
