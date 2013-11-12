@@ -12,8 +12,6 @@ function preview(img, selection) {
 function checkChange() {
 	var imgCur = [$('#edit #x1').val(), $('#edit #y1').val(), $('#edit #x2').val(), $('#edit #y2').val()];
 	var noCrop = imgOrg.toString() === imgCur.toString();
-	console.log(imgOrg);
-	console.log(imgCur);
 	if (noCrop == false) {
 		$('#controller #close').hide();
 		$('#controller #save').show();
@@ -41,7 +39,6 @@ $(function () {
 			}
 		}).success(function (data) {
 				if (data) {
-//					window.opener.location.reload(false);
 					parent.window.opener.focus();
 					parent.close();
 				}
@@ -49,7 +46,6 @@ $(function () {
 	});
 
 	$('#controller').on('click', '#close', function () {
-//		window.opener.location.reload(false);
 		parent.window.opener.focus();
 		parent.close();
 	});

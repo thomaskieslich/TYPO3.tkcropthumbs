@@ -4,22 +4,19 @@
 		<header/>
 		<body>
 			<trans-unit id="editor.title" xml:space="preserve">
-				<source>edit cropping</source>
+				<source>Edit Cropping</source>
 			</trans-unit>
 			<trans-unit id="editor.aspectratio" xml:space="preserve">
-				<source>ar</source>
+				<source>AR</source>
 			</trans-unit>
 			<trans-unit id="editor.save" xml:space="preserve">
-				<source>save and close</source>
+				<source>Save and Close</source>
 			</trans-unit>
 			<trans-unit id="editor.reset.single" xml:space="preserve">
-				<source>reset this image</source>
-			</trans-unit>
-			<trans-unit id="editor.reset.all" xml:space="preserve">
-				<source>reset all images</source>
+				<source>Reset this Image</source>
 			</trans-unit>
 			<trans-unit id="editor.close" xml:space="preserve">
-				<source>close</source>
+				<source>Close</source>
 			</trans-unit>
 		</body>
 	</file>

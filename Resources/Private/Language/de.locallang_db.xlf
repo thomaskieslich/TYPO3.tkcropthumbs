@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
+		<header/>
+		<body>
+			<trans-unit id="tca.aspectratio" xml:space="preserve" approved="yes">
+				<source>AspectRatio</source>
+			<target state="translated">Seitenverhältnis</target></trans-unit>
+			<trans-unit id="tca.crop" xml:space="preserve" approved="yes">
+				<source>Crop Image</source>
+			<target state="translated">Bild beschneiden</target></trans-unit>
+		</body>
+	</file>
+</xliff>

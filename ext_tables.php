@@ -45,7 +45,7 @@ foreach ($aspectvalues as $value) {
 $tempColumns = array(
 	'tx_tkcropthumbs_aspectratio' => array(
 		'exclude' => 0,
-		'label' => 'LLL:EXT:tkcropthumbs/locallang_db.xml:tt_content.tx_tkcropthumbs_aspectratio',
+		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tca.aspectratio',
 		'config' => array(
 			'type' => 'select',
 			'items' => $aspectratios,

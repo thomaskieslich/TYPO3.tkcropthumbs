@@ -43,7 +43,6 @@ class Wizard {
 		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
 		$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
 		$formField .= '</a>';
-		//$formField .= '<input type="text" value="' . htmlspecialchars($fObj['row']['tx_tkcropthumbs_crop']) . '" size="80" name="' . $fObj['itemFormElName'] . '">' . "\n";
 		return $formField;
 	}
 }

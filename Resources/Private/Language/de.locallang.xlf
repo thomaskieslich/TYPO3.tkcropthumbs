@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
+		<header/>
+		<body>
+			<trans-unit id="editor.title" xml:space="preserve" approved="yes">
+				<source>Edit Cropping</source>
+			<target state="translated">Beschneidung ändern</target></trans-unit>
+			<trans-unit id="editor.aspectratio" xml:space="preserve" approved="yes">
+				<source>AR</source>
+			<target state="translated">SV</target></trans-unit>
+			<trans-unit id="editor.reset.single" xml:space="preserve" approved="yes">
+				<source>Reset this Image</source>
+			<target state="translated">Bild zurücksetzen</target></trans-unit>
+			<trans-unit id="editor.save" xml:space="preserve" approved="yes">
+				<source>Save and Close</source>
+			<target state="translated">Speichern und schließen</target></trans-unit>
+			<trans-unit id="editor.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="translated">Schließen</target></trans-unit>
+		</body>
+	</file>
+</xliff>
