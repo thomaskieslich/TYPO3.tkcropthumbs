@@ -6,10 +6,7 @@ body {
   padding: 0;
   height: 600px;
   width: 800px;
-}
-h2 {
   color: #ccc;
-  font-size: 100%;
 }
 #image {
   float: left;
@@ -55,11 +52,14 @@ h2 {
 #values .btn {
   background: #ccc;
   border: 1px solid #999;
+  color: #444;
   padding: 6px;
   cursor: pointer;
   height: 18px;
+  font-weight: 700;
+  line-height: 18px;
   margin: 6px 0;
-  width: 120px;
+  width: 164px;
 }
 #values #save {
   display: none;
