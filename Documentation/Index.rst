@@ -26,7 +26,7 @@ tkcropthumbs
 		Crop Thumbnails with image area select and has a switch to make thumbs with aspect ratios. Can use it for Detailviews or simple galeries.
 
 	:Keywords:
-		comma,separated,list,of,keywords
+		Images, Thumbnails, Cropping
 
 	:Copyright:
 		2013
@@ -56,17 +56,8 @@ tkcropthumbs
 
 	Introduction/Index
 	UserManual/Index
-	AdministratorManual/Index
 	Configuration/Index
 	DeveloperCorner/Index
 	KnownProblems/Index
-	ToDoList/Index
 	ChangeLog/Index
 	Targets
-
-.. tip::
-	Please visit http://wiki.typo3.org/ReST_Syntax for further instructions and tips and tricks
-	how to start with reStructuredText and Sphinx.
-
-.. tip::
-	You may render this documentation locally with TYPO3 extension `sphinx <http://typo3.org/extensions/repository/view/sphinx>`_.

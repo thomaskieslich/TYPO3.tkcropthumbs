@@ -17,9 +17,10 @@ Introduction
 What does it do?
 ----------------
 
-In this chapter should be given a brief overview of the extension. What does it do? What problem does it solve?
-Who is interested in this? Basically, this section includes everything people need to know to decide whether they
-should go on with this extension.
+- individual cropping for each thumbnail in content elements
+- crop all thumbnails with fixed aspect ratio within a content element (detection for portrait and landscape)
+- thumbnails with fixed aspect ratio can have individual crops with the correct aspect ratio
+- uses imgareaselect for cropping
 
 
 .. _screenshots:
@@ -27,10 +28,9 @@ should go on with this extension.
 Screenshots
 -----------
 
-.. figure:: ../Images/IntroductionPackage.png
-		:width: 500px
-		:alt: Introduction Package
+.. figure:: ../Images/Screenshots/screen_01.png
+		:figwidth: 500px
+		:alt: Aspect Ratio
+		:align: left
 
-		Introduction Package just after installation (caption of the image)
-
-		How the Frontend of the Introduction Package looks like just after installation (legend of the image)
+		set aspect ratio for all image elements
