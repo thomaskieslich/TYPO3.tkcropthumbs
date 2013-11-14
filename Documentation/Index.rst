@@ -56,8 +56,6 @@ tkcropthumbs
 
 	Introduction/Index
 	UserManual/Index
-	Configuration/Index
-	DeveloperCorner/Index
 	KnownProblems/Index
 	ChangeLog/Index
-	Targets
+	ToDo/Index

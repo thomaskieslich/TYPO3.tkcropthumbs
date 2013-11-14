@@ -6,10 +6,9 @@
 .. include:: ../Includes.txt
 
 
-.. _known-problems:
+.. _todo:
 
-Known Problems
-==============
+ToDo
+=========
 
-
-* current Version (6.2.x) don't work with TYPO3 below 6.2
+* update Screenshots in Documentation

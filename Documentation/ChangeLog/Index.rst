@@ -11,11 +11,24 @@
 ChangeLog
 =========
 
-.. note::
-	It is recommended to provide the User with a URL pointing to a roadmap_. Forge gives the possibility to
-	create a Roadmap very easily. Optionally, the link could point to the `repository log`_.
+**6.2.0**
 
-.. _source code: http://git.typo3.org/
-.. _stable versions: http://typo3.org/extensions/repository/
-.. _roadmap: http://forge.typo3.org/projects/typo3v4-official_extension_template/roadmap
-.. _repository log: http://git.typo3.org/TYPO3v4/Core.git?a=shortlog
+* first Version for TYPO3 6.2.x
+* complete Rewrite with Namespaces, FAL. Rest Documentation etc.
+
+**1.2.7**
+
+* change TYPO3 Versions (max. 4.7) - last Version for 4.5 - 4.7
+* last Version for TYPO3 4.x
+
+**1.2.6**
+
+* add compatibility for dam 1.2.4
+* add fallback for empty aspect ratio
+
+**1.2.5**
+
+* changes in mod1/index.php
+
+.. _source code: https://github.com/thomaskieslich/TYPO3.tkcropthumbs
+.. _stable versions: http://typo3.org/extensions/repository/view/tkcropthumbs
