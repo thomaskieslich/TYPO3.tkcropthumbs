@@ -42,7 +42,7 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 	/**
 	 * @var int
 	 */
-	protected $currentFileFeference;
+	protected $currentFileReference;
 
 	/**
 	 * Creates and returns a TypoScript "imgResource".
@@ -116,12 +116,6 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 					$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
 					$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
 
-					//tkcropthumbs
-					$tkcropthumbs = $this->getCropValues();
-					if ($tkcropthumbs) {
-						$processingConfiguration['tkcropthumbs'] = $tkcropthumbs;
-					}
-
 					// Possibility to cancel/force profile extraction
 					// see $TYPO3_CONF_VARS['GFX']['im_stripProfileCommand']
 					if (isset($fileArray['stripProfile'])) {
@@ -141,6 +135,15 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 						if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 							$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
 						}
+
+						//tkcropthumbs
+						if (is_array($fileArray) && $fileArray['import.']['current'] == 1) {
+							$tkcropthumbs = $this->getCropValues();
+							if ($tkcropthumbs) {
+								$processingConfiguration['tkcropthumbs'] = $tkcropthumbs;
+							}
+						}
+
 						$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 
 						$hash = $processedFileObject->calculateChecksum();
@@ -198,16 +201,18 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 				'contentUid' => $this->data['uid'],
 				'refUid' => GeneralUtility::trimExplode(',', $this->data['image_fileReferenceUids'])
 			);
-			$this->currentFileFeference = 0;
+			$this->currentFileReference = 0;
 		}
+
+		$uid = $this->fileReferences[refUid][$this->currentFileReference];
 
 		$splitCurrentRecord = explode(':', $this->currentRecord);
 		$tableName = $splitCurrentRecord[0];
-		$selectFields = 'tx_tkcropthumbs_crop';
+		$selectFields = 'tx_tkcropthumbs_crop, sorting_foreign';
 		$fromTable = 'sys_file_reference';
-		$uid = $this->fileReferences[refUid][$this->currentFileFeference];
 
 		$whereClause = 'uid=' . $uid . ' AND tablenames=\'' . $tableName . '\' AND uid_foreign=' . $this->fileReferences[contentUid];
+		$whereClause .= ' AND hidden=0 AND deleted=0';
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -223,9 +228,9 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 			$tkcropthumbs['cropValues'] = $cropValues;
 		}
 
-		$this->currentFileFeference++;
+		$this->currentFileReference++;
 
-		if (!empty($tkcropthumbs)) {
+		if (!empty($tkcropthumbs) && $uid) {
 			return $tkcropthumbs;
 		}
 	}
