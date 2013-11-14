@@ -11,6 +11,10 @@
 ChangeLog
 =========
 
+**6.2.1**
+
+* fix sql error in ContentObjectRenderer
+
 **6.2.0**
 
 * first Version for TYPO3 6.2.x
