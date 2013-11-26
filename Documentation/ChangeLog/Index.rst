@@ -11,6 +11,10 @@
 ChangeLog
 =========
 
+**6.2.2**
+
+* switch back to old mod Method to give none Admin Users access to Cropping
+
 **6.2.1**
 
 * fix sql error in ContentObjectRenderer

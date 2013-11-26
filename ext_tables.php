@@ -5,19 +5,24 @@ if (!defined('TYPO3_MODE')) {
 }
 
 //Cropping Single
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules.user := addToList(TkcropthumbsCrop)');
 
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'ThomasKieslich.' . $_EXTKEY,
-		'user',
-		'crop',
-		'',
-		array(
-			'Cropping' => 'show'
-		),
-		array()
-	);
+	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules.user := addToList(TkcropthumbsCrop)');
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('user_txtkcropthumbsM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
+
+//	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+//		'ThomasKieslich.' . $_EXTKEY,
+//		'user',
+//		'crop',
+//		'',
+//		array(
+//			'Cropping' => 'show'
+//		),
+//		array(
+//			access => 'user,group'
+//		)
+//	);
 }
 
 $sysFilereferenceTemp = array(

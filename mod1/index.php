@@ -1,5 +1,4 @@
 <?php
-namespace ThomasKieslich\Tkcropthumbs\Domain\Model;
 
 /***************************************************************
  *  Copyright notice
@@ -23,31 +22,8 @@ namespace ThomasKieslich\Tkcropthumbs\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+$LANG->includeLLFile('EXT:tkcropthumbs/Resources/Private/Language/locallang.xlf');
 
-/**
- * Content Model
- */
-class Content extends AbstractEntity {
-
-	/**
-	 * @var string
-	 */
-	protected $aspectratio;
-
-	/**
-	 * @return string
-	 */
-	public function getAspectratio() {
-		return $this->aspectratio;
-	}
-
-	/**
-	 * @param string $aspectratio
-	 *
-	 * @return string
-	 */
-	public function setAspectratio($aspectratio) {
-		$this->aspectratio = $aspectratio;
-	}
-}
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tkcropthumbs') . 'Classes/Controller/CroppingModuleController.php';
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ThomasKieslich\\Tkcropthumbs\\Controller\\CroppingModuleController');
+$SOBE->initializeAction();

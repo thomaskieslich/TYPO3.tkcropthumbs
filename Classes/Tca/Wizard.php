@@ -38,7 +38,7 @@ class Wizard {
 		}
 
 		$formField = '<a href="#"  onclick="window.open(\'';
-		$formField .= 'mod.php?M=user_TkcropthumbsCrop&reference=' . $fObj['row']['uid'];
+		$formField .= 'mod.php?M=user_txtkcropthumbsM1&reference=' . $fObj['row']['uid'];
 		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
 		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
 		$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';

@@ -26,12 +26,12 @@ namespace ThomasKieslich\Tkcropthumbs\Controller;
 use ThomasKieslich\Tkcropthumbs\Domain;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class Cropping Controller
  */
-class CroppingController extends ActionController {
+class CroppingModuleController {
 
 	/**
 	 * @var array
@@ -49,15 +49,7 @@ class CroppingController extends ActionController {
 	protected $referenceProperties;
 
 	/**
-	 * @var \ThomasKieslich\Tkcropthumbs\Domain\Repository\ContentRepository
-	 *
-	 * @inject
-	 */
-	protected $contentRepository;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Resource\FileRepository
-	 * @inject
 	 */
 	protected $fileRepository;
 
@@ -108,6 +100,7 @@ class CroppingController extends ActionController {
 	 */
 	public function initializeAction() {
 		$getVars = GeneralUtility::_GET();
+		$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 
 		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars($getVars['reference'])));
 
@@ -116,9 +109,17 @@ class CroppingController extends ActionController {
 			$this->referenceObject = $this->fileRepository->findFileReferenceByUid($referenceUid);
 			$this->referenceProperties = $this->referenceObject->getProperties();
 
-			$cObj = $this->contentRepository->findByUid($this->referenceProperties[uid_foreign]);
-			if ($cObj->getAspectratio()) {
-				$this->aspectRatio = GeneralUtility::trimExplode(':', $cObj->getAspectratio(), TRUE);
+			//cObj
+			$selectFields = 'uid, tx_tkcropthumbs_aspectratio';
+			$fromTable = 'tt_content';
+			$whereClause = 'uid = ' . $this->referenceProperties[uid_foreign];
+			$whereClause .= ' AND hidden=0 AND deleted=0';
+
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause);
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+
+			if ($row['tx_tkcropthumbs_aspectratio']) {
+				$this->aspectRatio = GeneralUtility::trimExplode(':', $row['tx_tkcropthumbs_aspectratio'], TRUE);
 				$this->fixAr = TRUE;
 			}
 
@@ -129,8 +130,10 @@ class CroppingController extends ActionController {
 			}
 			if (isset($import) && count($import) === 4) {
 				$this->cropValues = $import;
+				$this->showAction();
 			} else {
 				$this->initValues();
+				$this->showAction();
 			}
 		}
 	}
@@ -185,10 +188,76 @@ class CroppingController extends ActionController {
 		});
 	</script > ";
 
-//		DebuggerUtility::var_dump($script);
+		$arField = '';
+		if ($this->fVars['fixAr']) {
+			$arField = '<input type="text" id="aspectRatio" name="aspectRatio" value="' . $this->fVars['ar'] . '" readonly="">';
+		} else {
+			$arField = '
+				<input type="text" id="aspectRatio" name="aspectRatio">
+				<input type="button" id="setAR" value="Set AR"/>
+			';
+		}
 
-		$this->view->assign('fVars', $this->fVars);
-		$this->view->assign('script', $script);
+		$html = '
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Cropping Image</title>
+		<link rel="stylesheet" href="' . $this->fVars['pubPath'] . 'Css/extension.min.css">
+	</head>
+	<body>
+		<div id="image">
+			<figure>
+				<img src="' . $this->fVars['publicUrl'] . '" id="cropbox" alt="' . $this->fVars['imgName'] . '" style="width:' . $this->fVars['imgWidth'] . 'px; height:' . $this->fVars['imgHeight'] . 'px">
+			</figure>
+		</div>
+
+		<div id="values">
+			<h2>' . $GLOBALS['LANG']->getLL('editor.title') . '</h2>
+
+			<form id="edit">
+				<fieldset>
+					<div class="formRow">
+						<label for="x1">X1</label>
+						<input type="text" id="x1">
+						<label for="y1">Y1</label>
+						<input type="text" id="y1">
+					</div>
+					<div class="formRow">
+						<label for="x2">X2</label>
+						<input type="text" id="x2">
+						<label for="y2">Y2</label>
+						<input type="text" id="y2">
+					</div>
+					<div class="formRow">
+						<label for="w">W</label>
+						<input type="text" id="w" readonly>
+						<label for="h">H</label>
+						<input type="text" id="h" readonly>
+					</div>
+					<div class="formRow">
+						<label for="aspectRatio">' . $GLOBALS['LANG']->getLL('editor.aspectratio') . '</label>
+						' . $arField . '
+					</div>
+				</fieldset>
+			</form>
+
+			<div id="controller">
+				<div id="resetSingle" class="btn">' . $GLOBALS['LANG']->getLL('editor.reset.single') . '</div>
+				<div id="save" class="btn">' . $GLOBALS['LANG']->getLL('editor.save') . '</div>
+				<div id="close" class="btn">' . $GLOBALS['LANG']->getLL('editor.close') . '</div>
+			</div>
+		</div>
+		<script src="' . $this->fVars['pubPath'] . 'Js/jquery-1.10.2.min.js"></script>
+		<script src="' . $this->fVars['pubPath'] . 'Js/jquery.imgareaselect-0.9.10.min.js"></script>
+		' . $script . '
+		<script src="' . $this->fVars['pubPath'] . 'Js/extension.min.js"></script>
+	</body>
+</html>
+		';
+
+		echo $html;
 	}
 
 	/**
