@@ -10,6 +10,15 @@
 
 ChangeLog
 =========
+**6.2.4**
+
+* make it compatible with 6.1.7
+* test it in 6.2.0beta4
+* set min Version in em_conf to 6.1.7
+
+**6.2.3**
+
+* set min Version in em_conf to 6.1.0 for easier install in 6.2beta
 
 **6.2.2**
 
