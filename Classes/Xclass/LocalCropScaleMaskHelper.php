@@ -27,7 +27,6 @@ namespace ThomasKieslich\Tkcropthumbs\Xclass;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 use TYPO3\CMS\Core\Utility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class LocalCropScaleMaskHelper

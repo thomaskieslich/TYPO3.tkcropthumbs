@@ -204,21 +204,14 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 			$this->currentFileReference = 0;
 		}
 
-		$uid = $this->fileReferences[refUid][$this->currentFileReference];
-
-		$splitCurrentRecord = explode(':', $this->currentRecord);
-		$tableName = $splitCurrentRecord[0];
-		$selectFields = 'tx_tkcropthumbs_crop, sorting_foreign';
-		$fromTable = 'sys_file_reference';
-
-		$whereClause = 'uid=' . $uid . ' AND tablenames=\'' . $tableName . '\' AND uid_foreign=' . $this->fileReferences[contentUid];
-		$whereClause .= ' AND hidden=0 AND deleted=0';
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause);
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$cropValues = json_decode($row['tx_tkcropthumbs_crop'], TRUE);
-
 		$aspectRatio = GeneralUtility::trimExplode(':', $this->data['tx_tkcropthumbs_aspectratio']);
+
+		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$fileObjects = $fileRepository->findByRelation('tt_content', 'image', $this->data['uid']);
+
+		$currentFile = $fileObjects[$this->currentFileReference]->getReferenceProperties();
+
+		$cropValues = json_decode($currentFile['tx_tkcropthumbs_crop'], TRUE);
 
 		$tkcropthumbs = array();
 		if (count($aspectRatio) === 2) {
@@ -230,8 +223,18 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 
 		$this->currentFileReference++;
 
-		if (!empty($tkcropthumbs) && $uid) {
+		if (!empty($tkcropthumbs)) {
 			return $tkcropthumbs;
 		}
+	}
+
+	/**
+	 * Get instance of FAL resource factory
+	 * < 6.2 only
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected function getResourceFactory() {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 	}
 }
