@@ -36,13 +36,17 @@ class Wizard {
 		if ($fObj['row']['tx_tkcropthumbs_crop']) {
 			$icon = 'crop_act.png';
 		}
-
-		$formField = '<a href="#"  onclick="window.open(\'';
-		$formField .= 'mod.php?M=user_txtkcropthumbsM1&reference=' . $fObj['row']['uid'];
-		$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-		$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
-		$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
-		$formField .= '</a>';
+		if (is_numeric($fObj['row']['uid'])) {
+			$formField = '<a href="#"  onclick="window.open(\'';
+			$formField .= 'mod.php?M=user_txtkcropthumbsM1&reference=' . $fObj['row']['uid'];
+			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
+			$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
+			$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
+			$formField .= '</a>';
+		} else {
+			$icon = 'crop_save.png';
+			$formField = '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
+		}
 		return $formField;
 	}
 }
