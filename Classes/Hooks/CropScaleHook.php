@@ -27,10 +27,14 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
+/**
+ * Class CropScaleHook
+ *
+ * @package ThomasKieslich\Tkcropthumbs\Hooks
+ */
 class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 
 	var $currentFileObject;
@@ -57,7 +61,6 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 			return $imageResource;
 		} else {
 			$processingConfiguration = $imageResource['processedFile']->getProcessingConfiguration();
-//			DebuggerUtility::var_dump($processingConfiguration, '$processingConfiguration org');
 			$cropParameters = $this->calcCrop($cropData, $processingConfiguration, $parent->data);
 
 			$processingConfiguration = $cropParameters;
@@ -69,6 +72,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	}
 
 	/**
+	 * get crop and aspectRatio Data
 	 * @param $data
 	 * @return array
 	 */
@@ -100,6 +104,14 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 		return $cropData;
 	}
 
+	/**
+	 * calculate new processing values
+	 *
+	 * @param array $cropData
+	 * @param array $processingConfiguration
+	 * @param array $data
+	 * @return array mixed
+	 */
 	public static function calcCrop($cropData, $processingConfiguration, $data) {
 		$width = intval($data['imagewidth']);
 		$height = intval($data['imageheight']);
@@ -166,6 +178,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 			$cropParameters = ' -crop ' . $width . 'x' . $height . '+' . $offsetX . '+' . $offsetY . ' ';
 		}
 
+		//set values
 		$processingConfiguration['maxWidth'] = '';
 		$processingConfiguration['maxHeight'] = '';
 
@@ -178,73 +191,12 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 			$processingConfiguration['additionalParameters'] = $cropParameters . $processingConfiguration['additionalParameters'];
 		}
 
-//		DebuggerUtility::var_dump($processingConfiguration, '$processingConfiguration new');
-
-//		$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-//		$gifCreator->init();
-//		$gifCreator->mayScaleUp = 1;
-//		$info = array($fileWidth, $fileHeight);
-//		$scaleData = $gifCreator->getImageScale($info, $width, $height, $options);
-
-//		DebuggerUtility::var_dump($width, '$width');
-//		DebuggerUtility::var_dump($height, '$height');
-
-		//-geometry 847x565! -colorspace RGB -quality 80 -crop 847x476+0+44!
-		//'-geometry 1969x1311! -colorspace RGB -quality 80 -crop 847x564+937+432  '
-		//'-geometry 2363x1852!  -crop 847x468+729+663  '
-
-//			$w = intval($w);
-//			$h = intval($h);
-//
-//			$srcWidth = intval($fileWidth * $w / $cropWidth);
-//			$srcHeight = intval($fileHeight * $h / $cropHeight);
-//
-//			$xRatio = $fileWidth / $w;
-//			$offsetX = intval($cropValues['x1'] * $xRatio);
-//			$yRatio = $fileHeight / $h;
-//			$offsetY = intval($cropValues['y1'] * $yRatio);
-//
-//			$cropParameters = ' -crop ' . $w . 'x' . $h . '+' . $offsetX . '+' . $offsetY . ' ';
-
-//			$srcWidth = intval($scaleData['origW'] + ($cropData['originalImage']['width'] - $cropWidth) * $xRatio);
-
-//			$srcHeight = intval($scaleData['origH'] + ($cropData['originalImage']['height'] - $cropHeight) * $yRatio);
-
-//			DebuggerUtility::var_dump($xRatio, '$xRatio');
-//			DebuggerUtility::var_dump($offsetX, '$offsetX');
-//			DebuggerUtility::var_dump($w, 'w');
-
-//			$graphicalFunctions = GeneralUtility::makeInstance('TYPO3\CMS\Core\Imaging\GraphicalFunctions');
-//			$this->mayScaleUp = 0;
-//			$scaleData = $graphicalFunctions::getImageScale($info, $w, $h, $options = NULL);
-//			$scaleData = \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageScale($info, $w, $h, $options = NULL);
-//			$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], array());
-
-//			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-//			$gifCreator->init();
-//			$gifCreator->mayScaleUp = 0;
-//			$info = array($cropData['originalImage']['width'], $cropData['originalImage']['height']);
-//			$scaleData = $gifCreator->getImageScale($info, $w, $h, array());
-
-//			if (!$scaleData['origW']) {
-//				$scaleData['origW'] = $scaleData[0];
-//			}
-//			if (!$scaleData['origH']) {
-//				$scaleData['origH'] = $scaleData[1];
-//			}
-//
-//			if ($scaleData['crs']) {
-//				$offsetX = intval(($scaleData[0] - $scaleData['origW']) * ($scaleData['cropH'] + 100) / 200);
-//				$offsetY = intval(($scaleData[1] - $scaleData['origH']) * ($scaleData['cropV'] + 100) / 200);
-//				$image['additionalParameters'] = ' -crop ' . $scaleData['origW'] . 'x' . $scaleData['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
-//			}
-
-//		DebuggerUtility::var_dump($processingConfiguration, '$processingConfiguration');
-
 		return $processingConfiguration;
 	}
 
 	/**
+	 * process the image like ContentObjectRenderer
+	 *
 	 * @param $file
 	 * @param $processingConfiguration
 	 * @return mixed

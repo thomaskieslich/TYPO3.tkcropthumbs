@@ -10,6 +10,10 @@
 
 ChangeLog
 =========
+**6.2.5**
+* remove xclass using complete
+* !! errors possible
+
 **6.2.4**
 
 * make it compatible with 6.1.7
