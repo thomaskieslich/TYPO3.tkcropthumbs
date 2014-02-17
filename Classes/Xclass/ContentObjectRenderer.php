@@ -26,6 +26,7 @@ namespace ThomasKieslich\Tkcropthumbs\Xclass;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class ContentObjectRenderer
@@ -137,12 +138,13 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 						}
 
 						//tkcropthumbs
-						if (is_array($fileArray) && $fileArray['import.']['current'] == 1) {
-							$tkcropthumbs = $this->getCropValues();
-							if ($tkcropthumbs) {
-								$processingConfiguration['tkcropthumbs'] = $tkcropthumbs;
-							}
-						}
+//						if (is_array($fileArray) && $fileArray['import.']['current'] == 1) {
+							$tkcropthumbs = \ThomasKieslich\Tkcropthumbs\Utility\CalcCrop::getCropValues($this->data, $this->fileReferences);
+//							$tkcropthumbs = $this->getCropValues();
+//							if ($tkcropthumbs) {
+//								$processingConfiguration['tkcropthumbs'] = $tkcropthumbs;
+//							}
+//						}
 
 						$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 
@@ -192,41 +194,7 @@ class ContentObjectRenderer extends \TYPO3\CMS\Frontend\ContentObject\ContentObj
 		return $imageResource;
 	}
 
-	/**
-	 * get the cropping values
-	 */
-	protected function getCropValues() {
-		if (!$this->fileReferences || $this->fileReferences['contentUid'] != $this->data['uid']) {
-			$this->fileReferences = array(
-				'contentUid' => $this->data['uid'],
-				'refUid' => GeneralUtility::trimExplode(',', $this->data['image_fileReferenceUids'])
-			);
-			$this->currentFileReference = 0;
-		}
 
-		$aspectRatio = GeneralUtility::trimExplode(':', $this->data['tx_tkcropthumbs_aspectratio']);
-
-		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileObjects = $fileRepository->findByRelation('tt_content', 'image', $this->data['uid']);
-
-		$currentFile = $fileObjects[$this->currentFileReference]->getReferenceProperties();
-
-		$cropValues = json_decode($currentFile['tx_tkcropthumbs_crop'], TRUE);
-
-		$tkcropthumbs = array();
-		if (count($aspectRatio) === 2) {
-			$tkcropthumbs['aspectRatio'] = $aspectRatio;
-		}
-		if (count($cropValues) === 4) {
-			$tkcropthumbs['cropValues'] = $cropValues;
-		}
-
-		$this->currentFileReference++;
-
-		if (!empty($tkcropthumbs)) {
-			return $tkcropthumbs;
-		}
-	}
 
 	/**
 	 * Get instance of FAL resource factory

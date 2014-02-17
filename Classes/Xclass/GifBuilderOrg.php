@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
  *
  * @package ThomasKieslich\Tkcropthumbs\Xclass
  */
-class GifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
+class GifBuilderOrg extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
 
 	/***********************************
 	 *
@@ -49,12 +49,11 @@ class GifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
 	 * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
 	 * @param array $options An array with options passed to getImageScale (see this function).
 	 * @param boolean $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
-	 * @param array $tkcropthumbs
 	 * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 * @todo Define visibility
 	 */
-	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE, $tkcropthumbs = NULL) {
+	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE) {
 		if ($this->NO_IMAGE_MAGICK) {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
@@ -81,36 +80,6 @@ class GifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
 				} else {
 					$max = 0;
 				}
-
-				//tkcropthumbs
-				if ($tkcropthumbs && $tkcropthumbs['cropValues']) {
-					$cropValues = $tkcropthumbs['cropValues'];
-					$cWidth = intval($cropValues['x2'] - $cropValues['x1']);
-					$cHeight = intval($cropValues['y2'] - $cropValues['y1']);
-
-					if (!$tkcropthumbs['aspectRatio']) {
-						$tkcropthumbs['aspectRatio'][0] = $cropValues['x2'] - $cropValues['x1'];
-						$tkcropthumbs['aspectRatio'][1] = $cropValues['y2'] - $cropValues['y1'];
-					}
-				}
-
-				if ($tkcropthumbs && $tkcropthumbs['aspectRatio']) {
-					$aspect = $tkcropthumbs['aspectRatio'];
-					if ($options['maxW'] && !$w) {
-						$w = $options['maxW'];
-						$h = intval($options['maxW'] * ($aspect[1] / $aspect[0])) . 'c';
-					}
-					if ($options['maxW'] && $w) {
-						$w = $w . 'c';
-						$options['maxW'] = $w;
-						$h = intval($options['maxW'] * ($aspect[1] / $aspect[0])) . 'c';
-					} elseif ($h || $w) {
-						$w = intval($h * ($aspect[0] / $aspect[1])) . 'c';
-						$h = $h . 'c';
-					}
-				}
-				//tkcropthumbs end
-
 				$data = $this->getImageScale($info, $w, $h, $options);
 				$w = $data['origW'];
 				$h = $data['origH'];
@@ -130,16 +99,13 @@ class GifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
 					$info[3] = $imagefile;
 					return $info;
 				}
-				$file['origW'] = $info[0];
-				$file['origH'] = $info[1];
 				$info[0] = $data[0];
 				$info[1] = $data[1];
-				$frame = $this->noFramePrepended ? '' : intval($frame);
+				$frame = $this->noFramePrepended ? '' : (int)$frame;
 				if (!$params) {
 					$params = $this->cmds[$newExt];
 				}
 				// Cropscaling:
-				$paramsOrg = $params;
 				if ($data['crs']) {
 					if (!$data['origW']) {
 						$data['origW'] = $data[0];
@@ -147,37 +113,14 @@ class GifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {
 					if (!$data['origH']) {
 						$data['origH'] = $data[1];
 					}
-					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
+					$offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
+					$offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
 					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
 				}
-
-
-				//tkcropthumbs
-				if ($cropValues) {
-					if (!$data['origW']) {
-						$data['origW'] = $file['origW'];
-					}
-					if (!$data['origH']) {
-						$data['origH'] = $file['origH'];
-					}
-
-					$xRatio = $data['origW'] / $cWidth;
-					$offsetX1 = intval($cropValues['x1'] * $xRatio);
-					$yRatio = $data['origH'] / $cHeight;
-					$offsetY1 = intval($cropValues['y1'] * $yRatio);
-
-					$cropParams = ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX1 . '+' . $offsetY1 . ' ';
-					$info[0] = intval($data['origW'] + ($file['origW'] - $cWidth) * $xRatio);
-					$info[1] = intval($data['origH'] + ($file['origH'] - $cHeight) * $yRatio);
-					$params = $paramsOrg . $cropParams;
-				}
-
-				//tkcropthumbs end
-
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
 				$cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
-				DebuggerUtility::var_dump($command, 'command');
+				DebuggerUtility::var_dump($command, '$command');
+				DebuggerUtility::var_dump($cropscale, '$cropscale');
 				if ($this->alternativeOutputKey) {
 					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
 				} else {
