@@ -248,7 +248,7 @@ class CroppingModuleController {
 				<div id="close" class="btn">' . $GLOBALS['LANG']->getLL('editor.close') . '</div>
 			</div>
 		</div>
-		<script src="' . $this->fVars['pubPath'] . 'Js/jquery-1.10.2.min.js"></script>
+		<script src="' . $this->fVars['pubPath'] . 'Js/jquery-1.9.1.min.js"></script>
 		<script src="' . $this->fVars['pubPath'] . 'Js/jquery.imgareaselect-0.9.10.min.js"></script>
 		' . $script . '
 		<script src="' . $this->fVars['pubPath'] . 'Js/extension.min.js"></script>
