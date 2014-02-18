@@ -1,68 +1,58 @@
+html {
+  height: 100%;
+  width: 100%;
+}
 body {
-  background-color: #666;
+  background-color: #444;
   font-family: Arial;
-  font-size: 12px;
+  font-size: 13px;
   margin: 0;
   padding: 0;
-  height: 600px;
-  width: 800px;
   color: #ccc;
+  height: 100%;
+  width: 100%;
 }
-#image {
+.cropfields {
+  height: 26px;
+  padding: 6px;
+  width: 100%;
+}
+.cropfields form {
   float: left;
-  padding: 10px;
 }
-#image figure {
-  margin: 0;
-}
-#values {
-  float: right;
-  width: 180px;
-}
-#values fieldset {
-  border: 1px solid #f90;
-}
-#values fieldset .formRow {
-  clear: both;
-  margin: 6px 0;
-  overflow: auto;
-}
-#values fieldset label {
+.cropfields form label {
   display: block;
   float: left;
-  margin: 4px 4px;
+  margin: 2px 4px;
+  padding: 0;
   width: 16px;
 }
-#values fieldset input {
+.cropfields form input {
   border: none;
   float: left;
+  font-size: 13px;
   padding: 2px;
-  width: 48px;
-}
-#values fieldset input[type="button"] {
-  cursor: pointer;
-  height: 18px;
-  margin: 0;
+  margin-right: 6px;
   width: 40px;
 }
-#values fieldset input#aspectRatio {
-  margin-right: 10px;
-  width: 70px;
-}
-#values .btn {
+.cropfields .btn {
   background: #ccc;
-  border: 1px solid #999;
   color: #444;
-  padding: 6px;
+  display: inline-block;
+  float: left;
   cursor: pointer;
-  height: 18px;
-  font-weight: 700;
-  line-height: 18px;
-  margin: 6px 0;
-  width: 164px;
+  height: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  padding: 2px 6px;
+  margin-right: 6px;
 }
-#values #save {
+.cropfields #save {
   display: none;
+}
+#cropbox {
+  max-width: 100%;
+  max-height: 95%;
 }
 /*
  * imgAreaSelect default style

@@ -23,7 +23,8 @@ $sysFilereferenceTemp = array(
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $sysFilereferenceTemp, 'tx_tkcroptumbs');
-$GLOBALS['TCA']['sys_file_reference']['palettes']['imageoverlayPalette']['showitem'] .= ',--linebreak--,tx_tkcropthumbs_crop';
+$GLOBALS['TCA']['sys_file_reference']['palettes']['imageoverlayPalette']['showitem'] .=
+	',--linebreak--,tx_tkcropthumbs_crop';
 
 //Aspectratio tt_content
 $extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tkcropthumbs']);

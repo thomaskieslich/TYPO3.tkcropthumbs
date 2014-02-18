@@ -38,11 +38,11 @@ $(function () {
 				'uid': uid
 			}
 		}).success(function (data) {
-				if (data) {
-					parent.window.opener.focus();
-					parent.close();
-				}
-			});
+			if (data) {
+				parent.window.opener.focus();
+				parent.close();
+			}
+		});
 	});
 
 	$('#controller').on('click', '#close', function () {
@@ -59,9 +59,10 @@ $(function () {
 				'uid': uid
 			}
 		}).success(function (data) {
-				if (data) {
-					location.reload();
-				}
-			});
+			if (data) {
+				location.reload();
+			}
+		});
 	});
+
 });

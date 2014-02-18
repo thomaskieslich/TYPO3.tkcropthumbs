@@ -1,72 +1,61 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
 body {
-	background-color: #666;
+	background-color: #444;
 	font-family: Arial;
-	font-size: 12px;
+	font-size: 13px;
 	margin: 0;
 	padding: 0;
-	height: 600px;
-	width: 800px;
 	color: #ccc;
+	height: 100%;
+	width: 100%;
 }
 
-h2 {
-}
-
-#image {
-	float: left;
-	padding: 10px;
-	figure {
-		margin: 0;
-	}
-}
-#values {
-	float: right;
-	width: 180px;
-	fieldset {
-		border: 1px solid #f90;
-		.formRow {
-			clear: both;
-			margin: 6px 0;
-			overflow: auto;
-		}
+.cropfields {
+	height: 26px;
+	padding: 6px;
+	width: 100%;
+	form {
+		float: left;
 		label {
 			display: block;
 			float: left;
-			margin: 4px 4px;
+			margin: 2px 4px;
+			padding: 0;
 			width: 16px;
 		}
 		input {
 			border: none;
 			float: left;
+			font-size: 13px;
 			padding: 2px;
-			width: 48px;
-		}
-		input[type="button"] {
-			cursor: pointer;
-			height: 18px;
-			margin: 0;
+			margin-right: 6px;
 			width: 40px;
-		}
-		input#aspectRatio {
-			margin-right: 10px;
-			width: 70px;
 		}
 	}
 	.btn {
 		background: #ccc;
-		border: 1px solid #999;
 		color: #444;
-		padding: 6px;
+		display: inline-block;
+		float: left;
 		cursor: pointer;
-		height: 18px;
-		font-weight: 700;
-		line-height: 18px;
-		margin: 6px 0;
-		width: 164px;
+		height: 16px;
+		line-height: 16px;
+		font-weight: 400;
+		padding: 2px 6px;
+		margin-right: 6px;
 	}
 	#save {
 		display: none;
 	}
+}
+
+#cropbox {
+	max-width: 100%;
+	max-height: 95%;
 }
 
 /*

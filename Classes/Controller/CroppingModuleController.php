@@ -98,13 +98,11 @@ class CroppingModuleController {
 	 * @return void
 	 */
 	public function initializeAction() {
-		$getVars = GeneralUtility::_GET();
-		$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars(GeneralUtility::_GET('reference'))));
 
-		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars($getVars['reference'])));
-
-		if (is_int($referenceUid)) {
+		if (is_numeric($referenceUid)) {
 			//Reference
+			$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 			$this->referenceObject = $this->fileRepository->findFileReferenceByUid($referenceUid);
 			$this->referenceProperties = $this->referenceObject->getProperties();
 
@@ -145,14 +143,15 @@ class CroppingModuleController {
 	public function showAction() {
 		$this->resizeImage();
 
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tkcropthumbs']);
+		$aspectratioPresets = GeneralUtility::trimExplode(',', $extConf['aspectratio']);
+
 		$this->fVars = array(
 			'imgUid' => $this->referenceProperties['uid'],
 			'imgName' => $this->referenceProperties['name'],
 			'pubPath' => ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/',
 			'publicUrl' => $this->referenceObject->getPublicUrl(TRUE),
-			'imgHeight' => $this->height,
-			'imgWidth' => $this->width,
-			'ar' => implode(':', $this->aspectRatio),
+			'aspectRatio' => implode(':', $this->aspectRatio),
 			'fixAr' => $this->fixAr
 		);
 
@@ -178,6 +177,14 @@ class CroppingModuleController {
 				instance: true
 			});
 
+			$('#edit').on('change', '#aspectRatio', function () {
+				console.log($('#aspectRatio').val());
+				cropbox.setOptions({
+					aspectRatio: $('#aspectRatio').val()
+				});
+				cropbox.update();
+			});
+
 			$('#setAR').click(function () {
 				cropbox . setOptions({
 					aspectRatio: $('#aspectRatio') . val()
@@ -189,12 +196,17 @@ class CroppingModuleController {
 
 		$arField = '';
 		if ($this->fVars['fixAr']) {
-			$arField = '<input type="text" id="aspectRatio" name="aspectRatio" value="' . $this->fVars['ar'] . '" readonly="">';
+			$arField = '<input type="text" name="aspectRatio" value="' . $this->fVars['aspectRatio'] . '" readonly="">';
 		} else {
+			$arOptions = '';
+			foreach ($aspectratioPresets as $preset) {
+				$arOptions .= '<option>' . $preset . '</option>';
+			}
 			$arField = '
-				<input type="text" id="aspectRatio" name="aspectRatio">
-				<input type="button" id="setAR" value="Set AR"/>
-			';
+				<select name="aspectRatio" id="aspectRatio">
+					<option value="0">-:-</option>';
+			$arField .= $arOptions;
+			$arField .= '</select>';
 		}
 
 		$html = '
@@ -206,48 +218,30 @@ class CroppingModuleController {
 		<link rel="stylesheet" href="' . $this->fVars['pubPath'] . 'Css/extension.min.css">
 	</head>
 	<body>
-		<div id="image">
-			<figure>
-				<img src="' . $this->fVars['publicUrl'] . '" id="cropbox" alt="' . $this->fVars['imgName'] . '" style="width:' . $this->fVars['imgWidth'] . 'px; height:' . $this->fVars['imgHeight'] . 'px">
-			</figure>
-		</div>
-
-		<div id="values">
-			<h2>' . $GLOBALS['LANG']->getLL('editor.title') . '</h2>
-
+		<div class="cropfields">
 			<form id="edit">
-				<fieldset>
-					<div class="formRow">
-						<label for="x1">X1</label>
-						<input type="text" id="x1">
-						<label for="y1">Y1</label>
-						<input type="text" id="y1">
-					</div>
-					<div class="formRow">
-						<label for="x2">X2</label>
-						<input type="text" id="x2">
-						<label for="y2">Y2</label>
-						<input type="text" id="y2">
-					</div>
-					<div class="formRow">
-						<label for="w">W</label>
-						<input type="text" id="w" readonly>
-						<label for="h">H</label>
-						<input type="text" id="h" readonly>
-					</div>
-					<div class="formRow">
-						<label for="aspectRatio">' . $GLOBALS['LANG']->getLL('editor.aspectratio') . '</label>
-						' . $arField . '
-					</div>
-				</fieldset>
+				<label for="x1">X1</label>
+				<input type="text" id="x1">
+				<label for="y1">Y1</label>
+				<input type="text" id="y1">
+				<label for="x2">X2</label>
+				<input type="text" id="x2">
+				<label for="y2">Y2</label>
+				<input type="text" id="y2">
+				<label for="w">W</label>
+				<input type="text" id="w" readonly>
+				<label for="h">H</label>
+				<input type="text" id="h" readonly>
+				<label for="aspectRatio">' . $GLOBALS['LANG']->getLL('editor.aspectratio') . '</label>
+				' . $arField . '
 			</form>
-
 			<div id="controller">
 				<div id="resetSingle" class="btn">' . $GLOBALS['LANG']->getLL('editor.reset.single') . '</div>
 				<div id="save" class="btn">' . $GLOBALS['LANG']->getLL('editor.save') . '</div>
 				<div id="close" class="btn">' . $GLOBALS['LANG']->getLL('editor.close') . '</div>
 			</div>
 		</div>
+		<img src="' . $this->fVars['publicUrl'] . '" id="cropbox" alt="' . $this->fVars['imgName'] . '">
 		<script src="' . $this->fVars['pubPath'] . 'Js/jquery-1.9.1.min.js"></script>
 		<script src="' . $this->fVars['pubPath'] . 'Js/jquery.imgareaselect-0.9.10.min.js"></script>
 		' . $script . '
