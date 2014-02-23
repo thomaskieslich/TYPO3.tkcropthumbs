@@ -7,9 +7,12 @@ if (!defined('TYPO3_MODE')) {
 //Cropping Single
 
 if (TYPO3_MODE === 'BE') {
-	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules.user := addToList(TkcropthumbsCrop)');
-
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('user_txtkcropthumbsM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
+	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+		'options.hideModules.user := addToList(TkcropthumbsCrop)'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'user_txtkcropthumbsM1',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'app/');
 }
 
 $sysFilereferenceTemp = array(
@@ -22,7 +25,11 @@ $sysFilereferenceTemp = array(
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $sysFilereferenceTemp, 'tx_tkcroptumbs');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+	'sys_file_reference',
+	$sysFilereferenceTemp,
+	'tx_tkcroptumbs'
+);
 $GLOBALS['TCA']['sys_file_reference']['palettes']['imageoverlayPalette']['showitem'] .=
 	',--linebreak--,tx_tkcropthumbs_crop';
 
@@ -48,6 +55,10 @@ $tempColumns = array(
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns, tx_tkcroptumbs);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+	'tt_content',
+	$tempColumns,
+	tx_tkcroptumbs
+);
 
 $GLOBALS['TCA']['tt_content']['palettes']['image_settings']['showitem'] .= ', tx_tkcropthumbs_aspectratio';

@@ -42,26 +42,18 @@ class AjaxController {
 		$getVars = GeneralUtility::_GET();
 		$getAction = htmlspecialchars($getVars['action']);
 		$getUid = intval(htmlspecialchars($getVars['uid']));
-		$getCropValues = array(
-			'x1' => intval(htmlspecialchars($getVars['cropValues']['x1'])),
-			'y1' => intval(htmlspecialchars($getVars['cropValues']['y1'])),
-			'x2' => intval(htmlspecialchars($getVars['cropValues']['x2'])),
-			'y2' => intval(htmlspecialchars($getVars['cropValues']['y2']))
-		);
-
-		if ($getAction == save) {
-			$this->save($getUid, $getCropValues);
-		}
+		$getCropValues = $getVars['cropValues'];
+		$getAspectRatio = $getVars['aspectRatio'];
 
 		switch ($getAction) {
 			case 'save';
 				$this->save($getUid, $getCropValues);
 				break;
-			case 'resetSingle';
-				$this->resetSingle($getUid);
+			case 'delete';
+				$this->delete($getUid);
 				break;
 			default;
-				$this->save($getUid, $getCropValues);
+				break;
 		}
 	}
 
@@ -85,7 +77,7 @@ class AjaxController {
 	 * @param $uid
 	 * @return void
 	 */
-	protected function resetSingle($uid) {
+	protected function delete($uid) {
 		$table = 'sys_file_reference';
 		$where = 'uid = ' . $uid;
 		$fieldValues = array(

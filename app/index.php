@@ -22,8 +22,4 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$LANG->includeLLFile('EXT:tkcropthumbs/Resources/Private/Language/locallang.xlf');
-
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tkcropthumbs') . 'Classes/Controller/CroppingModuleController.php';
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ThomasKieslich\\Tkcropthumbs\\Controller\\CroppingModuleController');
-$SOBE->initializeAction();
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tkcropthumbs') . 'Classes/Controller/BackendController.php';

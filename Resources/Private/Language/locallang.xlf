@@ -3,20 +3,20 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
 		<header/>
 		<body>
-			<trans-unit id="editor.title" xml:space="preserve">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Edit Cropping</source>
 			</trans-unit>
-			<trans-unit id="editor.aspectratio" xml:space="preserve">
-				<source>AR</source>
+			<trans-unit id="reset" xml:space="preserve">
+				<source>Reset</source>
 			</trans-unit>
-			<trans-unit id="editor.save" xml:space="preserve">
+			<trans-unit id="save" xml:space="preserve">
 				<source>Save and Close</source>
 			</trans-unit>
-			<trans-unit id="editor.reset.single" xml:space="preserve">
-				<source>Reset this Image</source>
-			</trans-unit>
-			<trans-unit id="editor.close" xml:space="preserve">
+			<trans-unit id="close" xml:space="preserve">
 				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="delete" xml:space="preserve">
+				<source>Delete and Close</source>
 			</trans-unit>
 		</body>
 	</file>

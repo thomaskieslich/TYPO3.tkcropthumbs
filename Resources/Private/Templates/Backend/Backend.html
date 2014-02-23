@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Cropping Image</title>
+		<link rel="stylesheet" href="/{content.extPath}Resources/Public/Css/extension.css">
+	</head>
+	<body>
+		<div class="cropfields">
+			<form id="edit">
+				<label for="x1">X1</label>
+				<input type="text" id="x1" readonly="readonly">
+				<label for="y1">Y1</label>
+				<input type="text" id="y1" readonly="readonly">
+				<label for="x2">X2</label>
+				<input type="text" id="x2" readonly="readonly">
+				<label for="y2">Y2</label>
+				<input type="text" id="y2" readonly="readonly">
+				<label for="w">W</label>
+				<input type="text" id="w" readonly="readonly">
+				<label for="h">H</label>
+				<input type="text" id="h" readonly="readonly">
+				<label for="aspectRatio">AR</label>
+				{content.AspectRatio}
+				<f:if condition="{content.aspectRatio}">
+					<f:then>
+						<input type="text" id="aspectRatio" value="{content.aspectRatio}" readonly="readonly">
+					</f:then>
+					<f:else>
+						{f:form.select(name: 'aspectRatio', id: 'aspectRatio', options: '{content.aspectratioPresets}')}
+					</f:else>
+				</f:if>
+
+			</form>
+			<div id="controller">
+				<div id="reset" class="btn">{f:translate(key: 'reset')}</div>
+				<div id="save" class="btn">{f:translate(key: 'save')}</div>
+				<div id="close" class="btn">{f:translate(key: 'close')}</div>
+				<div id="delete" class="btn">{f:translate(key: 'delete')}</div>
+			</div>
+		</div>
+		<div id="image">
+			<img src="{content.image}" id="cropbox" alt="Image">
+		</div>
+
+		<script src="/{content.extPath}Resources/Public/Js/jquery-1.9.1.min.js"></script>
+		<script src="/{content.extPath}Resources/Public/Js/jquery.imgareaselect-0.9.10.js"></script>
+		{content.script -> f:format.raw()}
+		<script src="/{content.extPath}Resources/Public/Js/extension.js"></script>
+	</body>
+</html>

@@ -27,6 +27,7 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -73,6 +74,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 
 	/**
 	 * get crop and aspectRatio Data
+	 *
 	 * @param $data
 	 * @return array
 	 */
@@ -90,7 +92,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 		$currentFileProperties = $fileObjects[$this->currentFileObject]->getProperties();
 
 		$cropValues = json_decode($currentFileReference['tx_tkcropthumbs_crop'], TRUE);
-		if (count($cropValues) === 4) {
+		if (count($cropValues) >= 4 && count($cropValues) <= 6) {
 			$cropData['cropValues'] = $cropValues;
 		}
 
