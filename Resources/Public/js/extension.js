@@ -32,7 +32,8 @@ $(function () {
 
 	$('#edit').on('change', '#aspectRatio', function () {
 		cropbox.setOptions({
-			aspectRatio: $('#aspectRatio').val()
+			aspectRatio: $('#aspectRatio').val(),
+			movable: false
 		});
 
 		if ($('#aspectRatio').val()) {
@@ -83,7 +84,8 @@ $(function () {
 			}
 		}).success(function (data) {
 			if (data) {
-				location.reload();
+				parent.window.opener.focus();
+				parent.close();
 			}
 		});
 	});
@@ -97,6 +99,10 @@ $(function () {
 		$('#h').val(selection.height);
 
 		$('.imgareaselect-selection').css('background', 'none');
+		cropbox.setOptions({
+			movable: true
+		});
+		cropbox.update();
 
 		checkChange();
 	}
