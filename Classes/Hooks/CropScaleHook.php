@@ -27,7 +27,6 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -38,9 +37,15 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 
-	var $currentFileObject;
+	/**
+	 * @var int
+	 */
+	protected $currentContentObject;
 
-	var $contentUid;
+	/**
+	 * @var object
+	 */
+	protected $serviceClass;
 
 	/**
 	 * Hook for post-processing image resources
@@ -52,148 +57,45 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	 * @return array Modified image resource information
 	 */
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, ContentObjectRenderer $parent) {
-		if (!$this->contentUid || $this->contentUid != $parent->data['uid']) {
-			$this->contentUid = $parent->data['uid'];
-			$this->currentFileObject = 0;
+
+		$currentTable = $parent->getCurrentTable();
+		$confTables = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_tkcropthumbs.']['tables.'];
+		$cropEnabled = FALSE;
+
+		if (array_key_exists($currentTable . '.', $confTables)) {
+			$data = $parent->data;
+			$field = $confTables[$currentTable . '.']['field'];
+			$values = GeneralUtility::trimExplode(',', $confTables[$currentTable . '.']['values'], TRUE);
+
+			foreach ($values as $value) {
+				if ($data[$field] == $value) {
+					$cropEnabled = TRUE;
+				}
+			}
 		}
 
-		$cropData = $this->getData($parent->data);
-		if (!$cropData) {
+		$serviceObject = NULL;
+		if (!$cropEnabled) {
 			return $imageResource;
 		} else {
-			$processingConfiguration = $imageResource['processedFile']->getProcessingConfiguration();
-			$cropParameters = $this->calcCrop($cropData, $processingConfiguration, $parent->data);
+			$classPath = $confTables[$currentTable . '.']['classPath'];
+			if (isset($classPath)) {
+				if (!$this->currentContentObject || $this->currentContentObject != $parent->data['uid']) {
+					$this->currentContentObject = $parent->data['uid'];
+					$this->serviceClass = GeneralUtility::makeInstance($classPath);
+				}
+				$cropPopUp = $confTables[$currentTable . '.']['cropPopUp'];
+				$serviceObject = $this->serviceClass->init($file, $configuration, $imageResource, $parent, $cropPopUp);
+			}
+		}
 
-			$processingConfiguration = $cropParameters;
-
-			$imageResource = $this->processImage($file, $processingConfiguration);
+		if (!$serviceObject) {
+			return $imageResource;
+		} else {
+			$imageResource = $this->processImage($file, $serviceObject);
 		}
 
 		return $imageResource;
-	}
-
-	/**
-	 * get crop and aspectRatio Data
-	 *
-	 * @param $data
-	 * @return array
-	 */
-	protected function getData($data) {
-		$cropData = array();
-
-		$aspectRatio = GeneralUtility::trimExplode(':', $data['tx_tkcropthumbs_aspectratio']);
-		if (count($aspectRatio) === 2) {
-			$cropData['aspectRatio'] = $aspectRatio;
-		}
-
-		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileObjects = $fileRepository->findByRelation('tt_content', 'image', $data['uid']);
-		$currentFileReference = $fileObjects[$this->currentFileObject]->getReferenceProperties();
-		$currentFileProperties = $fileObjects[$this->currentFileObject]->getProperties();
-
-		$cropValues = json_decode($currentFileReference['tx_tkcropthumbs_crop'], TRUE);
-		if (count($cropValues) >= 4 && count($cropValues) <= 6) {
-			$cropData['cropValues'] = $cropValues;
-		}
-
-		if ($cropData) {
-			$cropData['originalImage']['width'] = $currentFileProperties['width'];
-			$cropData['originalImage']['height'] = $currentFileProperties['height'];
-		}
-
-		$this->currentFileObject++;
-
-		return $cropData;
-	}
-
-	/**
-	 * calculate new processing values
-	 *
-	 * @param array $cropData
-	 * @param array $processingConfiguration
-	 * @param array $data
-	 * @return array mixed
-	 */
-	public static function calcCrop($cropData, $processingConfiguration, $data) {
-		$width = intval($data['imagewidth']);
-		$height = intval($data['imageheight']);
-
-		$fileWidth = $cropData['originalImage']['width'];
-		$fileHeight = $cropData['originalImage']['height'];
-
-		if ($processingConfiguration['maxWidth']) {
-			$maxWidth = $processingConfiguration['maxWidth'];
-		} elseif (!$processingConfiguration['maxWidth'] && $processingConfiguration['width']) {
-			$maxWidth = $processingConfiguration['width'];
-		}
-		if ($width > $maxWidth) {
-			$width = $maxWidth;
-		}
-
-		if ($cropData['cropValues']) {
-			$cropValues = $cropData['cropValues'];
-		} else {
-			$cropValues = array();
-		}
-
-		if ($cropData['aspectRatio']) {
-			$arValues = $cropData['aspectRatio'];
-		} else {
-			$arValues = array();
-		}
-
-		if ($cropValues) {
-			$cropWidth = intval($cropValues['x2'] - $cropValues['x1']);
-			$cropHeight = intval($cropValues['y2'] - $cropValues['y1']);
-
-			if (!$arValues) {
-				$arValues[0] = $cropValues['x2'] - $cropValues['x1'];
-				$arValues[1] = $cropValues['y2'] - $cropValues['y1'];
-			}
-		}
-
-		if ($maxWidth && !$width && !$height) {
-			$width = $maxWidth;
-			$height = intval($width * ($arValues[1] / $arValues[0]));
-		}
-
-		if ($maxWidth && $width) {
-			$width = $width;
-			$height = intval($width * ($arValues[1] / $arValues[0]));
-		} elseif ($height || $width) {
-			$width = intval($height * ($arValues[0] / $arValues[1]));
-			$height = $height;
-			if ($maxWidth <= $width) {
-				$width = $maxWidth;
-				$height = intval($width * ($arValues[1] / $arValues[0]));
-			}
-		}
-
-		//cropping
-		if ($cropData['cropValues']) {
-			$srcWidth = intval($fileWidth * $width / $cropWidth);
-			$srcHeight = intval($fileHeight * $height / $cropHeight);
-
-			$offsetX = intval($cropValues['x1'] * ($width / $cropWidth));
-			$offsetY = intval($cropValues['y1'] * ($height / $cropHeight));
-
-			$cropParameters = ' -crop ' . $width . 'x' . $height . '+' . $offsetX . '+' . $offsetY . ' ';
-		}
-
-		//set values
-		$processingConfiguration['maxWidth'] = '';
-		$processingConfiguration['maxHeight'] = '';
-
-		if (!$cropValues) {
-			$processingConfiguration['width'] = $width . 'c';
-			$processingConfiguration['height'] = $height . 'c';
-		} else {
-			$processingConfiguration['width'] = $srcWidth;
-			$processingConfiguration['height'] = $srcHeight;
-			$processingConfiguration['additionalParameters'] = $cropParameters . $processingConfiguration['additionalParameters'];
-		}
-
-		return $processingConfiguration;
 	}
 
 	/**

@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE') {
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'user_txtkcropthumbsM1',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'app/');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
 }
 
 $sysFilereferenceTemp = array(

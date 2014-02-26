@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
-class BackendController {
+class CroppingController {
 
 	/**
 	 * @var array
@@ -55,7 +55,12 @@ class BackendController {
 	 */
 	protected $cropValues;
 
-	public function initialize() {
+	/**
+	 * Init
+	 *
+	 * @return void
+	 */
+	public function init() {
 		$this->content = array();
 		$this->content['extPath'] = ExtensionManagementUtility::siteRelPath('tkcropthumbs');
 
@@ -96,6 +101,7 @@ class BackendController {
 				$this->content['aspectratioPresets'] = $presets;
 			}
 
+			//crop values
 			if (isset($referenceProperties['tx_tkcropthumbs_crop'])) {
 				$import = json_decode($referenceProperties['tx_tkcropthumbs_crop'], TRUE);
 			}
@@ -122,7 +128,6 @@ class BackendController {
 		$renderer->assign('content', $this->content);
 		$view = $renderer->render();
 		echo $view;
-//		DebuggerUtility::var_dump($this);
 	}
 
 	/**
@@ -183,6 +188,3 @@ class BackendController {
 
 	}
 }
-
-$SOBE = GeneralUtility::makeInstance('ThomasKieslich\\Tkcropthumbs\\Controller\\BackendController');
-$SOBE->initialize();

@@ -22,4 +22,5 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tkcropthumbs') . 'Classes/Controller/BackendController.php';
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ThomasKieslich\\Tkcropthumbs\\Controller\\CroppingController');
+$SOBE->init();

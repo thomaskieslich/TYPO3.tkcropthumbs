@@ -7,7 +7,7 @@ $(function () {
 		y2: imgY2,
 		imageWidth: imgWidth,
 		imageHeight: imgHeight,
-		aspectRatio: 'imgAr',
+		aspectRatio: imgAr,
 		handles: true,
 		keys: true,
 		fadeSpeed: 200,

@@ -43,7 +43,6 @@ class AjaxController {
 		$getAction = htmlspecialchars($getVars['action']);
 		$getUid = intval(htmlspecialchars($getVars['uid']));
 		$getCropValues = $getVars['cropValues'];
-		$getAspectRatio = $getVars['aspectRatio'];
 
 		switch ($getAction) {
 			case 'save';

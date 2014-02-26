@@ -1,0 +1,10 @@
+plugin.tx_tkcropthumbs{
+	tables{
+		tt_content{
+			field = CType
+			values = image, textpic
+			classPath = \ThomasKieslich\Tkcropthumbs\Services\Ttcontent
+			cropPopUp = 0
+		}
+	}
+}
