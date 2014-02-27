@@ -7,11 +7,8 @@ if (!defined('TYPO3_MODE')) {
 //Cropping Single
 
 if (TYPO3_MODE === 'BE') {
-	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
-		'options.hideModules.user := addToList(TkcropthumbsCrop)'
-	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'user_txtkcropthumbsM1',
+		'txtkcropthumbsM1',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
 }
 

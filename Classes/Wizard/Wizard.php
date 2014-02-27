@@ -23,8 +23,8 @@ namespace ThomasKieslich\Tkcropthumbs\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Wizard
@@ -37,11 +37,18 @@ class Wizard {
 		if ($fObj['row']['tx_tkcropthumbs_crop']) {
 			$icon = 'crop_act.png';
 		}
-		$url = BackendUtility::getModuleUrl('user_txtkcropthumbsM1');
+
+		$moduleName = 'txtkcropthumbsM1';
+
+		$allUrlParameters = array();
+		$allUrlParameters['M'] = $moduleName;
+		$allUrlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
+		$allUrlParameters['reference'] = $fObj['row']['uid'];
+		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE, TRUE), '&');
 
 		if (is_numeric($fObj['row']['uid'])) {
 			$formField = '<a href="#"  onclick="window.open(\'';
-			$formField .= $url . '&reference=' . $fObj['row']['uid'];
+			$formField .= $url;
 			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
 			$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
 			$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';
