@@ -1,5 +1,5 @@
 <?php
-namespace ThomasKieslich\Tkcropthumbs\Tca;
+namespace ThomasKieslich\Tkcropthumbs\Wizard;
 
 /***************************************************************
  *  Copyright notice
@@ -23,6 +23,7 @@ namespace ThomasKieslich\Tkcropthumbs\Tca;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
@@ -36,9 +37,11 @@ class Wizard {
 		if ($fObj['row']['tx_tkcropthumbs_crop']) {
 			$icon = 'crop_act.png';
 		}
+		$url = BackendUtility::getModuleUrl('user_txtkcropthumbsM1');
+
 		if (is_numeric($fObj['row']['uid'])) {
 			$formField = '<a href="#"  onclick="window.open(\'';
-			$formField .= 'mod.php?M=user_txtkcropthumbsM1&reference=' . $fObj['row']['uid'];
+			$formField .= $url . '&reference=' . $fObj['row']['uid'];
 			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
 			$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
 			$formField .= '<img src="' . $iconPath . '/' . $icon . '" id="' . $fObj['itemFormElName'] . '">';

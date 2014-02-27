@@ -20,7 +20,7 @@ $sysFilereferenceTemp = array(
 		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tca.crop',
 		'config' => array(
 			'type' => 'user',
-			'userFunc' => 'ThomasKieslich\\Tkcropthumbs\\Tca\\Wizard->showIcon',
+			'userFunc' => 'ThomasKieslich\\Tkcropthumbs\\Wizard\\Wizard->showIcon',
 		)
 	)
 );
