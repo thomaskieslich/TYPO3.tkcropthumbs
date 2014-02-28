@@ -12,7 +12,7 @@ ChangeLog
 =========
 **6.2.5**
 * remove xclass using complete
-* !! errors possible
+* add Ajax CRSC
 
 **6.2.4**
 
