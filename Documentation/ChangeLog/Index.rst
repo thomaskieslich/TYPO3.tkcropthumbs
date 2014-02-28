@@ -12,7 +12,7 @@ ChangeLog
 =========
 **6.2.5**
 * remove xclass using complete
-* add Ajax CRSC
+* add CSRF token to Ajax and mod.php calls
 
 **6.2.4**
 
