@@ -42,11 +42,16 @@ class AjaxController {
 		$getVars = GeneralUtility::_GET();
 		$getAction = htmlspecialchars($getVars['action']);
 		$getUid = intval(htmlspecialchars($getVars['uid']));
-		$getCropValues = $getVars['cropValues'];
+		$getCropValues = json_decode($getVars['cropValues'], TRUE);
+
+		$cropValues = array();
+		foreach ($getCropValues as $key => $value) {
+			$cropValues[$key] = intval($value);
+		}
 
 		switch ($getAction) {
 			case 'save';
-				$this->save($getUid, $getCropValues);
+				$this->save($getUid, $cropValues);
 				break;
 			case 'delete';
 				$this->delete($getUid);
@@ -62,14 +67,18 @@ class AjaxController {
 	 * @return void
 	 */
 	protected function save($uid, $cropValues) {
-		$table = 'sys_file_reference';
-		$where = 'uid = ' . $uid;
-		$fieldValues = array(
-			'tx_tkcropthumbs_crop' => json_encode($cropValues)
-		);
-		$db = $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+		if (is_int($uid) && !empty($cropValues)) {
+			$table = 'sys_file_reference';
+			$where = 'uid = ' . $uid;
+			$fieldValues = array(
+				'tx_tkcropthumbs_crop' => json_encode($cropValues)
+			);
+			$db = $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
 
-		echo $db;
+			echo $db;
+		} else {
+			echo 0;
+		}
 	}
 
 	/**

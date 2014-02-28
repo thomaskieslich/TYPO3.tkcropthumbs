@@ -134,6 +134,8 @@ class CroppingController {
 	 * @return string
 	 */
 	protected function makeScript() {
+		$ajaxUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl('TkcropthumbsAjaxController::init');
+
 		$script = '
 		<script>
 			var imgUid = ' . $this->content[imageUid] . ';
@@ -144,6 +146,7 @@ class CroppingController {
 			var imgWidth = ' . $this->imageWidth . ';
 			var imgHeight = ' . $this->imageHeight . ';
 			var imgAr = "' . implode(":", $this->aspectRatio) . '";
+			var ajaxUrl = "' . $ajaxUrl . '";
 		</script>';
 
 		return $script;
