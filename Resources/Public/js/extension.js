@@ -54,10 +54,10 @@ $(function () {
 	$('#controller').on('click', '#save', function () {
 		$.ajax({
 			dataType: 'json',
-			url: 'ajax.php?ajaxID=TkcropthumbsAjaxController::init',
+			url: ajaxUrl,
 			data: {
 				'action': 'save',
-				'cropValues': cropbox.getSelection(),
+				'cropValues': JSON.stringify(cropbox.getSelection()),
 				'uid': imgUid
 			}
 		}).success(function (data) {
@@ -77,7 +77,7 @@ $(function () {
 	$('#controller').on('click', '#delete', function () {
 		$.ajax({
 			dataType: 'json',
-			url: 'ajax.php?ajaxID=TkcropthumbsAjaxController::init',
+			url: ajaxUrl,
 			data: {
 				'action': 'delete',
 				'uid': imgUid
