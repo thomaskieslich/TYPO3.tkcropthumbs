@@ -25,7 +25,11 @@ namespace ThomasKieslich\Tkcropthumbs\Services;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use ThomasKieslich\Tkcropthumbs\Hooks\CropScaleHook;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class Ttcontent
@@ -38,38 +42,38 @@ class Ttcontent extends CropScaleHook {
 	 * @param $file
 	 * @param $fileArray
 	 * @param $imageResource
-	 * @param $parent
+	 * @param ContentObjectRenderer $parent
 	 * @param $cropPopUp
 	 * @return array|null
 	 */
-	public function init($file, $fileArray, $imageResource, $parent, $cropPopUp = NULL) {
-
-		if ($fileArray['import.'] || $cropPopUp == 1) {
+	public function init($file, $fileArray, $imageResource, ContentObjectRenderer $parent, $cropPopUp = NULL) {
+		$cropData = array();
+		if (MathUtility::canBeInterpretedAsInteger($file)
+			&& $fileArray['import.']
+			|| $cropPopUp == 1
+		) {
 			$cropData = $this->getData($parent);
 		} elseif (!$cropPopUp) {
 			return NULL;
 		}
 
-		if (!$cropData) {
+		if (empty($cropData)) {
 			return NULL;
-		} else {
-			$processingConfiguration = $imageResource['processedFile']->getProcessingConfiguration();
-
-			$cropParameters = $this->calcCrop($cropData, $processingConfiguration);
-
-			return $cropParameters;
 		}
-
-		return NULL;
+		/** @var ProcessedFile $processedFile */
+		$processedFile = $imageResource['processedFile'];
+		$processingConfiguration = $processedFile->getProcessingConfiguration();
+		$cropParameters = $this->calcCrop($cropData, $processingConfiguration);
+		return $cropParameters;
 	}
 
 	/**
 	 * get crop and aspectRatio Data
 	 *
-	 * @param $parent
+	 * @param ContentObjectRenderer $parent
 	 * @return array
 	 */
-	protected function getData($parent) {
+	protected function getData(ContentObjectRenderer $parent) {
 		$cropData = array();
 		$aspectRatio = GeneralUtility::trimExplode(':', $parent->data['tx_tkcropthumbs_aspectratio']);
 		if (count($aspectRatio) === 2) {
@@ -77,6 +81,7 @@ class Ttcontent extends CropScaleHook {
 		}
 
 		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		/** @var  FileReference $fileReference */
 		$fileReference = $fileRepository->findFileReferenceByUid($parent->getCurrentVal());
 		$currentFileProperties = $fileReference->getProperties();
 
@@ -101,6 +106,12 @@ class Ttcontent extends CropScaleHook {
 	 * @return array mixed
 	 */
 	protected function calcCrop($cropData, $processingConfiguration) {
+		$cropWidth = '';
+		$cropHeight = '';
+		$srcWidth = '';
+		$srcHeight = '';
+		$cropParameters = '';
+
 		$width = (int)$processingConfiguration['width'];
 		$height = (int)$processingConfiguration['height'];
 
@@ -144,7 +155,6 @@ class Ttcontent extends CropScaleHook {
 			$width = $maxWidth;
 			$height = (int)$width * ($arValues[1] / $arValues[0]);
 		} elseif ($maxWidth && $width) {
-			$width = $width;
 			$height = (int)$width * ($arValues[1] / $arValues[0]);
 		} elseif ($height && $width) {
 			$width = (int)$height * ($arValues[0] / $arValues[1]);

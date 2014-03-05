@@ -24,6 +24,7 @@ namespace ThomasKieslich\Tkcropthumbs\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -84,7 +85,7 @@ class CroppingController {
 			//aspectratio
 			$selectFields = 'uid, tx_tkcropthumbs_aspectratio';
 			$fromTable = 'tt_content';
-			$whereClause = 'uid = ' . $referenceProperties[uid_foreign];
+			$whereClause = 'uid = ' . $referenceProperties['uid_foreign'];
 			$whereClause .= ' AND hidden=0 AND deleted=0';
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause);
@@ -123,6 +124,7 @@ class CroppingController {
 
 	/**
 	 * Render Fluid Template
+	 * @return void
 	 */
 	protected function renderContent() {
 		$renderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
@@ -138,18 +140,18 @@ class CroppingController {
 	 * @return string
 	 */
 	protected function makeScript() {
-		$ajaxUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl('TkcropthumbsAjaxController::init');
+		$ajaxUrl = BackendUtility::getAjaxUrl('TkcropthumbsAjaxController::init');
 
 		$script = '
 		<script>
-			var imgUid = ' . $this->content[imageUid] . ';
-			var imgX1 = ' . $this->cropValues[x1] . ';
-			var imgY1 = ' . $this->cropValues[y1] . ';
-			var imgX2 = ' . $this->cropValues[x2] . ';
-			var imgY2 = ' . $this->cropValues[y2] . ';
+			var imgUid = ' . $this->content['imageUid'] . ';
+			var imgX1 = ' . $this->cropValues['x1'] . ';
+			var imgY1 = ' . $this->cropValues['y1'] . ';
+			var imgX2 = ' . $this->cropValues['x2'] . ';
+			var imgY2 = ' . $this->cropValues['y2'] . ';
 			var imgWidth = ' . $this->imageWidth . ';
 			var imgHeight = ' . $this->imageHeight . ';
-			var imgAr = "' . implode(":", $this->aspectRatio) . '";
+			var imgAr = "' . implode(':', $this->aspectRatio) . '";
 			var ajaxUrl = "' . $ajaxUrl . '";
 		</script>';
 

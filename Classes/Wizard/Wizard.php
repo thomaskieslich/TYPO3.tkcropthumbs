@@ -23,6 +23,7 @@ namespace ThomasKieslich\Tkcropthumbs\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,6 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Wizard {
 
+	/**
+	 * @param $fObj
+	 * @return string
+	 */
 	public function showIcon($fObj) {
 		$iconPath = ExtensionManagementUtility::extRelPath('tkcropthumbs') . 'Resources/Public/Icons';
 		$icon = 'crop.png';
@@ -42,7 +47,7 @@ class Wizard {
 
 		$allUrlParameters = array();
 		$allUrlParameters['M'] = $moduleName;
-		$allUrlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
+		$allUrlParameters['moduleToken'] = FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
 		$allUrlParameters['reference'] = $fObj['row']['uid'];
 		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE, TRUE), '&');
 
