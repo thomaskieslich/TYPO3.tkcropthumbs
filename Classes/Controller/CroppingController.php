@@ -26,8 +26,12 @@ namespace ThomasKieslich\Tkcropthumbs\Controller;
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
+/**
+ * Class CroppingController
+ *
+ * @package ThomasKieslich\Tkcropthumbs\Controller
+ */
 class CroppingController {
 
 	/**
@@ -64,7 +68,7 @@ class CroppingController {
 		$this->content = array();
 		$this->content['extPath'] = ExtensionManagementUtility::siteRelPath('tkcropthumbs');
 
-		$referenceUid = intval(str_replace('sys_file_', '', htmlspecialchars(GeneralUtility::_GET('reference'))));
+		$referenceUid = (int)str_replace('sys_file_', '', htmlspecialchars(GeneralUtility::_GET('reference')));
 
 		if (is_numeric($referenceUid)) {
 			//image
@@ -165,26 +169,26 @@ class CroppingController {
 		}
 
 		$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
-		if (intval($this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1])) > $this->imageWidth) {
+		if ((int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]) > $this->imageWidth) {
 			$orientation = 'portrait';
 		}
 
 		if ($orientation == 'landscape') {
-			$cWidth = intval($this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]));
+			$cWidth = (int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]);
 			if ($cWidth == 0) {
 				$cWidth = $this->imageWidth;
 			}
-			$this->cropValues['x1'] = intval($this->imageWidth / 2 - $cWidth / 2);
+			$this->cropValues['x1'] = (int)$this->imageWidth / 2 - $cWidth / 2;
 			$this->cropValues['y1'] = 0;
 			$this->cropValues['x2'] = $this->imageWidth - $this->cropValues['x1'];
 			$this->cropValues['y2'] = $this->imageHeight;
 		} elseif ($orientation == 'portrait') {
-			$cHeight = intval($this->imageWidth * ($this->aspectRatio[1] / $this->aspectRatio[0]));
+			$cHeight = (int)$this->imageWidth * ($this->aspectRatio[1] / $this->aspectRatio[0]);
 			if ($cHeight == 0) {
 				$cHeight = $this->imageHeight;
 			}
 			$this->cropValues['x1'] = 0;
-			$this->cropValues['y1'] = intval($this->imageHeight / 2 - $cHeight / 2);
+			$this->cropValues['y1'] = (int)$this->imageHeight / 2 - $cHeight / 2;
 			$this->cropValues['x2'] = $this->imageWidth;
 			$this->cropValues['y2'] = $this->imageHeight - $this->cropValues['y1'];
 		}

@@ -35,40 +35,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Ttcontent extends CropScaleHook {
 
 	/**
-	 * @var int
-	 */
-	protected $currentFileObject;
-
-	/**
-	 * @var array
-	 */
-	protected $cropData;
-
-	/**
 	 * @param $file
-	 * @param $conf
+	 * @param $fileArray
 	 * @param $imageResource
 	 * @param $parent
 	 * @param $cropPopUp
 	 * @return array|null
 	 */
-	public function init($file, $conf, $imageResource, $parent, $cropPopUp = NULL) {
+	public function init($file, $fileArray, $imageResource, $parent, $cropPopUp = NULL) {
 
-		if (!$this->currentFileObject) {
-			$this->currentFileObject = 0;
-		}
-
-		if ($conf['import.']['current'] == 1) {
-			$this->cropData = $this->getData($parent->data);
+		if ($fileArray['import.'] || $cropPopUp == 1) {
+			$cropData = $this->getData($parent);
 		} elseif (!$cropPopUp) {
 			return NULL;
 		}
 
-		if (!$this->cropData) {
+		if (!$cropData) {
 			return NULL;
 		} else {
 			$processingConfiguration = $imageResource['processedFile']->getProcessingConfiguration();
-			$cropParameters = $this->calcCrop($this->cropData, $processingConfiguration);
+
+			$cropParameters = $this->calcCrop($cropData, $processingConfiguration);
 
 			return $cropParameters;
 		}
@@ -79,23 +66,21 @@ class Ttcontent extends CropScaleHook {
 	/**
 	 * get crop and aspectRatio Data
 	 *
-	 * @param $data
+	 * @param $parent
 	 * @return array
 	 */
-	protected function getData($data) {
+	protected function getData($parent) {
 		$cropData = array();
-
-		$aspectRatio = GeneralUtility::trimExplode(':', $data['tx_tkcropthumbs_aspectratio']);
+		$aspectRatio = GeneralUtility::trimExplode(':', $parent->data['tx_tkcropthumbs_aspectratio']);
 		if (count($aspectRatio) === 2) {
 			$cropData['aspectRatio'] = $aspectRatio;
 		}
 
 		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileObjects = $fileRepository->findByRelation('tt_content', 'image', $data['uid']);
-		$currentFileReference = $fileObjects[$this->currentFileObject]->getReferenceProperties();
-		$currentFileProperties = $fileObjects[$this->currentFileObject]->getProperties();
+		$fileReference = $fileRepository->findFileReferenceByUid($parent->getCurrentVal());
+		$currentFileProperties = $fileReference->getProperties();
 
-		$cropValues = json_decode($currentFileReference['tx_tkcropthumbs_crop'], TRUE);
+		$cropValues = json_decode($currentFileProperties['tx_tkcropthumbs_crop'], TRUE);
 		if (count($cropValues) >= 4 && count($cropValues) <= 6) {
 			$cropData['cropValues'] = $cropValues;
 		}
@@ -104,8 +89,6 @@ class Ttcontent extends CropScaleHook {
 			$cropData['originalImage']['width'] = $currentFileProperties['width'];
 			$cropData['originalImage']['height'] = $currentFileProperties['height'];
 		}
-
-		$this->currentFileObject++;
 
 		return $cropData;
 	}
@@ -118,11 +101,11 @@ class Ttcontent extends CropScaleHook {
 	 * @return array mixed
 	 */
 	protected function calcCrop($cropData, $processingConfiguration) {
-		$width = intval($processingConfiguration['width']);
-		$height = intval($processingConfiguration['height']);
+		$width = (int)$processingConfiguration['width'];
+		$height = (int)$processingConfiguration['height'];
 
-		$maxWidth = intval($processingConfiguration['maxWidth']);
-		$maxHeight = intval($processingConfiguration['maxHeight']);
+		$maxWidth = (int)$processingConfiguration['maxWidth'];
+		$maxHeight = (int)$processingConfiguration['maxHeight'];
 
 		$fileWidth = $cropData['originalImage']['width'];
 		$fileHeight = $cropData['originalImage']['height'];
@@ -148,8 +131,8 @@ class Ttcontent extends CropScaleHook {
 		}
 
 		if ($cropValues) {
-			$cropWidth = intval($cropValues['x2'] - $cropValues['x1']);
-			$cropHeight = intval($cropValues['y2'] - $cropValues['y1']);
+			$cropWidth = (int)$cropValues['x2'] - $cropValues['x1'];
+			$cropHeight = (int)$cropValues['y2'] - $cropValues['y1'];
 
 			if (!$arValues) {
 				$arValues[0] = $cropValues['x2'] - $cropValues['x1'];
@@ -159,27 +142,27 @@ class Ttcontent extends CropScaleHook {
 
 		if ($maxWidth && !$width && !$height) {
 			$width = $maxWidth;
-			$height = intval($width * ($arValues[1] / $arValues[0]));
+			$height = (int)$width * ($arValues[1] / $arValues[0]);
 		} elseif ($maxWidth && $width) {
 			$width = $width;
-			$height = intval($width * ($arValues[1] / $arValues[0]));
+			$height = (int)$width * ($arValues[1] / $arValues[0]);
 		} elseif ($height && $width) {
-			$width = intval($height * ($arValues[0] / $arValues[1]));
+			$width = (int)$height * ($arValues[0] / $arValues[1]);
 			if ($maxWidth && $maxWidth <= $width) {
 				$width = $maxWidth;
-				$height = intval($width * ($arValues[1] / $arValues[0]));
+				$height = (int)$width * ($arValues[1] / $arValues[0]);
 			}
 		}
 
 		//cropping
 		if ($cropData['cropValues']) {
-			$srcWidth = intval($fileWidth * $width / $cropWidth);
-			$srcHeight = intval($fileHeight * $height / $cropHeight);
+			$srcWidth = (int)$fileWidth * $width / $cropWidth;
+			$srcHeight = (int)$fileHeight * $height / $cropHeight;
 
-			$offsetX = intval($cropValues['x1'] * ($width / $cropWidth));
-			$offsetY = intval($cropValues['y1'] * ($height / $cropHeight));
+			$offsetX = (int)$cropValues['x1'] * ($width / $cropWidth);
+			$offsetY = (int)$cropValues['y1'] * ($height / $cropHeight);
 
-			$cropParameters = ' -crop ' . $width . 'x' . $height . '+' . $offsetX . '+' . $offsetY . ' ';
+			$cropParameters = ' -crop ' . (int)$width . 'x' . (int)$height . '+' . (int)$offsetX . '+' . (int)$offsetY . ' ';
 		}
 
 		//set values
@@ -187,11 +170,11 @@ class Ttcontent extends CropScaleHook {
 		$processingConfiguration['maxHeight'] = '';
 
 		if (!$cropValues) {
-			$processingConfiguration['width'] = $width . 'c';
-			$processingConfiguration['height'] = $height . 'c';
+			$processingConfiguration['width'] = (int)$width . 'c';
+			$processingConfiguration['height'] = (int)$height . 'c';
 		} else {
-			$processingConfiguration['width'] = $srcWidth;
-			$processingConfiguration['height'] = $srcHeight;
+			$processingConfiguration['width'] = (int)$srcWidth;
+			$processingConfiguration['height'] = (int)$srcHeight;
 			$processingConfiguration['additionalParameters'] = $cropParameters . $processingConfiguration['additionalParameters'];
 		}
 

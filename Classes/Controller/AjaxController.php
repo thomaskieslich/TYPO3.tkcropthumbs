@@ -41,12 +41,12 @@ class AjaxController {
 	public function init() {
 		$getVars = GeneralUtility::_GET();
 		$getAction = htmlspecialchars($getVars['action']);
-		$getUid = intval(htmlspecialchars($getVars['uid']));
+		$getUid = (int)htmlspecialchars($getVars['uid']);
 		$getCropValues = json_decode($getVars['cropValues'], TRUE);
 
 		$cropValues = array();
 		foreach ($getCropValues as $key => $value) {
-			$cropValues[$key] = intval($value);
+			$cropValues[$key] = (int)$value;
 		}
 
 		switch ($getAction) {

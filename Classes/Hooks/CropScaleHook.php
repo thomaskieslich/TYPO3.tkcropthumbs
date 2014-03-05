@@ -25,7 +25,6 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -51,24 +50,22 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	 * Hook for post-processing image resources
 	 *
 	 * @param string $file Original image file
-	 * @param array $configuration TypoScript getImgResource properties
+	 * @param array $fileArray TypoScript getImgResource properties
 	 * @param array $imageResource Information of the created/converted image resource
 	 * @param ContentObjectRenderer $parent Parent content object
 	 * @return array Modified image resource information
 	 */
-	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, ContentObjectRenderer $parent) {
+	public function getImgResourcePostProcess($file, array $fileArray, array $imageResource, ContentObjectRenderer $parent) {
 
 		$currentTable = $parent->getCurrentTable();
 		$confTables = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_tkcropthumbs.']['tables.'];
 		$cropEnabled = FALSE;
 
 		if (array_key_exists($currentTable . '.', $confTables)) {
-			$data = $parent->data;
 			$field = $confTables[$currentTable . '.']['field'];
 			$values = GeneralUtility::trimExplode(',', $confTables[$currentTable . '.']['values'], TRUE);
-
 			foreach ($values as $value) {
-				if ($data[$field] == $value) {
+				if ($parent->data[$field] == $value) {
 					$cropEnabled = TRUE;
 				}
 			}
@@ -85,14 +82,17 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 					$this->serviceClass = GeneralUtility::makeInstance($classPath);
 				}
 				$cropPopUp = $confTables[$currentTable . '.']['cropPopUp'];
-				$serviceObject = $this->serviceClass->init($file, $configuration, $imageResource, $parent, $cropPopUp);
+				$serviceObject = $this->serviceClass->init($file, $fileArray, $imageResource, $parent, $cropPopUp);
 			}
 		}
 
 		if (!$serviceObject) {
 			return $imageResource;
 		} else {
-			$imageResource = $this->processImage($file, $serviceObject);
+			if ($imageResource['processedFile']->isPersisted()) {
+				$imageResource['processedFile']->delete(TRUE);
+			}
+			$imageResource = $this->processImage($serviceObject, $imageResource['originalFile']);
 		}
 
 		return $imageResource;
@@ -101,13 +101,10 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	/**
 	 * process the image like ContentObjectRenderer
 	 *
-	 * @param $file
 	 * @param $processingConfiguration
-	 * @return mixed
+	 * @param $fileObject
 	 */
-	protected function processImage($file, $processingConfiguration) {
-		$file = GeneralUtility::resolveBackPath($file);
-		$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+	protected function processImage($processingConfiguration, $fileObject) {
 
 		$processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 
