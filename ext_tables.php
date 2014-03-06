@@ -4,31 +4,26 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-//Cropping Single
-
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'txtkcropthumbsM1',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
 }
 
+//crop to sys_file_reference
 $sysFilereferenceTemp = array(
 	'tx_tkcropthumbs_crop' => array(
 		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tca.crop',
 		'config' => array(
-			'type' => 'user',
-			'userFunc' => 'ThomasKieslich\\Tkcropthumbs\\Wizard\\Wizard->showIcon',
+			'type' => 'passthrough'
 		)
 	)
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 	'sys_file_reference',
-	$sysFilereferenceTemp,
-	'tx_tkcroptumbs'
+	$sysFilereferenceTemp
 );
-$GLOBALS['TCA']['sys_file_reference']['palettes']['imageoverlayPalette']['showitem'] .=
-	',--linebreak--,tx_tkcropthumbs_crop';
 
 //Aspectratio tt_content
 $extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tkcropthumbs']);
@@ -54,8 +49,7 @@ $tempColumns = array(
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 	'tt_content',
-	$tempColumns,
-	tx_tkcroptumbs
+	$tempColumns
 );
 
 $GLOBALS['TCA']['tt_content']['palettes']['image_settings']['showitem'] .= ', tx_tkcropthumbs_aspectratio';

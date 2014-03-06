@@ -25,6 +25,7 @@ namespace ThomasKieslich\Tkcropthumbs\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,6 +75,7 @@ class CroppingController {
 		if (is_numeric($referenceUid)) {
 			//image
 			$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+			/** @var FileReference  $referenceObject */
 			$referenceObject = $fileRepository->findFileReferenceByUid($referenceUid);
 			$referenceProperties = $referenceObject->getProperties();
 
