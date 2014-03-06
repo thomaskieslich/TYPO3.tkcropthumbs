@@ -72,7 +72,7 @@ class InlineElementHook implements InlineElementHookInterface {
 	 * @return void
 	 */
 	public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems) {
-		if (is_numeric($parentUid) && $foreignTable === 'sys_file_reference') {
+		if (is_int((int)$parentUid) && $foreignTable === 'sys_file_reference') {
 			$confTables = $this->getTSConfig($childRecord);
 			$parentTable = $childRecord['tablenames'];
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $parentTable, "uid = '" . $parentUid . "'");
@@ -139,7 +139,7 @@ class InlineElementHook implements InlineElementHookInterface {
 			$formField = '<a href="#" onclick="window.open(\'';
 			$formField .= $url;
 			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-			$formField .= '\',\'height=620,width=820,status=0,menubar=0,scrollbars=0\');return false;">';
+			$formField .= '\',\'height=640,width=860,status=0,menubar=0,scrollbars=0\');return false;">';
 			$formField .= '<img src="' . $iconPath . '/' . $icon . '">';
 			$formField .= '</a>';
 		} else {
