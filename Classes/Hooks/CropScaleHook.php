@@ -90,7 +90,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 			return $imageResource;
 		} else {
 			if ($imageResource['processedFile']->isPersisted()) {
-				$imageResource['processedFile']->delete(TRUE);
+				$imageResource['processedFile']->delete();
 			}
 			$imageResource = $this->processImage($serviceObject, $imageResource['originalFile']);
 		}
