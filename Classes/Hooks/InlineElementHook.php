@@ -26,7 +26,7 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -133,18 +133,16 @@ class InlineElementHook implements InlineElementHookInterface {
 		}
 
 		$moduleName = 'txtkcropthumbsM1';
-
-		$allUrlParameters = array();
-		$allUrlParameters['M'] = $moduleName;
-		$allUrlParameters['moduleToken'] = FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
-		$allUrlParameters['reference'] = $childRecord['uid'];
-		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE, TRUE), '&');
+		$urlParameters = array(
+			'reference' => $childRecord['uid']
+		);
+		$url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
 
 		if (is_numeric($childRecord['uid'])) {
 			$formField = '<a href="#" onclick="window.open(\'';
 			$formField .= $url;
 			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-			$formField .= '\',\'height=640,width=860,status=0,menubar=0,scrollbars=0\');return false;">';
+			$formField .= '\',\'height=640,width=900,status=0,menubar=0,scrollbars=0\');return false;">';
 			$formField .= '<img src="' . $iconPath . '/' . $icon . '">';
 			$formField .= '</a>';
 		} else {
