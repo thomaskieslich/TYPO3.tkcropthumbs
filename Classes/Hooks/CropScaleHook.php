@@ -24,6 +24,7 @@ namespace ThomasKieslich\Tkcropthumbs\Hooks;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
@@ -56,7 +57,10 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	 * @return array Modified image resource information
 	 */
 	public function getImgResourcePostProcess($file, array $fileArray, array $imageResource, ContentObjectRenderer $parent) {
-
+		/** @var File $parentFile */
+		$parentFile = $imageResource['originalFile'];
+		/** @var ProcessedFile $parentProcessedFile */
+		$parentProcessedFile = $imageResource['processedFile'];
 		$currentTable = $parent->getCurrentTable();
 		$confTables = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_tkcropthumbs.']['tables.'];
 		$cropEnabled = FALSE;
@@ -89,10 +93,10 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 		if (!$serviceObject) {
 			return $imageResource;
 		} else {
-			if ($imageResource['processedFile']->isPersisted()) {
-				$imageResource['processedFile']->delete();
+			if ($parentProcessedFile->isPersisted()) {
+				$parentProcessedFile->delete();
 			}
-			$imageResource = $this->processImage($serviceObject, $imageResource['originalFile']);
+			$imageResource = $this->processImage($serviceObject, $parentFile);
 		}
 
 		return $imageResource;
@@ -104,24 +108,24 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 	 * @param $processingConfiguration
 	 * @param $fileObject
 	 */
-	protected function processImage($processingConfiguration, $fileObject) {
+	protected function processImage($processingConfiguration, File $fileObject) {
+		/** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile */
+		$processedFile = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 
-		$processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
-
-		$hash = $processedFileObject->calculateChecksum();
+		$hash = $processedFile->calculateChecksum();
 		// store info in the TSFE template cache (kept for backwards compatibility)
-		if ($processedFileObject->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
+		if ($processedFile->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
 			$GLOBALS['TSFE']->tmpl->fileCache[$hash] = array(
-				0 => $processedFileObject->getProperty('width'),
-				1 => $processedFileObject->getProperty('height'),
-				2 => $processedFileObject->getExtension(),
-				3 => $processedFileObject->getPublicUrl(),
+				0 => $processedFile->getProperty('width'),
+				1 => $processedFile->getProperty('height'),
+				2 => $processedFile->getExtension(),
+				3 => $processedFile->getPublicUrl(),
 				'origFile' => $fileObject->getPublicUrl(),
 				'origFile_mtime' => $fileObject->getModificationTime(),
 				// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
 				// in order for the setup-array to create a unique filename hash.
 				'originalFile' => $fileObject,
-				'processedFile' => $processedFileObject,
+				'processedFile' => $processedFile,
 				'fileCacheHash' => $hash
 			);
 		}
