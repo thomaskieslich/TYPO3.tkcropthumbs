@@ -73,9 +73,10 @@ class InlineElementHook implements InlineElementHookInterface {
 	 */
 	public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems) {
 		if (is_int((int)$parentUid) && $foreignTable === 'sys_file_reference') {
-			$confTables = $this->getTSConfig($childRecord);
+			$confTables = $this->getTsConfig($childRecord);
 			$parentTable = $childRecord['tablenames'];
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $parentTable, "uid = '" . $parentUid . "'");
+			$cropEnabled = FALSE;
 
 			if (array_key_exists($parentTable . '.', $confTables)) {
 				$field = $confTables[$parentTable . '.']['field'];
@@ -98,17 +99,17 @@ class InlineElementHook implements InlineElementHookInterface {
 	 * @param $childRecord
 	 * @return mixed
 	 */
-	protected function getTSConfig($childRecord) {
+	protected function getTsConfig($childRecord) {
 
 		/** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
-		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+		$template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 		$template->tt_track = 0;
 		$template->setProcessExtensionStatics(TRUE);
 		$template->init();
 		$rootline = array();
 		if ($childRecord['pid'] > 0) {
 			/** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
-			$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$sysPage = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 			// Get the rootline for the current page
 			$rootline = $sysPage->getRootLine($childRecord['pid'], '', TRUE);
 		}
@@ -120,6 +121,10 @@ class InlineElementHook implements InlineElementHookInterface {
 		return $confTables;
 	}
 
+	/**
+	 * @param $childRecord
+	 * @return string
+	 */
 	protected function getIcon($childRecord) {
 		$iconPath = '../' . ExtensionManagementUtility::siteRelPath('tkcropthumbs') . 'Resources/Public/Icons';
 		$icon = 'crop.png';
