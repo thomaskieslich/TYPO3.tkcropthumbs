@@ -46,9 +46,10 @@ $(function () {
 	});
 
 	$('#controller').on('click', '#reset', function () {
-		cropbox.setSelection(selectionOrg['x1'], selectionOrg['y1'], selectionOrg['x2'], selectionOrg['y2']);
-		cropbox.update();
-		checkChange();
+		location.reload();
+//		cropbox.setSelection(selectionOrg['x1'], selectionOrg['y1'], selectionOrg['x2'], selectionOrg['y2']);
+//		cropbox.update();
+//		checkChange();
 	});
 
 	$('#controller').on('click', '#save', function () {
@@ -124,5 +125,26 @@ $(function () {
 			$('#edit #x1, #edit #y1, #edit #x2, #edit #y2').removeAttr('readonly');
 		}
 	}
+
+	//SVG Fallback
+	function supportsSVG() {
+		return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect
+	}
+
+	if (!supportsSVG()) {
+		//img replace
+		$('img[src$="svg"]').attr('src', function () {
+			return $(this).attr('src').replace('.svg', '.png');
+		});
+
+		// background-image replace
+		$('div, span').each(function () {
+			var bgOrg = $(this).css('background-image');
+			if (bgOrg.indexOf('.svg') > 0) {
+				$(this).css('background-image', bgOrg.replace('.svg', '.png'));
+			}
+		});
+	}
+
 
 });

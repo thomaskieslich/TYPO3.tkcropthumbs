@@ -142,7 +142,7 @@ class InlineElementHook implements InlineElementHookInterface {
 			$formField = '<a href="#" onclick="window.open(\'';
 			$formField .= $url;
 			$formField .= '\',\'tkcropthumbs' . rand(0, 1000000) . '';
-			$formField .= '\',\'height=640,width=900,status=0,menubar=0,scrollbars=0\');return false;">';
+			$formField .= '\',\'height=640,width=800,status=0,menubar=0,scrollbars=0\');return false;">';
 			$formField .= '<img src="' . $iconPath . '/' . $icon . '">';
 			$formField .= '</a>';
 		} else {

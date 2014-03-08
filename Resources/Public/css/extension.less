@@ -2,6 +2,8 @@
 @color-grey-dark: #494949;
 @color-font-light: #ccc;
 
+@iconPath: '/typo3conf/ext/tkcropthumbs/Resources/Public/Icons/';
+
 html {
 	height: 100%;
 	width: 100%;
@@ -25,16 +27,14 @@ body {
 	form {
 		float: left;
 		label {
-			display: block;
-			float: left;
-			margin: 1px 4px;
-			padding: 0;
+			display: inline-block;
 		}
 		input {
 			border: none;
 			border-radius: 2px;
-			float: left;
+			display: inline-block;
 			font-size: 13px;
+			line-height: 16px;
 			padding: 2px;
 			margin-right: 6px;
 			width: 40px;
@@ -46,21 +46,31 @@ body {
 			padding: 1px;
 		}
 	}
-	.btn {
-		background: @color-grey-light;
-		border-radius: 2px;
-		color: @color-grey-dark;
-		display: inline-block;
-		float: left;
-		cursor: pointer;
-		height: 16px;
-		line-height: 14px;
-		font-weight: 400;
-		padding: 2px 6px;
-		margin-left: 6px;
-	}
-	#save {
-		display: none;
+	#controller {
+		.icon {
+			float: left;
+			cursor: pointer;
+			display: inline-block;
+			background-image: url('@{iconPath}cropIcons.svg');
+			background-repeat: no-repeat;
+			background-size: 80px 20px;
+			margin-left: 6px;
+			height: 20px;
+			width: 20px;
+		}
+		#reset {
+			background-position: 0 0;
+		}
+		#close {
+			background-position: -20px 0;
+		}
+		#save {
+			background-position: -40px 0;
+			display: none;
+		}
+		#delete {
+			background-position: -60px 0;
+		}
 	}
 }
 
