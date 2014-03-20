@@ -72,15 +72,15 @@ class InlineElementHook implements InlineElementHookInterface {
 	 * @return void
 	 */
 	public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems) {
-		if (is_int((int)$parentUid) && $foreignTable === 'sys_file_reference') {
+		if (is_int((int)$parentUid) && $foreignTable === 'sys_file_reference' && $childRecord) {
 			$confTables = $this->getTsConfig($childRecord);
 			$parentTable = $childRecord['tablenames'];
-			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $parentTable, "uid = '" . $parentUid . "'");
 			$cropEnabled = FALSE;
 
 			if (array_key_exists($parentTable . '.', $confTables)) {
 				$field = $confTables[$parentTable . '.']['field'];
 				$values = GeneralUtility::trimExplode(',', $confTables[$parentTable . '.']['values'], TRUE);
+				$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $parentTable, "uid = '" . $parentUid . "'");
 				foreach ($values as $value) {
 					if ($record[$field] == $value) {
 						$cropEnabled = TRUE;
