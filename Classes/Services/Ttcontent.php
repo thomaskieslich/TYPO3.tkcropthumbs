@@ -43,18 +43,12 @@ class Ttcontent extends CropScaleHook {
 	 * @param $fileArray
 	 * @param $imageResource
 	 * @param ContentObjectRenderer $parent
-	 * @param $cropPopUp
 	 * @return array|null
 	 */
-	public function init($file, $fileArray, $imageResource, ContentObjectRenderer $parent, $cropPopUp = NULL) {
+	public function init($file, $fileArray, $imageResource, ContentObjectRenderer $parent) {
 		$cropData = array();
-		if (MathUtility::canBeInterpretedAsInteger($file)
-			&& $fileArray['import.']
-			|| $cropPopUp == 1
-		) {
+		if (MathUtility::canBeInterpretedAsInteger($file) && $fileArray['import.']) {
 			$cropData = $this->getData($parent);
-		} elseif (!$cropPopUp) {
-			return NULL;
 		}
 
 		if (empty($cropData)) {

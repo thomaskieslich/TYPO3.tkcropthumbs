@@ -85,8 +85,7 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 					$this->currentContentObject = $parent->data['uid'];
 					$this->serviceClass = GeneralUtility::makeInstance($classPath);
 				}
-				$cropPopUp = $confTables[$currentTable . '.']['cropPopUp'];
-				$serviceObject = $this->serviceClass->init($file, $fileArray, $imageResource, $parent, $cropPopUp);
+				$serviceObject = $this->serviceClass->init($file, $fileArray, $imageResource, $parent);
 			}
 		}
 

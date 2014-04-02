@@ -4,7 +4,6 @@ plugin.tx_tkcropthumbs{
 			field = CType
 			values = image, textpic
 			classPath = \ThomasKieslich\Tkcropthumbs\Services\Ttcontent
-			cropPopUp = 0
 		}
 	}
 }
