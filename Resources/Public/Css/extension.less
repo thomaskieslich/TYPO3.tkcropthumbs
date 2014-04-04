@@ -1,0 +1,132 @@
+@color-grey-light: #ccc;
+@color-grey-dark: #494949;
+@color-font-light: #ccc;
+
+@iconPath: '/typo3conf/ext/tkcropthumbs/Resources/Public/Icons/';
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	background-color: @color-grey-dark;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	color: @color-font-light;
+	height: 100%;
+	width: 100%;
+}
+
+.cropfields {
+	height: 26px;
+	padding: 6px;
+	width: 100%;
+	form {
+		float: left;
+		label {
+			display: inline-block;
+		}
+		input {
+			border: none;
+			border-radius: 2px;
+			display: inline-block;
+			font-size: 13px;
+			line-height: 16px;
+			padding: 2px;
+			margin-right: 6px;
+			width: 40px;
+		}
+		input[readonly="readonly"] {
+			border: 1px solid @color-font-light;
+			background-color: @color-grey-dark;
+			color: @color-font-light;
+			padding: 1px;
+		}
+	}
+	#controller {
+		.icon {
+			float: left;
+			cursor: pointer;
+			display: inline-block;
+			background-image: url('@{iconPath}cropIcons.svg');
+			background-repeat: no-repeat;
+			background-size: 80px 20px;
+			margin-left: 6px;
+			height: 20px;
+			width: 20px;
+		}
+		#reset {
+			background-position: 0 0;
+		}
+		#close {
+			background-position: -20px 0;
+		}
+		#save {
+			background-position: -40px 0;
+			display: none;
+		}
+		#delete {
+			background-position: -60px 0;
+		}
+	}
+}
+
+#image {
+	display: inline-block;
+	width: auto;
+	height: 95%;
+}
+
+#cropbox {
+	width: auto;
+	height: 100%;
+}
+
+/*
+ * imgAreaSelect default style
+ */
+
+.imgareaselect-border1 {
+	background: url(img/border-v.gif) repeat-y left top;
+}
+
+.imgareaselect-border2 {
+	background: url(img/border-h.gif) repeat-x left top;
+}
+
+.imgareaselect-border3 {
+	background: url(img/border-v.gif) repeat-y right top;
+}
+
+.imgareaselect-border4 {
+	background: url(img/border-h.gif) repeat-x left bottom;
+}
+
+.imgareaselect-border1, .imgareaselect-border2,
+.imgareaselect-border3, .imgareaselect-border4 {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+.imgareaselect-handle {
+	background-color: #fff;
+	border: solid 1px #000;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+.imgareaselect-outer {
+	background-color: #000;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+.imgareaselect-selection {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+
