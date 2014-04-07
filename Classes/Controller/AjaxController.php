@@ -44,9 +44,11 @@ class AjaxController {
 		$getUid = (int)htmlspecialchars($getVars['uid']);
 		$getCropValues = json_decode($getVars['cropValues'], TRUE);
 
-		$cropValues = array();
-		foreach ($getCropValues as $key => $value) {
-			$cropValues[$key] = (int)$value;
+		if ($getCropValues) {
+			$cropValues = array();
+			foreach ($getCropValues as $key => $value) {
+				$cropValues[$key] = (int)$value;
+			}
 		}
 
 		switch ($getAction) {

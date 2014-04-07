@@ -10,6 +10,9 @@
 
 ChangeLog
 =========
+**6.2.6**
+* fix Ajax for Save & delete
+
 **6.2.5**
 * remove xclass using complete
 * add CSRF token to Ajax and mod.php calls
