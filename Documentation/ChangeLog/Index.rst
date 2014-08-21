@@ -10,6 +10,9 @@
 
 ChangeLog
 =========
+**6.2.7**
+* fix bug with empty aspect ratios
+
 **6.2.6**
 * fix Ajax for Save & delete
 
