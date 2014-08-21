@@ -75,7 +75,7 @@ class CroppingController {
 		if (is_numeric($referenceUid)) {
 			//image
 			$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-			/** @var FileReference  $referenceObject */
+			/** @var FileReference $referenceObject */
 			$referenceObject = $fileRepository->findFileReferenceByUid($referenceUid);
 			$referenceProperties = $referenceObject->getProperties();
 
@@ -127,6 +127,7 @@ class CroppingController {
 
 	/**
 	 * Render Fluid Template
+	 *
 	 * @return void
 	 */
 	protected function renderContent() {
@@ -144,7 +145,6 @@ class CroppingController {
 	 */
 	protected function makeScript() {
 		$ajaxUrl = BackendUtility::getAjaxUrl('TkcropthumbsAjaxController::init');
-		print_r($this->aspectRatio);
 		$script = '
 		<script>
 			var imgUid = ' . $this->content['imageUid'] . ';
@@ -169,34 +169,35 @@ class CroppingController {
 	protected function initializeValues() {
 
 		if (!$this->aspectRatio) {
-			$this->aspectRatio[0] = $this->imageWidth;
-			$this->aspectRatio[1] = $this->imageHeight;
-		}
-
-		$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
-		if ((int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]) > $this->imageWidth) {
-			$orientation = 'portrait';
-		}
-
-		if ($orientation == 'landscape') {
-			$cWidth = (int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]);
-			if ($cWidth == 0) {
-				$cWidth = $this->imageWidth;
-			}
-			$this->cropValues['x1'] = (int)$this->imageWidth / 2 - $cWidth / 2;
-			$this->cropValues['y1'] = 0;
-			$this->cropValues['x2'] = $this->imageWidth - $this->cropValues['x1'];
-			$this->cropValues['y2'] = $this->imageHeight;
-		} elseif ($orientation == 'portrait') {
-			$cHeight = (int)$this->imageWidth * ($this->aspectRatio[1] / $this->aspectRatio[0]);
-			if ($cHeight == 0) {
-				$cHeight = $this->imageHeight;
-			}
 			$this->cropValues['x1'] = 0;
-			$this->cropValues['y1'] = (int)$this->imageHeight / 2 - $cHeight / 2;
+			$this->cropValues['y1'] = 0;
 			$this->cropValues['x2'] = $this->imageWidth;
-			$this->cropValues['y2'] = $this->imageHeight - $this->cropValues['y1'];
-		}
+			$this->cropValues['y2'] = $this->imageHeight;
+		} else {
+			$orientation = ($this->imageWidth > $this->imageHeight) ? 'landscape' : 'portrait';
+			if ((int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]) > $this->imageWidth) {
+				$orientation = 'portrait';
+			}
 
+			if ($orientation == 'landscape') {
+				$cWidth = (int)$this->imageHeight * ($this->aspectRatio[0] / $this->aspectRatio[1]);
+				if ($cWidth == 0) {
+					$cWidth = $this->imageWidth;
+				}
+				$this->cropValues['x1'] = (int)$this->imageWidth / 2 - $cWidth / 2;
+				$this->cropValues['y1'] = 0;
+				$this->cropValues['x2'] = $this->imageWidth - $this->cropValues['x1'];
+				$this->cropValues['y2'] = $this->imageHeight;
+			} elseif ($orientation == 'portrait') {
+				$cHeight = (int)$this->imageWidth * ($this->aspectRatio[1] / $this->aspectRatio[0]);
+				if ($cHeight == 0) {
+					$cHeight = $this->imageHeight;
+				}
+				$this->cropValues['x1'] = 0;
+				$this->cropValues['y1'] = (int)$this->imageHeight / 2 - $cHeight / 2;
+				$this->cropValues['x2'] = $this->imageWidth;
+				$this->cropValues['y2'] = $this->imageHeight - $this->cropValues['y1'];
+			}
+		}
 	}
 }
