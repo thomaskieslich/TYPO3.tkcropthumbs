@@ -97,6 +97,7 @@ class CroppingController {
 				$this->aspectRatio = GeneralUtility::trimExplode(':', $row['tx_tkcropthumbs_aspectratio'], TRUE);
 				$this->content['aspectRatio'] = implode(':', $this->aspectRatio);
 			} else {
+				$this->aspectRatio = array();
 				$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tkcropthumbs']);
 				$confValues = GeneralUtility::trimExplode(',', $extConf['aspectratio']);
 				$presets = array(
@@ -143,7 +144,7 @@ class CroppingController {
 	 */
 	protected function makeScript() {
 		$ajaxUrl = BackendUtility::getAjaxUrl('TkcropthumbsAjaxController::init');
-
+		print_r($this->aspectRatio);
 		$script = '
 		<script>
 			var imgUid = ' . $this->content['imageUid'] . ';
