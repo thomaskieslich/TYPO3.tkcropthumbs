@@ -47,9 +47,6 @@ $(function () {
 
 	$('#controller').on('click', '#reset', function () {
 		location.reload();
-//		cropbox.setSelection(selectionOrg['x1'], selectionOrg['y1'], selectionOrg['x2'], selectionOrg['y2']);
-//		cropbox.update();
-//		checkChange();
 	});
 
 	$('#controller').on('click', '#save', function () {
@@ -103,7 +100,6 @@ $(function () {
 		cropbox.setOptions({
 			movable: true
 		});
-		cropbox.update();
 
 		checkChange();
 	}
@@ -145,6 +141,4 @@ $(function () {
 			}
 		});
 	}
-
-
 });

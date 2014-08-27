@@ -16,8 +16,6 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'misc',
 	'author' => 'Thomas Kieslich',
 	'author_email' => 'info@thomaskieslich.net',
-	'author_company' => '',
-	'shy' => '',
 	'priority' => '',
 	'module' => '',
 	'state' => 'stable',
@@ -30,7 +28,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '6.2.7',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '6.2.0-6.2.99',
+			'typo3' => '6.2.0-6.2.99'
 		),
 		'conflicts' => array(
 		),
