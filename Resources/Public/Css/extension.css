@@ -43,7 +43,7 @@ body {
   float: left;
   cursor: pointer;
   display: inline-block;
-  background-image: url('/typo3conf/ext/tkcropthumbs/Resources/Public/Icons/cropIcons.svg');
+  background-image: url('../Icons/cropIcons.svg');
   background-repeat: no-repeat;
   background-size: 80px 20px;
   margin-left: 6px;
