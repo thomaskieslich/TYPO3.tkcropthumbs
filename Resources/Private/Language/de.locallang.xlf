@@ -1,23 +1,30 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
-		<header/>
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2014-09-05T19:24:58Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="title" xml:space="preserve" approved="yes">
-				<source>Edit Cropping</source>
-			<target state="translated">Bearbeite Ausschnitt</target></trans-unit>
-			<trans-unit id="reset" xml:space="preserve" approved="yes">
-				<source>Reset</source>
-			<target state="translated">Zurücksetzen</target></trans-unit>
-			<trans-unit id="save" xml:space="preserve" approved="yes">
-				<source>Save and Close</source>
-			<target state="translated">Speichern und schließen</target></trans-unit>
-			<trans-unit id="close" xml:space="preserve" approved="yes">
-				<source>Close</source>
-			<target state="translated">Schließen</target></trans-unit>
-			<trans-unit id="delete" xml:space="preserve" approved="yes">
-				<source>Delete and Close</source>
-			<target state="translated">Löschen und schließen</target></trans-unit>
+		<trans-unit id="close" approved="yes" xml:space="preserve">
+			<source>Close</source>
+			<target>Schließen</target>
+		</trans-unit>
+		<trans-unit id="delete" approved="yes" xml:space="preserve">
+			<source>Delete and Close</source>
+			<target>Löschen und schließen</target>
+		</trans-unit>
+		<trans-unit id="reset" approved="yes" xml:space="preserve">
+			<source>Reset</source>
+			<target>Zurücksetzen</target>
+		</trans-unit>
+		<trans-unit id="save" approved="yes" xml:space="preserve">
+			<source>Save and Close</source>
+			<target>Speichern und schließen</target>
+		</trans-unit>
+		<trans-unit id="title" approved="yes" xml:space="preserve">
+			<source>Edit Cropping</source>
+			<target>Bearbeite Ausschnitt</target>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

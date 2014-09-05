@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.2">
-	<file source-language="en" datatype="plaintext" original="messages" date="2013-10-31T13:21:00Z" product-name="tkcropthumbs">
-		<header/>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-05T19:24:47Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="tca.aspectratio" xml:space="preserve">
-				<source>AspectRatio</source>
-			</trans-unit>
-			<trans-unit id="tca.crop" xml:space="preserve">
-				<source>Crop Image</source>
-			</trans-unit>
+		<trans-unit id="tca.aspectratio" xml:space="preserve">
+			<source>AspectRatio</source>
+		</trans-unit>
+		<trans-unit id="tca.crop" xml:space="preserve">
+			<source>Crop Image</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>
