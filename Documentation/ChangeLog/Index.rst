@@ -10,6 +10,11 @@
 
 ChangeLog
 =========
+**6.2.8**
+* fix crop Handlers
+* move ext_tables content to TCA/Overrides
+* update language files
+
 **6.2.7**
 * fix bug with empty aspect ratios
 
