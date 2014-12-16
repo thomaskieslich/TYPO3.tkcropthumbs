@@ -47,8 +47,8 @@ class Ttcontent extends CropScaleHook {
 	 */
 	public function init($file, $fileArray, $imageResource, ContentObjectRenderer $parent) {
 		$cropData = array();
-		if (MathUtility::canBeInterpretedAsInteger($file) && $fileArray['import.']) {
-			$cropData = $this->getData($parent);
+		if (MathUtility::canBeInterpretedAsInteger($file)) {
+			$cropData = $this->getData($parent, $file);
 		}
 
 		if (empty($cropData)) {
@@ -65,9 +65,10 @@ class Ttcontent extends CropScaleHook {
 	 * get crop and aspectRatio Data
 	 *
 	 * @param ContentObjectRenderer $parent
+	 * @param integer $fileReferenceUid
 	 * @return array
 	 */
-	protected function getData(ContentObjectRenderer $parent) {
+	protected function getData(ContentObjectRenderer $parent, $fileReferenceUid) {
 		$cropData = array();
 		$aspectRatio = GeneralUtility::trimExplode(':', $parent->data['tx_tkcropthumbs_aspectratio']);
 		if (count($aspectRatio) === 2) {
@@ -76,7 +77,7 @@ class Ttcontent extends CropScaleHook {
 
 		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		/** @var  FileReference $fileReference */
-		$fileReference = $fileRepository->findFileReferenceByUid($parent->getCurrentVal());
+		$fileReference = $fileRepository->findFileReferenceByUid($fileReferenceUid);
 		$currentFileProperties = $fileReference->getProperties();
 
 		$cropValues = json_decode($currentFileProperties['tx_tkcropthumbs_crop'], TRUE);
@@ -114,6 +115,11 @@ class Ttcontent extends CropScaleHook {
 
 		$fileWidth = $cropData['originalImage']['width'];
 		$fileHeight = $cropData['originalImage']['height'];
+
+		if ($width <= 0 && $height <= 0) {
+			$width = (int)$fileWidth;
+			$height = (int)$fileHeight;
+		}
 
 		if ($maxWidth && $width > $maxWidth) {
 			$width = $maxWidth;

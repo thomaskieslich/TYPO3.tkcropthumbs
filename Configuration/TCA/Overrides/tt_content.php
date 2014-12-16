@@ -14,7 +14,7 @@ foreach ($aspectvalues as $value) {
 $tempColumns = array(
 	'tx_tkcropthumbs_aspectratio' => array(
 		'exclude' => 0,
-		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tca.aspectratio',
+		'label' => 'LLL:EXT:tkcropthumbs/Resources/Private/Language/locallang_db.xlf:tca.aspectratio',
 		'config' => array(
 			'type' => 'select',
 			'items' => $aspectratios,
@@ -29,4 +29,8 @@ $tempColumns = array(
 	$tempColumns
 );
 
-$GLOBALS['TCA']['tt_content']['palettes']['image_settings']['showitem'] .= ', tx_tkcropthumbs_aspectratio';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'image_settings', 'tx_tkcropthumbs_aspectratio');
+// fluidcontent_core hides the palette by default
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluidcontent_core')) {
+	$GLOBALS['TCA']['tt_content']['palettes']['image_settings']['canNotCollapse'] = 1;
+}
