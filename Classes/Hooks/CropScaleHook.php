@@ -92,9 +92,6 @@ class CropScaleHook implements ContentObjectGetImageResourceHookInterface {
 		if (!$serviceObject) {
 			return $imageResource;
 		} else {
-			if ($parentProcessedFile->isPersisted()) {
-				$parentProcessedFile->delete();
-			}
 			$imageResource = $this->processImage($serviceObject, $parentFile);
 		}
 

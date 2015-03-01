@@ -10,6 +10,9 @@
 
 ChangeLog
 =========
+**6.2.9**
+* fix performance problem
+
 **6.2.8**
 * fix crop Handlers
 * move ext_tables content to TCA/Overrides
