@@ -3,7 +3,7 @@ plugin.tx_tkcropthumbs{
 		tt_content{
 			field = CType
 			values = image, textpic
-			classPath = \ThomasKieslich\Tkcropthumbs\Services\Ttcontent
+			classPath = ThomasKieslich\Tkcropthumbs\Services\Ttcontent
 		}
 	}
 }
